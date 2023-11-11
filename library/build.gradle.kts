@@ -5,7 +5,6 @@ plugins {
 }
 
 kotlin {
-    targetHierarchy.default()
     jvm()
     androidTarget {
         publishLibraryVariants("release")
@@ -21,21 +20,42 @@ kotlin {
     linuxX64()
 
     sourceSets {
-        val commonMain by getting {
+        androidMain {
             dependencies {
-                //put your multiplatform dependencies here
+                implementation(libs.ktor.client.okhttp)
             }
         }
-        val commonTest by getting {
+        iosMain {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.java)
+            }
+        }
+        commonMain {
+            dependencies {
+                implementation(libs.ktor.client)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.content.neogation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.coroutines)
+                implementation(libs.logger)
+            }
+        }
+        commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.coroutines.test)
             }
         }
     }
 }
 
 android {
-    namespace = "org.jetbrains.kotlinx.multiplatform.library.template"
+    namespace = "su.pank.yandex.music.api"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

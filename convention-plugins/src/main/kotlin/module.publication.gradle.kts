@@ -1,7 +1,3 @@
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.`maven-publish`
-
 plugins {
     `maven-publish`
     signing
@@ -18,22 +14,20 @@ publishing {
 
         // Provide artifacts information required by Maven Central
         pom {
-            name.set("Kotlin Multiplatform library template")
-            description.set("Dummy library to test deployment to Maven Central")
-            url.set("https://github.com/Kotlin/multiplatform-library-template")
+            name.set("Yandex Music Api")
+            description.set("Multiplatform library for work with yandex music")
+            url.set("https://github.com/pank-su/yandex-music-api")
 
             licenses {
                 license {
-                    name.set("MIT")
-                    url.set("https://opensource.org/licenses/MIT")
+                    name.set("GNU GPL 3.0")
+                    url.set("https://opensource.org/license/gpl-3-0/")
                 }
             }
             developers {
                 developer {
-                    id.set("JetBrains")
-                    name.set("JetBrains Team")
-                    organization.set("JetBrains")
-                    organizationUrl.set("https://www.jetbrains.com")
+                    id.set("pank-su")
+                    name.set("pank-su")
                 }
             }
             scm {
