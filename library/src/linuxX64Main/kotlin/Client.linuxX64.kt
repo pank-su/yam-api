@@ -1,5 +1,6 @@
 import io.ktor.client.engine.*
+import io.ktor.client.engine.curl.*
 
 actual fun getHttpClientEngine(): HttpClientEngine {
-    TODO("Not yet implemented")
+    return Curl.create()
 }

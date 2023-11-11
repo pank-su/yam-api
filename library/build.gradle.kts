@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxJson)
     id("module.publication")
 }
 
@@ -35,6 +36,11 @@ kotlin {
                 implementation(libs.ktor.client.java)
             }
         }
+        linuxMain {
+            dependencies {
+                implementation(libs.ktor.client.curl)
+            }
+        }
         commonMain {
             dependencies {
                 implementation(libs.ktor.client)
@@ -43,6 +49,7 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.coroutines)
                 implementation(libs.logger)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         commonTest {
