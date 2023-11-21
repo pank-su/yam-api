@@ -35,7 +35,6 @@ class Client {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
-
             })
 
         }
