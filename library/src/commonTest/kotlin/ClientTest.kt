@@ -1,17 +1,16 @@
 import dsl.client
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
+import io.getenv
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+
 
 class ClientTest {
     @Test
     fun simpleTest() = runTest {
+        val token = getenv("token")
         val client = client {
-
+            this.token = token
         }
-
-        val response = client.httpClient.get("https://pank.su")
-        println(response.bodyAsText())
+        println(client.me)
     }
 }

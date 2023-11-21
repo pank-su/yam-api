@@ -50,12 +50,14 @@ kotlin {
                 implementation(libs.coroutines)
                 implementation(libs.logger)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.datetime)
             }
         }
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
                 implementation(libs.coroutines.test)
+                implementation(libs.getenv)
             }
         }
     }

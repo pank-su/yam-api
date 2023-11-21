@@ -1,6 +1,11 @@
 package model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class InvocationInfo(val hostName: String, val reqId: String, val execDuration: Int)
+data class InvocationInfo(
+    @SerialName("hostname") val hostName: String,
+    @SerialName("req-id") val reqId: String,
+    @SerialName("exec-duration-millis") val execMillis: Int = 0
+)

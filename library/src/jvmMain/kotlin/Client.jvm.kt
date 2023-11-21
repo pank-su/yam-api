@@ -1,5 +1,7 @@
+import io.ktor.client.*
 import io.ktor.client.engine.*
+import io.ktor.client.engine.java.*
 
 actual fun getHttpClientEngine(): HttpClientEngine {
-    TODO("Not yet implemented")
+    return HttpClient(Java).engine
 }

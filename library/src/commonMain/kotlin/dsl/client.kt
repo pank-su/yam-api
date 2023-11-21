@@ -2,8 +2,8 @@ package dsl
 
 import Client
 
-fun client(init: Client.() -> Unit): Client {
+suspend fun client(init: Client.() -> Unit): Client {
     val client = Client()
-    client.init()
+    client.init(init)
     return client
 }
