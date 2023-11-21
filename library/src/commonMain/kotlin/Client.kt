@@ -18,15 +18,19 @@ class Client {
     var baseUrl: String = "https://api.music.yandex.net"
     var token: String? = null
     var language = "ru"
-    lateinit var me: Status
+    var me: Status? = null
 
 
     var httpClientEngine: HttpClientEngine = getHttpClientEngine()
 
+    val loggingSettings: (Logging.Config) -> Unit = {
+        it.logger = Logger.DEFAULT
+        it.level = LogLevel.BODY
+    }
+
     private var httpClient = HttpClient(httpClientEngine) {
         install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.BODY
+            loggingSettings(this)
         }
         install(ContentNegotiation) {
             json(Json {

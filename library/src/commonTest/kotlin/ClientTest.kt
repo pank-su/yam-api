@@ -11,6 +11,7 @@ class ClientTest {
         val client = client {
             this.token = token
         }
-        println(client.me)
+
+        println(client.getStatus())
     }
 }
