@@ -35,7 +35,6 @@ class Client {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
-
             })
 
         }
@@ -52,7 +51,7 @@ class Client {
 
     }
 
-    suspend fun getStatus(): Status? {
+    suspend fun getStatus(): Status {
         return httpClient.request(baseUrl) {
             url {
                 appendPathSegments("account", "status")
