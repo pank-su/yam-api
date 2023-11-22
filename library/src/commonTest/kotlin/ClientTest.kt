@@ -22,10 +22,10 @@ class StatusTest {
         if (clientBadAuth != null) return@runBlocking
         clientBadAuth = client { }
         val token = getenv("token") ?: return@runBlocking
+        if (token == "") return@runBlocking
         clientGoodAuth = client {
             this.token = token
         }
-        if (clientGoodAuth?.me == null) return@runBlocking
         canAuth = true
     }
 
