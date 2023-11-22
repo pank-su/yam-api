@@ -10,7 +10,10 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import model.BasicResponse
+import model.EmptyRequest
+import model.Result
 import model.account.Status
+import model.account.UserSettings
 
 expect fun getHttpClientEngine(): HttpClientEngine
 
@@ -24,21 +27,48 @@ class Client {
 
     var httpClientEngine: HttpClientEngine = getHttpClientEngine()
 
-    val loggingSettings: (Logging.Config) -> Unit = {
-        it.logger = Logger.DEFAULT
-        it.level = LogLevel.BODY
+    var loggingSettings: Logging.Config.() -> Unit = {
+        logger = Logger.DEFAULT
+        this.level = LogLevel.BODY
     }
+
+    var requestSettings: HttpRequestBuilder.() -> Unit = {
+
+    }
+
 
     private var httpClient = HttpClient(httpClientEngine) {
         install(Logging) {
-            loggingSettings(this)
+            loggingSettings()
         }
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
             })
-
         }
+    }
+
+    private suspend inline fun <reified T : Result> request(
+        vararg components: String,
+        method: HttpMethod = HttpMethod.Get,
+        body: Result = EmptyRequest()
+    ): T {
+        return httpClient.request(baseUrl) {
+            requestSettings()
+            this.method = method
+            url {
+                appendPathSegments(components.toList())
+            }
+            if (token != "") {
+                headers {
+                    append(HttpHeaders.Authorization, "OAuth $token")
+                }
+            }
+            if (method == HttpMethod.Post) {
+                contentType(ContentType.Application.Json)
+                setBody(body.apply { this.invocationInfo = null } as T)
+            }
+        }.body<BasicResponse<T>>().result
     }
 
     suspend fun init(init: Client.() -> Unit) {
@@ -50,15 +80,9 @@ class Client {
         }
     }
 
-    suspend fun getStatus(): Status {
-        return httpClient.request(baseUrl) {
-            url {
-                appendPathSegments("account", "status")
-            }
-            headers {
-                append(HttpHeaders.Authorization, "OAuth $token")
-            }
-        }.body<BasicResponse<Status>>().result
-    }
+    suspend fun getStatus() = request<Status>("account", "status")
+    suspend fun getSettings() = request<UserSettings>("account", "settings")
+    suspend fun setSettings(settings: UserSettings) =
+        request<UserSettings>("account", "settings", method = HttpMethod.Post, body = settings)
 
 }

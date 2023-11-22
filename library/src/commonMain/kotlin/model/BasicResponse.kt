@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-abstract class Result {
+open class Result {
     var invocationInfo: InvocationInfo? = null
 }
 
