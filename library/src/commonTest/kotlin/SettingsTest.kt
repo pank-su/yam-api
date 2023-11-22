@@ -10,10 +10,10 @@ class SettingsTest {
     @Test
     fun gettingSettings() = runTest {
         assertFailsWith<NotAuthenticatedException> {
-            client { }!!.getSettings()
+            client { }.getSettings()
         }
         val token = getenv("token") ?: return@runTest
-        if (token == "") return@runTest
+        ///if (token == "") return@runTest
         client { this.token = token }.getSettings()
     }
 
