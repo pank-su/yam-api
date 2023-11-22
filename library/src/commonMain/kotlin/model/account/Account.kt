@@ -20,7 +20,7 @@ data class Account(
     val serviceAvailable: Boolean,
     val hostedUser: Boolean? = null,
     @SerialName("passport-phones") val passportPhones: List<PassportPhone> = listOf(),
-    val registeredAt: Instant,
+    val registeredAt: Instant? = null,
     val child: Boolean? = null,
     val nonOwnerFamilyMember: Boolean? = null,
 ) : Result()

@@ -5,4 +5,4 @@ import model.Result
 
 
 @Serializable
-data class Status(val account: Account, val permissions: Permissions, val subscription: Subscription): Result()
+data class Status(val account: Account, val permissions: Permissions, val subscription: Subscription? = null) : Result()
