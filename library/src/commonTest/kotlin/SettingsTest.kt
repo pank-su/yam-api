@@ -13,7 +13,7 @@ class SettingsTest {
             client { }.getSettings()
         }
         val token = getenv("token") ?: return@runTest
-        ///if (token == "") return@runTest
+        if (token == "") return@runTest
         client { this.token = token }.getSettings()
     }
 
