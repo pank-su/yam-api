@@ -9,7 +9,7 @@ import model.Result
 
 @Serializable
 data class Account(
-    val now: String,
+    val now: Instant,
     val uid: Long? = null,
     val login: String? = null,
     val fullName: String? = null,
@@ -23,4 +23,5 @@ data class Account(
     val registeredAt: Instant? = null,
     val child: Boolean? = null,
     val nonOwnerFamilyMember: Boolean? = null,
+    val region: Int?
 ) : Result()

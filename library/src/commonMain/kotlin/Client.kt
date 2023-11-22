@@ -1,4 +1,5 @@
 import dsl.YandexMusicTagMaker
+import exceptions.SessionExpiredException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -16,7 +17,7 @@ expect fun getHttpClientEngine(): HttpClientEngine
 @YandexMusicTagMaker
 class Client {
     var baseUrl: String = "https://api.music.yandex.net"
-    var token: String? = null
+    var token: String = ""
     var language = "ru"
     var me: Status? = null
 
@@ -42,13 +43,11 @@ class Client {
 
     suspend fun init(init: Client.() -> Unit) {
         this.init()
-        if (token == null) return
         try {
-            me = getStatus()!!
-        } catch (e: NullPointerException) {
-            println("Токен некореектный")
+            me = getStatus()
+        } catch (e: SessionExpiredException) {
+            println("Токен некореектный или истёк")
         }
-
     }
 
     suspend fun getStatus(): Status {
