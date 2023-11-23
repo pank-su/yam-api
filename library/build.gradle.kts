@@ -51,6 +51,7 @@ kotlin {
                 implementation(libs.logger)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
+                kotlin("reflect")
             }
         }
         commonTest {

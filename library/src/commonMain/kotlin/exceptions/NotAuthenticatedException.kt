@@ -1,6 +1,4 @@
 package exceptions
 
 
-class NotAuthenticatedException: Exception("Вы не авторизованы") {
-
-}
+class NotAuthenticatedException: Exception("Вы не авторизованы")

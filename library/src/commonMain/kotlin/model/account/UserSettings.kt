@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.Result
+import kotlin.reflect.KMutableProperty1
 
 enum class Visibility {
     PUBLIC, PRIVATE
@@ -11,8 +12,8 @@ enum class Visibility {
 
 @Serializable
 enum class Theme {
-    @SerialName("light")
-    Light,
+    @SerialName("white")
+    White,
 
     @SerialName("black")
     Black
@@ -20,19 +21,34 @@ enum class Theme {
 
 @Serializable
 data class UserSettings(
-    val uid: Int?,
-    val lastFmScrobblingEnabled: Boolean,
-    val facebookScrobblingEnabled: Boolean,
-    val shuffleEnabled: Boolean,
-    val addNewTrackOnPlaylistTop: Boolean,
-    val volumePercents: Int,
-    val userMusicVisibility: Visibility,
-    val userSocialVisibility: Visibility,
-    val modified: Instant? = null,
-    val theme: Theme,
-    val promosDisabled: Boolean,
-    val autoPlayRadio: Boolean,
-    val syncQueueEnabled: Boolean,
-    val childModEnabled: Boolean?,
-    val adsDisabled: Boolean?
-) : Result()
+    var uid: Int? = null,
+    var lastFmScrobblingEnabled: Boolean,
+    var facebookScrobblingEnabled: Boolean,
+    var shuffleEnabled: Boolean,
+    var addNewTrackOnPlaylistTop: Boolean,
+    var volumePercents: Int,
+    var userMusicVisibility: Visibility,
+    var userSocialVisibility: Visibility,
+    var modified: Instant? = null,
+    var theme: Theme,
+    var promosDisabled: Boolean,
+    var autoPlayRadio: Boolean,
+    var syncQueueEnabled: Boolean,
+    var childModEnabled: Boolean?,
+    var adsDisabled: Boolean?
+) : Result() {
+    suspend fun <T> update(property: KMutableProperty1<UserSettings, T>, newValue: T): UserSettings {
+        return update(hashMapOf(property to newValue))
+    }
+
+    suspend fun update(propertyToValues: HashMap<KMutableProperty1<UserSettings, *>, *>): UserSettings {
+        val normalHashMap = hashMapOf<String, String>(
+
+        )
+        propertyToValues.forEach {
+            normalHashMap[it.key.name] = it.value!!.toString().lowercase()
+        }
+
+        return client!!.requestForm<UserSettings>("account", "settings", body =  normalHashMap)
+    }
+}

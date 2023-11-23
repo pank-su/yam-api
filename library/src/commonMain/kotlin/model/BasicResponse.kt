@@ -1,12 +1,16 @@
 package model
 
+import Client
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 open class Result {
-    var invocationInfo: InvocationInfo? = null
+    @Transient var invocationInfo: InvocationInfo? = null
+    @Transient var client: Client? = null
 }
+
 
 
 @Serializable

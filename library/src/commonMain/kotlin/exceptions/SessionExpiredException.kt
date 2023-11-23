@@ -1,5 +1,3 @@
 package exceptions
 
-class SessionExpiredException(override val message: String): Exception(message) {
-
-}
+class SessionExpiredException(override val message: String): Exception(message)

@@ -1,6 +1,7 @@
 package model
 
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.*
 
 @Serializable
-class EmptyRequest(): Result()
+class EmptyRequest(
+): Result()

@@ -6,14 +6,16 @@ import io.ktor.client.engine.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import model.BasicResponse
-import model.EmptyRequest
 import model.Result
 import model.account.Status
 import model.account.UserSettings
+
 
 expect fun getHttpClientEngine(): HttpClientEngine
 
@@ -36,7 +38,6 @@ class Client {
 
     }
 
-
     private var httpClient = HttpClient(httpClientEngine) {
         install(Logging) {
             loggingSettings()
@@ -48,28 +49,83 @@ class Client {
         }
     }
 
+    @OptIn(InternalSerializationApi::class)
     private suspend inline fun <reified T : Result> request(
-        vararg components: String,
+        components: List<String>,
         method: HttpMethod = HttpMethod.Get,
-        body: Result = EmptyRequest()
+        body: HashMap<String, String> = hashMapOf()
     ): T {
         return httpClient.request(baseUrl) {
             requestSettings()
             this.method = method
             url {
-                appendPathSegments(components.toList())
+                appendPathSegments(components)
             }
-            if (token != "") {
-                headers {
+            headers {
+                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+                append("USER_AGENT", "Yandex-Music-API")
+                if (token != "") {
                     append(HttpHeaders.Authorization, "OAuth $token")
                 }
             }
             if (method == HttpMethod.Post) {
-                contentType(ContentType.Application.Json)
-                setBody(body.apply { this.invocationInfo = null } as T)
+                headers {
+                    append(HttpHeaders.ContentType, "form-encoded")
+                }
+                formData {
+                    parameters {
+                        body.forEach {
+                            append(it.key, it.value)
+                        }
+                    }
+                }
             }
-        }.body<BasicResponse<T>>().result
+            headers {
+                remove(HttpHeaders.ContentType)
+                remove(HttpHeaders.ContentLength)
+            }
+        }.body<BasicResponse<T>>().result.apply { client = this@Client }
     }
+
+    internal suspend inline fun <reified T : Result> requestForm(
+        vararg components: String,
+        body: HashMap<String, String> = hashMapOf()
+    ): T {
+        return httpClient.submitForm(baseUrl, formParameters =
+        parameters {
+            body.forEach {
+                append(it.key, it.value)
+            }
+        }) {
+            requestSettings()
+            url {
+                appendPathSegments(components.toList())
+            }
+            headers {
+                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+                append("USER_AGENT", "Yandex-Music-API")
+                if (token != "") {
+                    append(HttpHeaders.Authorization, "OAuth $token")
+                }
+            }
+        }.body<BasicResponse<T>>().result.apply { client = this@Client }
+    }
+
+
+    private suspend inline fun <reified T : Result> request(
+        vararg components: String,
+        method: HttpMethod = HttpMethod.Get
+    ): T {
+        return request(components.toList(), method)
+    }
+
+    internal suspend inline fun <reified T : Result> requestPost(
+        vararg components: String,
+        body: HashMap<String, String> = hashMapOf()
+    ): T {
+        return request(components.toList(), method = HttpMethod.Post, body)
+    }
+
 
     suspend fun init(init: Client.() -> Unit) {
         this.init()
@@ -82,7 +138,7 @@ class Client {
 
     suspend fun getStatus() = request<Status>("account", "status")
     suspend fun getSettings() = request<UserSettings>("account", "settings")
-    suspend fun setSettings(settings: UserSettings) =
-        request<UserSettings>("account", "settings", method = HttpMethod.Post, body = settings)
+//    suspend fun setSettings(settings: UserSettings) =
+//       requestPost<UserSettings>("account", "settings",  body = settings)
 
 }
