@@ -1,17 +1,16 @@
-
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class AdsTest {
-
+class ExperimentsTest {
     @Test
-    fun gettingAds() = runTest {
+    fun gettingTest() = runTest{
+        client {  }.accountExperiments()
         val token = getenv("token") ?: return@runTest
         if (token == "") return@runTest
-        val ad = client { }.ads()
-
-        client { this.token = token }.ads()
+        client {
+            this.token = token
+        }.accountExperiments()
     }
 }

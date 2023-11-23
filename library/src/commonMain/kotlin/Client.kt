@@ -13,7 +13,9 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import model.BasicResponse
+import model.PermissionAlerts
 import model.Result
+import model.account.Experiments
 import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
@@ -142,5 +144,9 @@ class Client {
     suspend fun userSettings() = request<UserSettings>("account", "settings")
 
     suspend fun ads() = request<Ad>("settings")
+
+    suspend fun permissionAlerts() = request<PermissionAlerts>("permission-alerts")
+
+    suspend fun accountExperiments() = request<Experiments>("account", "experiments")
 
 }
