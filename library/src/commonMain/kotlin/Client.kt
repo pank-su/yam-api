@@ -1,3 +1,4 @@
+
 import dsl.YandexMusicTagMaker
 import exceptions.SessionExpiredException
 import io.ktor.client.*
@@ -15,6 +16,7 @@ import model.BasicResponse
 import model.Result
 import model.account.Status
 import model.account.UserSettings
+import model.ad.Ad
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -130,15 +132,15 @@ class Client {
     suspend fun init(init: Client.() -> Unit) {
         this.init()
         try {
-            me = getStatus()
+            me = status()
         } catch (e: SessionExpiredException) {
             println("Токен некореектный или истёк")
         }
     }
 
-    suspend fun getStatus() = request<Status>("account", "status")
-    suspend fun getSettings() = request<UserSettings>("account", "settings")
-//    suspend fun setSettings(settings: UserSettings) =
-//       requestPost<UserSettings>("account", "settings",  body = settings)
+    suspend fun status() = request<Status>("account", "status")
+    suspend fun userSettings() = request<UserSettings>("account", "settings")
+
+    suspend fun ads() = request<Ad>("settings")
 
 }

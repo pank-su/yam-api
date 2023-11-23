@@ -9,15 +9,15 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 
-class SettingsTest {
+class UserSettingsTest {
     @Test
-    fun gettingSettings() = runTest {
+    fun gettingUserSettings() = runTest {
         assertFailsWith<NotAuthenticatedException> {
-            client { }.getSettings()
+            client { }.userSettings()
         }
         val token = getenv("token") ?: return@runTest
         if (token == "") return@runTest
-        client { this.token = token }.getSettings()
+        client { this.token = token }.userSettings()
     }
 
     @Test
@@ -25,11 +25,13 @@ class SettingsTest {
         val token = getenv("token") ?: return@runTest
         if (token == "") return@runTest
         val client = client { this.token = token }
-        val settings = client.getSettings()
+        val settings = client.userSettings()
         assertEquals(settings.update(UserSettings::volumePercents, 80).volumePercents, 80)
         assertEquals(settings.update(UserSettings::volumePercents, 75).volumePercents, 75)
         assertEquals(settings.update(UserSettings::theme, Theme.White).theme, Theme.White)
         assertEquals(settings.update(UserSettings::theme, Theme.Black).theme, Theme.Black)
         assertNotEquals(settings, settings.update(UserSettings::autoPlayRadio, !settings.autoPlayRadio))
+        settings.update(UserSettings::volumePercents, settings.volumePercents)
+        settings.update(UserSettings::theme, settings.theme)
     }
 }
