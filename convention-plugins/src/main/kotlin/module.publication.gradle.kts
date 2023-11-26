@@ -26,8 +26,8 @@ publishing {
             }
             developers {
                 developer {
-                    id.set("pank-su")
-                    name.set("pank-su")
+                    id.set("pank_su")
+                    name.set("pank_su")
                 }
             }
             scm {
