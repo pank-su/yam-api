@@ -1,4 +1,3 @@
-
 import dsl.YandexMusicTagMaker
 import exceptions.SessionExpiredException
 import io.ktor.client.*
@@ -10,15 +9,16 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import model.BasicResponse
 import model.PermissionAlerts
 import model.Result
 import model.account.Experiments
+import model.account.PromoCodeStatus
 import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
+import model.feed.Feed
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -35,7 +35,7 @@ class Client {
 
     var loggingSettings: Logging.Config.() -> Unit = {
         logger = Logger.DEFAULT
-        this.level = LogLevel.BODY
+        this.level = LogLevel.NONE
     }
 
     var requestSettings: HttpRequestBuilder.() -> Unit = {
@@ -53,7 +53,6 @@ class Client {
         }
     }
 
-    @OptIn(InternalSerializationApi::class)
     private suspend inline fun <reified T : Result> request(
         components: List<String>,
         method: HttpMethod = HttpMethod.Get,
@@ -66,8 +65,11 @@ class Client {
                 appendPathSegments(components)
             }
             headers {
+
                 append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
                 append("USER_AGENT", "Yandex-Music-API")
+                append("Accept-Language", language)
+
                 if (token != "") {
                     append(HttpHeaders.Authorization, "OAuth $token")
                 }
@@ -149,4 +151,11 @@ class Client {
 
     suspend fun accountExperiments() = request<Experiments>("account", "experiments")
 
+    suspend fun consumePromoCode(code: String) = requestForm<PromoCodeStatus>(
+        "account",
+        "consume-promo-code",
+        body = hashMapOf("code" to code, "language" to language)
+    )
+
+    suspend fun feed() = request<Feed>("feed")
 }
