@@ -8,7 +8,25 @@ import model.Result
 enum class ExperimentStatus{
     @SerialName("default") DEFAULT,
     @SerialName("on") ON,
-    @SerialName("on_lite") ON_LITE
+    @SerialName("on_hard")
+    ON_HARD,
+    @SerialName("on2")
+    ON2,
+    @SerialName("on1")
+    ON1, // what?
+    @SerialName("on_lite")
+    ON_LITE,
+    @SerialName("editorial")
+    Editorial,
+    @SerialName("promo_bookmate_3")
+    PromoBookmate,
+    @SerialName("tarifficator_enabled")
+    TarifficatorEnabled,
+    @SerialName("ru")
+    RU,
+    pd100,
+    control,
+    year
 }
 
 @Serializable
@@ -40,7 +58,7 @@ data class Experiments(
     @SerialName("androidBackendWaveButton")
     val androidBackendWaveButton: ExperimentStatus,
     @SerialName("androidBigPlayerArtists")
-    val androidBigPlayerArtists: ExperimentStatus,
+    val androidBigPlayerArtists: ExperimentStatus? = null,
     @SerialName("androidBookmateOption")
     val androidBookmateOption: ExperimentStatus,
     @SerialName("AndroidCastOnboarding")
@@ -154,7 +172,7 @@ data class Experiments(
     @SerialName("AndroidMediaPauseOnStopSignal")
     val androidMediaPauseOnStopSignal: ExperimentStatus,
     @SerialName("androidMiniPlayerUi")
-    val androidMiniPlayerUi: ExperimentStatus,
+    val androidMiniPlayerUi: ExperimentStatus? = null,
     @SerialName("AndroidMixedLocalSearchAnalytics_Dev")
     val androidMixedLocalSearchAnalyticsDev: ExperimentStatus,
     @SerialName("AndroidMixedSearch")

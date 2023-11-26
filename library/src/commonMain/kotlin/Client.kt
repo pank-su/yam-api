@@ -35,7 +35,7 @@ class Client {
 
     var loggingSettings: Logging.Config.() -> Unit = {
         logger = Logger.DEFAULT
-        this.level = LogLevel.NONE
+        this.level = LogLevel.BODY
     }
 
     var requestSettings: HttpRequestBuilder.() -> Unit = {
