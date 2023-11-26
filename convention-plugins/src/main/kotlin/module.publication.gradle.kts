@@ -31,7 +31,7 @@ publishing {
                 }
             }
             scm {
-                url.set("https://github.com/Kotlin/multiplatform-library-template")
+                url.set("https://github.com/pank-su/yandex-music-api.git")
             }
         }
     }
