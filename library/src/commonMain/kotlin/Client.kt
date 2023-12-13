@@ -1,4 +1,5 @@
 import dsl.YandexMusicTagMaker
+import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -9,14 +10,16 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
-import model.account.Experiments
 import model.account.PromoCodeStatus
 import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
 import model.feed.Feed
+import model.landing.BlockType
+import model.landing.Landing
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -124,10 +127,12 @@ class Client {
                         }
                     }
                 }
-            }
-            headers {
-                remove(HttpHeaders.ContentType)
-                remove(HttpHeaders.ContentLength)
+            } else if (method == HttpMethod.Get) {
+                url {
+                    body.forEach {
+                        parameters.append(it.key, it.value)
+                    }
+                }
             }
         }.body<BasicResponse<T>>().result.apply { client = this@Client }
     }
@@ -197,4 +202,19 @@ class Client {
     )
 
     suspend fun feed() = request<Feed>("feed")
+
+    suspend fun feedWizardIsPassed() =
+        requestPrimitive<HashMap<String, Boolean>>("feed", "wizard", "is-passed").value!!["isWizardPassed"] as Boolean
+
+    suspend fun landing(vararg blocks: BlockType) =
+        request<Landing>(
+            listOf("landing3"),
+            body = hashMapOf(
+                "blocks" to blocks.joinToString(",") {
+                    val json = Json.encodeToString(it)
+                    json.substring(1..<json.length - 1)
+                },
+                "eitherUserId" to (me?.account?.uid ?: throw NotAuthenticatedException()).toString()
+            )
+        )
 }

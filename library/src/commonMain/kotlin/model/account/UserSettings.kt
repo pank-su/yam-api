@@ -1,32 +1,9 @@
 package model.account
 
 import kotlinx.datetime.Instant
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNames
 import model.Result
 import kotlin.reflect.KMutableProperty1
-
-@OptIn(ExperimentalSerializationApi::class)
-
-@Serializable
-enum class Visibility {
-    @JsonNames("PUBLIC", "public")
-    PUBLIC,
-
-    @JsonNames("PRIVATE", "private")
-    PRIVATE
-}
-
-@Serializable
-enum class Theme {
-    @SerialName("white")
-    White,
-
-    @SerialName("black")
-    Black
-}
 
 @Serializable
 data class UserSettings(
