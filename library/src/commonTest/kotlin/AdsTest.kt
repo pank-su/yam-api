@@ -1,4 +1,3 @@
-
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
@@ -12,6 +11,8 @@ class AdsTest {
         if (token == "") return@runTest
         val ad = client { }.ads()
 
-        client { this.token = token }.ads()
+        client {
+            this.token = token
+        }.ads()
     }
 }

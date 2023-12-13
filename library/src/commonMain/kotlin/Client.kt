@@ -10,9 +10,7 @@ import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import model.BasicResponse
-import model.PermissionAlerts
-import model.Result
+import model.*
 import model.account.Experiments
 import model.account.PromoCodeStatus
 import model.account.Status
@@ -52,6 +50,47 @@ class Client {
             })
         }
     }
+
+    private suspend inline fun <reified T> requestPrimitive(
+        vararg components: String,
+        method: HttpMethod = HttpMethod.Get,
+        body: HashMap<String, String> = hashMapOf()
+    ): ResultPrimitive<T> {
+        return httpClient.request(baseUrl) {
+            requestSettings()
+            this.method = method
+            url {
+                appendPathSegments(components.toList())
+            }
+            headers {
+
+                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+                append("USER_AGENT", "Yandex-Music-API")
+                append("Accept-Language", language)
+
+                if (token != "") {
+                    append(HttpHeaders.Authorization, "OAuth $token")
+                }
+            }
+            if (method == HttpMethod.Post) {
+                headers {
+                    append(HttpHeaders.ContentType, "form-encoded")
+                }
+                formData {
+                    parameters {
+                        body.forEach {
+                            append(it.key, it.value)
+                        }
+                    }
+                }
+            }
+            headers {
+                remove(HttpHeaders.ContentType)
+                remove(HttpHeaders.ContentLength)
+            }
+        }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
+    }
+
 
     private suspend inline fun <reified T : Result> request(
         components: List<String>,
@@ -149,7 +188,7 @@ class Client {
 
     suspend fun permissionAlerts() = request<PermissionAlerts>("permission-alerts")
 
-    suspend fun accountExperiments() = request<Experiments>("account", "experiments")
+    suspend fun accountExperiments() = requestPrimitive<HashMap<String, String>>("account", "experiments")
 
     suspend fun consumePromoCode(code: String) = requestForm<PromoCodeStatus>(
         "account",

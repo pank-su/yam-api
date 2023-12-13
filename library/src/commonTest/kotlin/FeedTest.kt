@@ -1,6 +1,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
+import model.playlist.CoverSize
 import kotlin.test.Test
 
 class FeedTest {
@@ -15,6 +16,8 @@ class FeedTest {
         }
         println(client.feed())
 
-
+        client.feed().generatedPlaylists.forEach {
+            println(it.data.getUrlBackgroundImage(CoverSize.`400x400`))
+        }
     }
 }

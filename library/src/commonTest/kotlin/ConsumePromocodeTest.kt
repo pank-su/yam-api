@@ -12,7 +12,6 @@ class ConsumePromoCodeTest {
             this.token = token
         }
 
-
         println(client.consumePromoCode("test"))
     }
 }

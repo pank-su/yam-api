@@ -6,7 +6,9 @@ import kotlin.test.Test
 class ExperimentsTest {
     @Test
     fun gettingTest() = runTest{
-        client {  }.accountExperiments()
+        client { }.accountExperiments().value?.forEach {
+            println("${it.key}: ${it.value}")
+        }
         val token = getenv("token") ?: return@runTest
         if (token == "") return@runTest
         client {

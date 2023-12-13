@@ -22,7 +22,9 @@ enum class GeneratedPlaylistType {
     podcasts,
 
     @JsonNames("missed_likes", "missedLikes")
-    MissedLikes
+    MissedLikes,
+
+    rewind2023
 }
 
 @Serializable

@@ -12,13 +12,28 @@ enum class AlbumType {
     Single,
 
     @SerialName("compilation")
-    Compilation
+    Compilation,
+
+    @SerialName("podcast")
+    Podcast,
+
+    @SerialName("audiobook")
+    AudioBook
 }
 
 @Serializable
 enum class MetaType {
     @SerialName("music")
-    Music
+    Music,
+
+    @SerialName("podcast")
+    Podcast,
+
+    @SerialName("podcast-episode")
+    PodcastEpisode,
+
+    @SerialName("audiobook")
+    AudioBook
 }
 
 @Serializable
@@ -69,7 +84,27 @@ enum class Genre {
     SoundTrack,
 
     @SerialName("rusbards")
-    Rusbards
+    Rusbards,
+
+    @SerialName("ruspop")
+    RusPop,
+
+    @SerialName("dance")
+    Dance,
+
+    @SerialName("podcasts")
+    Podcasts,
+
+    edmgenre, breakbeatgenre,
+
+    @SerialName("dnb")
+    DrumAndBase,
+
+    @SerialName("soviet")
+    Soviet,
+
+    @SerialName("fairytales")
+    FairyTales
 }
 
 @Serializable
@@ -82,7 +117,7 @@ data class Album(
     val releaseDate: Instant? = null,
     val coverUri: String,
     val ogImage: String,
-    val genre: Genre,
+    val genre: Genre? = null,
     val trackCount: Int,
     val likesCount: Int,
     val recent: Boolean,

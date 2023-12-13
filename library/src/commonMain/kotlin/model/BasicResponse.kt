@@ -11,6 +11,15 @@ open class Result {
     @Transient var client: Client? = null
 }
 
+@Serializable
+open class ResultPrimitive<T>() {
+    var value: T? = null
+    @Transient
+    var invocationInfo: InvocationInfo? = null
+    @Transient
+    var client: Client? = null
+}
+
 
 
 @Serializable
@@ -27,6 +36,28 @@ data class BasicResponse<T>(
             }
             return _result.apply {
                 this.invocationInfo = this@BasicResponse.invocationInfo
+            }
+        }
+}
+
+@Serializable
+data class BasicResponsePrimitive<T>(
+    val invocationInfo: InvocationInfo,
+    @SerialName("result") private val _result: T? = null,
+    @SerialName("error") private val _error: Error? = null
+) {
+    val result: ResultPrimitive<T>
+        get() {
+            if (_result == null) {
+                errorTypeToException[_error?.type]!!(_error?.message ?: "Неизвестна ошибка")
+                throw Throwable()
+            }
+
+            val result = ResultPrimitive<T>()
+
+            return result.apply {
+                value = this@BasicResponsePrimitive._result
+                this.invocationInfo = this@BasicResponsePrimitive.invocationInfo
             }
         }
 }
