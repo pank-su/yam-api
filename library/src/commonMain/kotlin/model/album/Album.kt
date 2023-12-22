@@ -28,5 +28,5 @@ data class Album(
     val availableForMobile: Boolean,
     val availablePartially: Boolean,
     val bests: List<Int>,
-    val trackPosition: TrackPosition
+    val trackPosition: TrackPosition? = null
 )

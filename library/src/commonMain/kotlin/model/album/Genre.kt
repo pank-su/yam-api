@@ -63,7 +63,7 @@ enum class Genre {
     Podcasts,
 
     // TODO
-    edmgenre, breakbeatgenre, ukrrock, experimental, electronics, industrial,
+    edmgenre, breakbeatgenre, ukrrock, experimental, electronics, industrial, rusestrada,
 
     @SerialName("social-tracks")
     SocialTracks,

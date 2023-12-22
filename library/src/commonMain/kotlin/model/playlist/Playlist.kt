@@ -26,7 +26,7 @@ data class Playlist(
     val title: String,
     val description: String,
     val trackCount: Int,
-    val tags: List<String>,
+    val tags: List<String> = listOf(),
     val revision: Int,
     val snapshot: Int,
     val visibility: Visibility,
@@ -35,11 +35,11 @@ data class Playlist(
     val modified: Instant,
     val isBanner: Boolean,
     val isPremiere: Boolean,
-    val everPlayed: Boolean,
-    val durationMs: Int,
-    @SerialName("ogImage") val ogImageUri: String,
-    val tracks: List<TrackShort>
+    val everPlayed: Boolean? = null,
+    val durationMs: Int? = null,
+    @SerialName("ogImage") val ogImageUri: String? = null,
+    val tracks: List<TrackShort> = listOf()
 ) {
-    fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri.replace("%%", size.toString())}"
+    fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
     fun getUrlBackgroundImage(size: CoverSize) = "https://${backgroundImageUrl?.replace("%%", size.toString())}"
 }

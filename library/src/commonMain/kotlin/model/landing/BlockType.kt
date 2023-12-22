@@ -13,25 +13,30 @@ enum class BlockType {
     PersonalPlaylists,
 
     @SerialName("promotions")
-    @JsonNames("promotions")
+    @JsonNames("promotion", "promotions")
     Promotions,
 
     @SerialName("new-releases")
     NewReleases,
 
     @SerialName("new-playlists")
+    @JsonNames("playlist", "new-playlists")
     NewPlaylists,
 
     @SerialName("mixes")
+    @JsonNames("mix-link", "mixes")
     Mixes,
 
     @SerialName("chart")
+    @JsonNames("chart-item", "chart")
     Chart,
 
     @SerialName("artists")
     Artists,
 
+
     @SerialName("albums")
+    @JsonNames("album", "albums")
     Albums,
 
     @SerialName("playlists")

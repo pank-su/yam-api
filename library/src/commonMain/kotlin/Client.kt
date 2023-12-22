@@ -217,4 +217,5 @@ class Client {
                 "eitherUserId" to (me?.account?.uid ?: throw NotAuthenticatedException()).toString()
             )
         )
+
 }
