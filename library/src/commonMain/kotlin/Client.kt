@@ -19,10 +19,8 @@ import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
 import model.feed.Feed
-import model.landing.BlockType
-import model.landing.ChartInfo
-import model.landing.ChartOption
-import model.landing.Landing
+import model.landing.*
+import model.playlist.TagResult
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -228,4 +226,11 @@ class Client {
             } else ""
         )
 
+    suspend fun newReleases() = request<LandingList>("landing3", "new-releases")
+
+    suspend fun newPlaylists() = request<LandingList>("landing3", "new-playlists")
+
+    suspend fun podcasts() = request<LandingList>("landing3", "podcasts")
+
+    suspend fun tags(tagId: String) = request<TagResult>("tags", tagId, "playlist-ids")
 }

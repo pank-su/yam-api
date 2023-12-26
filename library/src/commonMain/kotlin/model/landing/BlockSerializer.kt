@@ -31,6 +31,7 @@ object BlockSerializer : KSerializer<BlockEntity> {
         BlockType.Mixes -> serializer<MixLink>()
         BlockType.Chart -> serializer<ChartItem>()
         BlockType.Artists -> serializer<GeneratedPlaylist>()
+        BlockType.Podcasts -> serializer<GeneratedPlaylist>()
         BlockType.Albums -> serializer<Album>()
         BlockType.Playlists -> serializer<GeneratedPlaylist>()
         BlockType.PlayContexts -> serializer<PlayContextsData>()
