@@ -1,6 +1,7 @@
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
+import extensions.removeCarets
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -19,6 +20,8 @@ import model.account.UserSettings
 import model.ad.Ad
 import model.feed.Feed
 import model.landing.BlockType
+import model.landing.ChartInfo
+import model.landing.ChartOption
 import model.landing.Landing
 
 
@@ -211,11 +214,18 @@ class Client {
             listOf("landing3"),
             body = hashMapOf(
                 "blocks" to blocks.joinToString(",") {
-                    val json = Json.encodeToString(it)
-                    json.substring(1..<json.length - 1)
+                    Json.encodeToString(it).removeCarets()
+
                 },
                 "eitherUserId" to (me?.account?.uid ?: throw NotAuthenticatedException()).toString()
             )
+        )
+
+    suspend fun chart(chartOption: ChartOption? = null) =
+        request<ChartInfo>(
+            "landing3", "chart", if (chartOption != null) {
+                Json.encodeToString(chartOption).removeCarets()
+            } else ""
         )
 
 }
