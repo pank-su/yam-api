@@ -33,7 +33,7 @@ object BlockSerializer : KSerializer<BlockEntity> {
         BlockType.Artists -> serializer<GeneratedPlaylist>()
         BlockType.Albums -> serializer<Album>()
         BlockType.Playlists -> serializer<GeneratedPlaylist>()
-        BlockType.PlayContexts -> serializer<GeneratedPlaylist>()
+        BlockType.PlayContexts -> serializer<PlayContextsData>()
     } as KSerializer<Any>
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -63,5 +63,4 @@ object BlockSerializer : KSerializer<BlockEntity> {
     override fun serialize(encoder: Encoder, value: BlockEntity) {
         TODO("Not yet implemented")
     }
-
 }

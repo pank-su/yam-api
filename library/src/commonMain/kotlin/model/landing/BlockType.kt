@@ -43,5 +43,6 @@ enum class BlockType {
     Playlists,
 
     @SerialName("play_contexts")
+    @JsonNames("play-context", "play-contexts", "play_contexts")
     PlayContexts
 }

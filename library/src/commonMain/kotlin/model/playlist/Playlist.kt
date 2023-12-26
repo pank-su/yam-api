@@ -24,7 +24,7 @@ data class Playlist(
     val uid: Int,
     val kind: Int,
     val title: String,
-    val description: String,
+    val description: String? = null,
     val trackCount: Int,
     val tags: List<String> = listOf(),
     val revision: Int,

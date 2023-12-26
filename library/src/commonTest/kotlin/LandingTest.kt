@@ -10,7 +10,7 @@ class LandingTest {
     fun gettingTest() = runTest {
         val token = getenv("token") ?: return@runTest
         println(
-            client { this.token = token }.landing(BlockType.Chart)
+            client { this.token = token }.landing(BlockType.PlayContexts)
         )
     }
 }
