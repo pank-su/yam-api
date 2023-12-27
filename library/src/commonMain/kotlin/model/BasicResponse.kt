@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-open class Result {
+abstract class Result {
     @Transient var invocationInfo: InvocationInfo? = null
     @Transient var client: Client? = null
 }
@@ -18,11 +18,17 @@ open class ResultPrimitive<T>() {
     var invocationInfo: InvocationInfo? = null
     @Transient
     var client: Client? = null
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }
 
-
-
 @Serializable
+class ResultList<T> : List<T> by listOf(), Result()
+
+
+    @Serializable
 data class BasicResponse<T>(
     val invocationInfo: InvocationInfo,
     @SerialName("result") private val _result: T? = null,

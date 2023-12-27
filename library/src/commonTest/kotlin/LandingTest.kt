@@ -9,7 +9,7 @@ class LandingTest {
     fun gettingTest() = runTest {
         val token = getenv("token") ?: return@runTest
         println(
-            client { this.token = token }.tags("belarus")
+            client { this.token = token }.tracksDownloadInfo(118366943)
         )
     }
 }

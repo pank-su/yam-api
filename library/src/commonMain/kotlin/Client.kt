@@ -233,4 +233,8 @@ class Client {
     suspend fun podcasts() = request<LandingList>("landing3", "podcasts")
 
     suspend fun tags(tagId: String) = request<TagResult>("tags", tagId, "playlist-ids")
+
+    suspend fun tracksDownloadInfo(trackId: Int) = requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
+
+
 }
