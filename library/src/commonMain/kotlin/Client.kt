@@ -18,6 +18,7 @@ import model.account.PromoCodeStatus
 import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
+import model.album.Genre
 import model.feed.Feed
 import model.landing.*
 import model.playlist.TagResult
@@ -236,5 +237,6 @@ class Client {
 
     suspend fun tracksDownloadInfo(trackId: Int) = requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
 
+    suspend fun genres() = requestPrimitive<Genre>("genres")
 
 }

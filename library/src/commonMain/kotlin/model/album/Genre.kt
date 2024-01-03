@@ -65,6 +65,9 @@ enum class Genre {
     // TODO
     edmgenre, breakbeatgenre, ukrrock, experimental, electronics, industrial, rusestrada,
 
+    // TODO podcasts genres
+    nonfictionliterature, psychologyandphilosophy, biographyandmemoirs, fiction,
+
     @SerialName("social-tracks")
     SocialTracks,
 
