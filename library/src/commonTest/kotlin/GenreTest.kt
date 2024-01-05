@@ -6,7 +6,8 @@ import kotlin.test.Test
 class GenreTest {
     @Test
     fun gettingTest() = runTest{
-        getenv("token") ?: return@runTest
+        val token = getenv("token") ?: return@runTest
+        if (token.isBlank()) return@runTest
         client {  }.genres()
     }
 }
