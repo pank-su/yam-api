@@ -11,6 +11,7 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import model.*
@@ -18,6 +19,7 @@ import model.account.PromoCodeStatus
 import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
+import model.album.Album
 import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
@@ -246,5 +248,22 @@ class Client {
 
     suspend fun tracksSimilar(trackId: Int) = request<SimilarTracks>("tracks", trackId.toString(), "similar")
 
+    suspend fun playAudio(
+        trackId: Int,
+        from: String,
+        albumId: Int,
+        playlistId: String? = null,
+        fromCache: Boolean = false,
+        playId: String? = null,
+        uid: Int? = null,
+        timestamp: Instant? = null,
+        trackLengthSeconds: Int = 0,
+        totalPlayedSeconds: Int = 0,
+        endPositionSeconds: Int = 0,
+        clientNow: Instant? = null
+    ) {
+        TODO("Реализация позже")
+    }
 
+    suspend fun albumsWithTracks(albumId: Int) = request<Album>("albums", albumId.toString(), "with-tracks")
 }

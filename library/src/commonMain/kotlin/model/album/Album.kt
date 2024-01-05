@@ -2,8 +2,10 @@ package model.album
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import model.Result
 import model.artist.Artist
 import model.track.Options
+import model.track.Track
 
 @Serializable
 data class Album(
@@ -28,5 +30,7 @@ data class Album(
     val availableForMobile: Boolean,
     val availablePartially: Boolean,
     val bests: List<Int>,
-    val trackPosition: TrackPosition? = null
-)
+    val trackPosition: TrackPosition? = null,
+    val duplicates: List<Album>? = null,
+    val volumes: List<List<Track>>? = null
+) : Result()
