@@ -9,7 +9,7 @@ android-compileSdk = "33"
 ktor = "2.3.6"
 kotlinx-corutines = "1.7.3"
 kotlinx-json = "1.6.0"
-logger = "2.0.9"
+logger = "2.0.10"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
