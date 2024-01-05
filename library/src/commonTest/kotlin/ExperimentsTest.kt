@@ -9,10 +9,10 @@ class ExperimentsTest {
         client { }.accountExperiments().value?.forEach {
             println("${it.key}: ${it.value}")
         }
-        val token = getenv("token") ?: return@runTest
-        if (token == "") return@runTest
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
         client {
-            this.token = token
+            this.token = token!!
         }.accountExperiments()
     }
 }

@@ -1,8 +1,12 @@
+
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.runBlocking
 import model.account.Permission
-import kotlin.test.*
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 
 class StatusTest {
@@ -18,10 +22,11 @@ class StatusTest {
     fun setUpClient() = runBlocking {
         if (clientBadAuth != null) return@runBlocking
         clientBadAuth = client { }
-        val token = getenv("token") ?: return@runBlocking
-        if (token == "") return@runBlocking
+        val token = getenv("token")
+        if (token.isInvalid()) return@runBlocking
+
         clientGoodAuth = client {
-            this.token = token
+            this.token = token!!
         }
         canAuth = true
     }

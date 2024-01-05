@@ -7,8 +7,9 @@ import kotlin.test.Test
 class ChartTest {
     @Test
     fun gettingTest() = runTest {
-        val token = getenv("token") ?: return@runTest
-        if (token.isBlank()) return@runTest
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+
 
         val chart = client { }.chart(ChartOption.World)
         println(chart)

@@ -7,12 +7,11 @@ import kotlin.test.Test
 class FeedTest {
     @Test
     fun gettingTest() = runTest {
-        // client {  }.feed()
-        val token = getenv("token") ?: return@runTest
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
 
-        if (token == "") return@runTest
         val client = client {
-            this.token = token
+            this.token = token!!
         }
         println(client.feed())
 

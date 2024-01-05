@@ -8,7 +8,9 @@ class LandingTest {
 
     @Test
     fun gettingTest() = runTest {
-        val token = getenv("token") ?: return@runTest
-        client { this.token = token }.landing(*BlockType.entries.toTypedArray())
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+
+        client { this.token = token!! }.landing(*BlockType.entries.toTypedArray())
     }
 }

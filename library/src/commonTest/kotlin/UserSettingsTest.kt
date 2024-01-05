@@ -15,16 +15,16 @@ class UserSettingsTest {
         assertFailsWith<NotAuthenticatedException> {
             client { }.userSettings()
         }
-        val token = getenv("token") ?: return@runTest
-        if (token == "") return@runTest
-        client { this.token = token }.userSettings()
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+        client { this.token = token!! }.userSettings()
     }
 
     @Test
     fun updateSettings() = runTest {
-        val token = getenv("token") ?: return@runTest
-        if (token == "") return@runTest
-        val client = client { this.token = token }
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+        val client = client { this.token = token!! }
         val settings = client.userSettings()
         assertEquals(settings.update(UserSettings::volumePercents, 80).volumePercents, 80)
         assertEquals(settings.update(UserSettings::volumePercents, 75).volumePercents, 75)

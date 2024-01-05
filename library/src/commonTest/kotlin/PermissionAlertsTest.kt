@@ -11,8 +11,9 @@ class PermissionAlertsTest {
         assertFailsWith<ValidateException> {
             client { }.permissionAlerts()
         }
-        val token = getenv("token") ?: return@runTest
-        if (token == "") return@runTest
-        val client = client { this.token = token  }.permissionAlerts()
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+
+        val client = client { this.token = token!! }.permissionAlerts()
     }
 }

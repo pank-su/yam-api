@@ -8,12 +8,15 @@ class WizardIsPassedTest {
 
     @Test
     fun gettingTest() = runTest {
+
         assertFails {
             client {
 
             }.feedWizardIsPassed()
         }
         val token = getenv("token") ?: return@runTest
+        if (token.isBlank()) return@runTest
+
         client {
             this.token = token
         }.feedWizardIsPassed()
