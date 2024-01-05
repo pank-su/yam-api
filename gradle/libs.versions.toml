@@ -8,7 +8,7 @@ android-minSdk = "24"
 android-compileSdk = "33"
 ktor = "2.3.7"
 kotlinx-corutines = "1.7.3"
-kotlinx-json = "1.6.0"
+kotlinx-json = "1.6.2"
 logger = "2.0.10"
 
 [plugins]
