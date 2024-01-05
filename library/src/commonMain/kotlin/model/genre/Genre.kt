@@ -2,10 +2,11 @@ package model.genre
 
 import kotlinx.serialization.Serializable
 import model.Icon
+import model.album.GenreType
 
 @Serializable
 data class Genre(
-    val id: String,
+    val id: GenreType,
     val weight: Int,
     val composerTop: Boolean,
     val title: String,

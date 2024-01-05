@@ -1,4 +1,3 @@
-
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
@@ -23,6 +22,7 @@ import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
 import model.playlist.TagResult
+import model.track.SimilarTracks
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -234,10 +234,17 @@ class Client {
 
     suspend fun podcasts() = request<LandingList>("landing3", "podcasts")
 
+    suspend fun genres() = requestPrimitive<List<Genre>>("genres")
+
     suspend fun tags(tagId: String) = request<TagResult>("tags", tagId, "playlist-ids")
 
-    suspend fun tracksDownloadInfo(trackId: Int) = requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
+    suspend fun tracksDownloadInfo(trackId: Int) =
+        requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
 
-    suspend fun genres() = requestPrimitive<List<Genre>>("genres")
+    suspend fun tracksLyrics(trackId: Int, format: String = "TEXT"): Result =
+        TODO("Необходима реализация get_sign_request")
+
+    suspend fun tracksSimilar(trackId: Int) = request<SimilarTracks>("tracks", trackId.toString(), "similar")
+
 
 }

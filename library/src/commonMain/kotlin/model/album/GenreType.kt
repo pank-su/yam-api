@@ -483,6 +483,9 @@ enum class GenreType {
     @SerialName("audiobooksinenglish")
     AudiobooksInEnglish,
 
+    @SerialName("biographyandmemoirs")
+    BiographyAndMemoirs,
+
     @SerialName("audiobooks")
     Audiobooks,
 
