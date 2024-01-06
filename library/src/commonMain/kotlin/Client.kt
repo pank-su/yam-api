@@ -1,7 +1,7 @@
+
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
-import utils.removeCarets
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -26,8 +26,10 @@ import model.landing.*
 import model.playlist.TagResult
 import model.search.QueryType
 import model.search.Search
+import model.search.Suggestions
 import model.supplement.Supplement
 import model.track.SimilarTracks
+import utils.removeCarets
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -291,6 +293,31 @@ class Client {
         this.type = type
         this.page = page
     }
+
+    suspend fun searchSuggest(part: String) =
+        request<Suggestions>(listOf("search", "suggest"), body = hashMapOf("part" to part))
+
+    private suspend fun usersSettings(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylists(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsRecommendations(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsCreate(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsDelete(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsName(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsVisibility(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsChange(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsInsertTrack(): Result = TODO("с версии 0.0.2")
+
+    private suspend fun usersPlaylistsDeleteTrack(): Result = TODO("с версии 0.0.2")
+
+
 }
 
 

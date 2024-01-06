@@ -1,5 +1,6 @@
 package model.search
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.Result
 import model.Video
@@ -13,10 +14,12 @@ import model.track.Track
 @Serializable
 data class Search(
     val searchRequestId: String,
-    val text: String,
+    @SerialName("text")
+    val query: String,
     val misspellResult: String? = null,
     val misspellOriginal: String? = null,
-    val nocorrect: Boolean? = null,
+    @SerialName("nocorrect")
+    val isCorrect: Boolean? = null,
     val misspellCorrected: Boolean? = null,
     val best: Best? = null,
     val artists: SearchResult<Artist>? = null,
@@ -31,5 +34,9 @@ data class Search(
 
     ) : Result() {
     var type: QueryType = QueryType.All
-    var page: Int = 0
+    internal var page: Int = 0
+    suspend fun getPage(page: Int): Search = client!!.search(query = query, isCorrect = isCorrect ?: true, type, page)
+    suspend fun nextPage(): Search = getPage(page + 1)
+
+    suspend fun prevPage(): Search = getPage(page - 1)
 }
