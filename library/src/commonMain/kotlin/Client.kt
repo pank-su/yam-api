@@ -1,4 +1,3 @@
-
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
@@ -24,6 +23,7 @@ import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
 import model.playlist.TagResult
+import model.rotor.Dashboard
 import model.search.QueryType
 import model.search.Search
 import model.search.Suggestions
@@ -317,7 +317,9 @@ class Client {
 
     private suspend fun usersPlaylistsDeleteTrack(): Result = TODO("с версии 0.0.2")
 
+    suspend fun rotorAccountStatus() = request<Status>("rotor", "account", "status")
 
+    suspend fun rotorStationsDashboard() = request<Dashboard>("rotor", "stations", "dashboard")
 }
 
 

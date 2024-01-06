@@ -23,5 +23,5 @@ data class Account(
     val registeredAt: Instant? = null,
     val child: Boolean? = null,
     val nonOwnerFamilyMember: Boolean? = null,
-    val region: Int?
+    val region: Int? = null
 ) : Result()
