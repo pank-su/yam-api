@@ -1,5 +1,6 @@
 package model.track
 
+import utils.IntOrStringSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.album.Album
@@ -9,7 +10,8 @@ import model.playlist.CoverSize
 
 @Serializable
 data class Track(
-    val id: String,
+    @Serializable(with = IntOrStringSerializer::class)
+    val id: Int,
     val title: String,
     val available: Boolean,
     val availableForPremiumUsers: Boolean,
@@ -34,5 +36,6 @@ data class Track(
     val trackSharingFlag: TrackSharingFlag? = null
 ) {
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri.replace("%%", size.toString())}"
-    fun getUrlCover(size: CoverSize) = "https://${coverUri?.replace("%%", size.toString())}"
+    fun getUrlCover(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
 }
+

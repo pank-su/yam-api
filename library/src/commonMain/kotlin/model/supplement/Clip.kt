@@ -12,7 +12,7 @@ data class Clip(
     val thumbnail: String,
     val previewUrl: String,
     val duration: Int,
-    val trackIds: List<Int>,
+    val trackIds: List<Int>? = null,
     val artists: List<Artist>,
     val explicit: Boolean
 )

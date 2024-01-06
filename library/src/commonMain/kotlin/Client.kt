@@ -1,7 +1,7 @@
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
-import extensions.removeCarets
+import utils.removeCarets
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
@@ -24,6 +24,8 @@ import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
 import model.playlist.TagResult
+import model.search.QueryType
+import model.search.Search
 import model.supplement.Supplement
 import model.track.SimilarTracks
 
@@ -270,5 +272,25 @@ class Client {
 
     suspend fun albumsWithTracks(albumId: Int) = request<Album>("albums", albumId.toString(), "with-tracks")
 
-
+    suspend fun search(
+        query: String,
+        isCorrect: Boolean = false,
+        type: QueryType = QueryType.All,
+        page: Int = 0,
+        playlistInBest: Boolean = false
+    ) = request<Search>(
+        listOf("search"),
+        body = hashMapOf(
+            "text" to query,
+            "nocorrect" to isCorrect.toString().lowercase(),
+            "type" to type.name.lowercase(),
+            "page" to page.toString(),
+            "playlist-in-best" to playlistInBest.toString().lowercase()
+        )
+    ).apply {
+        this.type = type
+        this.page = page
+    }
 }
+
+
