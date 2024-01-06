@@ -24,6 +24,7 @@ import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
 import model.playlist.TagResult
+import model.supplement.Supplement
 import model.track.SimilarTracks
 
 
@@ -243,6 +244,8 @@ class Client {
     suspend fun tracksDownloadInfo(trackId: Int) =
         requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
 
+    suspend fun trackSupplement(trackId: Int) = request<Supplement>("tracks", trackId.toString(), "supplement")
+
     suspend fun tracksLyrics(trackId: Int, format: String = "TEXT"): Result =
         TODO("Необходима реализация get_sign_request")
 
@@ -266,4 +269,6 @@ class Client {
     }
 
     suspend fun albumsWithTracks(albumId: Int) = request<Album>("albums", albumId.toString(), "with-tracks")
+
+
 }

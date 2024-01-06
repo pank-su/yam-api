@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import model.Result
 import model.artist.Artist
+import model.playlist.CoverSize
 import model.track.Options
 import model.track.Track
 
@@ -33,4 +34,7 @@ data class Album(
     val trackPosition: TrackPosition? = null,
     val duplicates: List<Album>? = null,
     val volumes: List<List<Track>>? = null
-) : Result()
+) : Result() {
+    fun getCoverUri(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
+    fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
+}
