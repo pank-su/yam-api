@@ -1,3 +1,4 @@
+
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
@@ -19,6 +20,7 @@ import model.account.Status
 import model.account.UserSettings
 import model.ad.Ad
 import model.album.Album
+import model.downloadInfo.DownloadInfo
 import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
@@ -53,7 +55,7 @@ class Client {
 
     }
 
-    private var httpClient = HttpClient(httpClientEngine) {
+    internal var httpClient = HttpClient(httpClientEngine) {
         install(Logging) {
             loggingSettings()
         }
@@ -70,38 +72,33 @@ class Client {
         body: HashMap<String, String> = hashMapOf()
     ): ResultPrimitive<T> {
         return httpClient.request(baseUrl) {
-            requestSettings()
-            this.method = method
-            url {
-                appendPathSegments(components.toList())
-            }
-            headers {
-
-                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
-                append("USER_AGENT", "Yandex-Music-API")
-                append("Accept-Language", language)
-
-                if (token != "") {
-                    append(HttpHeaders.Authorization, "OAuth $token")
-                }
-            }
+            basicSettings(method, components.toList())
             if (method == HttpMethod.Post) {
                 headers {
                     append(HttpHeaders.ContentType, "form-encoded")
                 }
-                formData {
-                    parameters {
-                        body.forEach {
-                            append(it.key, it.value)
-                        }
-                    }
-                }
-            }
-            headers {
-                remove(HttpHeaders.ContentType)
-                remove(HttpHeaders.ContentLength)
             }
         }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
+    }
+
+    private fun HttpRequestBuilder.basicSettings(
+        method: HttpMethod,
+        components: List<String>
+    ) {
+        requestSettings()
+        this.method = method
+        url {
+            appendPathSegments(components.toList())
+        }
+        headers {
+            append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+            append("USER_AGENT", "Yandex-Music-API")
+            append("Accept-Language", language)
+
+            if (token != "") {
+                append(HttpHeaders.Authorization, "OAuth $token")
+            }
+        }
     }
 
 
@@ -111,31 +108,10 @@ class Client {
         body: HashMap<String, String> = hashMapOf()
     ): T {
         return httpClient.request(baseUrl) {
-            requestSettings()
-            this.method = method
-            url {
-                appendPathSegments(components)
-            }
-            headers {
-
-                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
-                append("USER_AGENT", "Yandex-Music-API")
-                append("Accept-Language", language)
-
-                if (token != "") {
-                    append(HttpHeaders.Authorization, "OAuth $token")
-                }
-            }
+            basicSettings(method, components)
             if (method == HttpMethod.Post) {
                 headers {
                     append(HttpHeaders.ContentType, "form-encoded")
-                }
-                formData {
-                    parameters {
-                        body.forEach {
-                            append(it.key, it.value)
-                        }
-                    }
                 }
             } else if (method == HttpMethod.Get) {
                 url {
@@ -320,6 +296,8 @@ class Client {
     suspend fun rotorAccountStatus() = request<Status>("rotor", "account", "status")
 
     suspend fun rotorStationsDashboard() = request<Dashboard>("rotor", "stations", "dashboard")
+
+
 }
 
 

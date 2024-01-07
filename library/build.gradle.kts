@@ -51,6 +51,8 @@ kotlin {
                 implementation(libs.logger)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.xmlutil)
+                implementation(libs.md5)
                 kotlin("reflect")
             }
         }
@@ -59,6 +61,7 @@ kotlin {
                 implementation(libs.kotlin.test)
                 implementation(libs.coroutines.test)
                 implementation(libs.getenv)
+                implementation(libs.io)
             }
         }
     }

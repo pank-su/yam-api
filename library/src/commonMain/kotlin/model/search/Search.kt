@@ -35,6 +35,7 @@ data class Search(
     ) : Result() {
     var type: QueryType = QueryType.All
     internal var page: Int = 0
+
     suspend fun getPage(page: Int): Search = client!!.search(query = query, isCorrect = isCorrect ?: true, type, page)
     suspend fun nextPage(): Search = getPage(page + 1)
 

@@ -1,12 +1,15 @@
 package model.track
 
-import utils.IntOrStringSerializer
+import Client
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import model.downloadInfo.Codec
+import model.downloadInfo.DownloadInfo
 import model.album.Album
 import model.album.MetaType
 import model.artist.Artist
 import model.playlist.CoverSize
+import utils.IntOrStringSerializer
 
 @Serializable
 data class Track(
@@ -37,5 +40,15 @@ data class Track(
 ) {
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri.replace("%%", size.toString())}"
     fun getUrlCover(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
+
+    suspend fun downloadInfo(client: Client) = client.tracksDownloadInfo(this.id)
+
+    suspend fun specificDownloadInfo(client: Client, codec: Codec, bitrateInKbps: Int): DownloadInfo {
+        val downloadInfo = client.tracksDownloadInfo(this.id).value
+
+        return downloadInfo?.firstOrNull { it.codec == codec && it.bitrateInKbps == bitrateInKbps }
+            ?: downloadInfo!!.first()
+    }
+
 }
 

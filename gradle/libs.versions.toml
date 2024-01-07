@@ -10,6 +10,9 @@ ktor = "2.3.7"
 kotlinx-corutines = "1.7.3"
 kotlinx-json = "1.6.2"
 logger = "2.0.10"
+xmlutil = "0.86.3"
+hash = "0.4.0"
+io = "0.3.0"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -37,3 +40,7 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-corutines" }
 logger = { module = "org.slf4j:slf4j-simple", version.ref = "logger" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
+
+xmlutil = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
+md5 = { module = "org.kotlincrypto.hash:md", version.ref = "hash" }
+io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "io" }
