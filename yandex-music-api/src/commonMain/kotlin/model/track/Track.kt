@@ -3,11 +3,11 @@ package model.track
 import Client
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.downloadInfo.Codec
-import model.downloadInfo.DownloadInfo
 import model.album.Album
 import model.album.MetaType
 import model.artist.Artist
+import model.downloadInfo.Codec
+import model.downloadInfo.DownloadInfo
 import model.playlist.CoverSize
 import utils.IntOrStringSerializer
 
@@ -36,7 +36,8 @@ data class Track(
     val derivedColors: DerivedColors? = null,
     val type: MetaType,
     val rememberPosition: Boolean,
-    val trackSharingFlag: TrackSharingFlag? = null
+    val trackSharingFlag: TrackSharingFlag? = null,
+    val contentWarning: String? = null
 ) {
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri.replace("%%", size.toString())}"
     fun getUrlCover(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
