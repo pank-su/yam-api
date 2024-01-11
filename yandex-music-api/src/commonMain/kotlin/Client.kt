@@ -1,4 +1,3 @@
-
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
@@ -31,6 +30,7 @@ import model.search.Search
 import model.search.Suggestions
 import model.supplement.Supplement
 import model.track.SimilarTracks
+import model.track.Track
 import utils.removeCarets
 
 
@@ -77,7 +77,27 @@ class Client {
                 headers {
                     append(HttpHeaders.ContentType, "form-encoded")
                 }
+            } else if (method == HttpMethod.Get) {
+                url {
+                    body.forEach {
+                        parameters.append(it.key, it.value)
+                    }
+                }
             }
+        }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
+    }
+
+    private suspend inline fun <reified T> requestPrimitiveForm(
+        vararg components: String,
+        method: HttpMethod = HttpMethod.Get,
+        body: HashMap<String, String> = hashMapOf()
+    ): ResultPrimitive<T> {
+        return httpClient.submitForm(baseUrl, formParameters = parameters {
+            body.forEach {
+                append(it.key, it.value)
+            }
+        }) {
+            basicSettings(method, components.toList())
         }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
     }
 
@@ -297,7 +317,10 @@ class Client {
 
     suspend fun rotorStationsDashboard() = request<Dashboard>("rotor", "stations", "dashboard")
 
-
+    suspend fun tracks(vararg trackIds: Int, withPositions: Boolean = true) = requestPrimitiveForm<List<Track>>(
+        "tracks", method = HttpMethod.Post,
+        body = hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(","))
+    )
 }
 
 

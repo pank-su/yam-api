@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "yandex-music-api"
-include(":library")
+include(":yandex-music-api")
