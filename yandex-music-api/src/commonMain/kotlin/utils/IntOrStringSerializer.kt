@@ -22,7 +22,7 @@ object IntOrStringSerializer : KSerializer<Int> {
     }
 
     override fun serialize(encoder: Encoder, value: Int) {
-        TODO("Не требуется")
+        encoder.encodeInt(value)
     }
 
 }
