@@ -39,10 +39,16 @@ data class Track(
     val trackSharingFlag: TrackSharingFlag? = null,
     val contentWarning: String? = null
 ) {
+    var downloadInfo: List<DownloadInfo>? = null
+
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri.replace("%%", size.toString())}"
     fun getUrlCover(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
 
-    suspend fun downloadInfo(client: Client) = client.tracksDownloadInfo(this.id)
+
+    suspend fun fetchDownloadInfo(client: Client): List<DownloadInfo>? {
+        downloadInfo = client.tracksDownloadInfo(this.id).value
+        return downloadInfo
+    }
 
     suspend fun specificDownloadInfo(client: Client, codec: Codec, bitrateInKbps: Int): DownloadInfo {
         val downloadInfo = client.tracksDownloadInfo(this.id).value
