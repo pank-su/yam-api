@@ -22,6 +22,7 @@ data class DownloadInfo(
     val downloadInfoUrl: String,
     val direct: Boolean
 ) {
+    var directLink: String? = null;
     @OptIn(ExperimentalStdlibApi::class)
     private fun buildDirectLink(xml: String): String {
         val info = XML { autoPolymorphic = true }.decodeFromString(DownloadInfoXML.serializer(), xml)
@@ -30,17 +31,18 @@ data class DownloadInfo(
         return "https://${info.host}/get-mp3/${sign}/${info.ts}${info.path}"
     }
 
-    suspend fun getDirectLink(client: Client): String {
+    suspend fun fetchDirectLink(client: Client): String? {
         val xml = client.httpClient.get(downloadInfoUrl) {
             headers {
                 append(HttpHeaders.Authorization, "OAuth ${client.token}")
             }
         }.body() as String
-        return buildDirectLink(xml)
+        directLink = buildDirectLink(xml)
+        return directLink
     }
 
     suspend fun download(client: Client): ByteArray {
-        val link = getDirectLink(client)
-        return client.httpClient.get(link).body() as ByteArray
+        val link = directLink ?: fetchDirectLink(client)
+        return client.httpClient.get(link!!).body() as ByteArray
     }
 }

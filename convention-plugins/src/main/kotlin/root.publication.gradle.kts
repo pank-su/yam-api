@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "su.pank"
-    version = "0.0.1-dev2"
+    version = "0.0.1-dev4"
 }
 
 nexusPublishing {
