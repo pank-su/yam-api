@@ -46,12 +46,13 @@ data class Track(
 
 
     suspend fun fetchDownloadInfo(client: Client): List<DownloadInfo>? {
+        if (downloadInfo != null) return downloadInfo
         downloadInfo = client.tracksDownloadInfo(this.id).value
         return downloadInfo
     }
 
     suspend fun specificDownloadInfo(client: Client, codec: Codec, bitrateInKbps: Int): DownloadInfo {
-        val downloadInfo = client.tracksDownloadInfo(this.id).value
+        val downloadInfo = this.fetchDownloadInfo(client)
 
         return downloadInfo?.firstOrNull { it.codec == codec && it.bitrateInKbps == bitrateInKbps }
             ?: downloadInfo!!.first()

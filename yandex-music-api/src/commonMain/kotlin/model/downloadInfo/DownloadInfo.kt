@@ -32,6 +32,7 @@ data class DownloadInfo(
     }
 
     suspend fun fetchDirectLink(client: Client): String? {
+        if (directLink != null) return directLink
         val xml = client.httpClient.get(downloadInfoUrl) {
             headers {
                 append(HttpHeaders.Authorization, "OAuth ${client.token}")

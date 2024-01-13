@@ -6,6 +6,7 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.*
 
 object LabelSerializer : KSerializer<Label> {
@@ -29,6 +30,9 @@ object LabelSerializer : KSerializer<Label> {
     }
 
     override fun serialize(encoder: Encoder, value: Label) {
-        TODO("Не требуется")
+        encoder.encodeStructure(descriptor) {
+            encodeIntElement(descriptor, 0, value.id)
+            encodeStringElement(descriptor, 1, value.name)
+        }
     }
 }
