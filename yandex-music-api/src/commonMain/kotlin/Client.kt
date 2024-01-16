@@ -321,6 +321,11 @@ class Client {
         "tracks", method = HttpMethod.Post,
         body = hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(","))
     )
+
+    // полное получение информации о пользователе
+    suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info") {
+        headers { append(HttpHeaders.Authorization, "OAuth $token") }
+    }.body<UserInfo>()
 }
 
 
