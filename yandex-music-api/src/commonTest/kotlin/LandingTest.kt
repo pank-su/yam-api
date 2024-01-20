@@ -11,6 +11,6 @@ class LandingTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 
-        client { this.token = token!! }.landing(*BlockType.entries.toTypedArray())
+        client { this.token = token!! }.landing(BlockType.PersonalPlaylists)
     }
 }

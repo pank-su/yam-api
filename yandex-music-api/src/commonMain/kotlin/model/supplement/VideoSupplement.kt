@@ -1,7 +1,7 @@
 package model.supplement
 
 import kotlinx.serialization.Serializable
-import model.playlist.CoverSize
+import model.cover.CoverSize
 
 @Serializable
 data class VideoSupplement(

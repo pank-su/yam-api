@@ -4,7 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import model.Result
 import model.artist.Artist
-import model.playlist.CoverSize
+import model.cover.CoverSize
 import model.track.Options
 import model.track.Track
 

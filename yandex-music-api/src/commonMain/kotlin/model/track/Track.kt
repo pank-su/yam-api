@@ -8,7 +8,7 @@ import model.album.MetaType
 import model.artist.Artist
 import model.downloadInfo.Codec
 import model.downloadInfo.DownloadInfo
-import model.playlist.CoverSize
+import model.cover.CoverSize
 import utils.IntOrStringSerializer
 
 @Serializable

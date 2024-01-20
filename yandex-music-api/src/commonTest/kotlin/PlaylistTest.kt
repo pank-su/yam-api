@@ -1,10 +1,9 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
-import model.cover.CoverSize
 import kotlin.test.Test
 
-class FeedTest {
+class PlaylistTest {
     @Test
     fun gettingTest() = runTest {
         val token = getenv("token")
@@ -13,10 +12,11 @@ class FeedTest {
         val client = client {
             this.token = token!!
         }
-        println(client.feed())
-
         client.feed().generatedPlaylists.forEach {
-            println(it.data.getUrlBackgroundImage(CoverSize.`400x400`))
+            val ownerId = it.data.kind
+            val playlistId = it.data.uid
+            println(client.userPlaylist(ownerId, playlistId))
         }
+        //client.playlistList()
     }
 }

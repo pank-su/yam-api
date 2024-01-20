@@ -1,4 +1,4 @@
-package model.playlist
+package model.cover
 
 import kotlinx.serialization.Serializable
 

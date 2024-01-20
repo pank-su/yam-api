@@ -4,8 +4,11 @@ import Client
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import model.Result
 import model.account.User
 import model.account.Visibility
+import model.cover.Cover
+import model.cover.CoverSize
 import model.feed.GeneratedPlaylistType
 import model.track.Track
 import model.track.TrackShort
@@ -41,7 +44,7 @@ data class Playlist(
     val durationMs: Int? = null,
     @SerialName("ogImage") val ogImageUri: String? = null,
     val tracks: List<TrackShort> = listOf()
-) {
+): Result() {
     private var fullTracks: List<Track>? = null
 
     suspend fun fetchTracks(client: Client): List<Track>? {

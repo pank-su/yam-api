@@ -23,6 +23,7 @@ import model.downloadInfo.DownloadInfo
 import model.feed.Feed
 import model.genre.Genre
 import model.landing.*
+import model.playlist.Playlist
 import model.playlist.TagResult
 import model.rotor.Dashboard
 import model.search.QueryType
@@ -48,7 +49,7 @@ class Client {
 
     var loggingSettings: Logging.Config.() -> Unit = {
         logger = Logger.DEFAULT
-        this.level = LogLevel.BODY
+        this.level = LogLevel.ALL
     }
 
     var requestSettings: HttpRequestBuilder.() -> Unit = {
@@ -295,7 +296,21 @@ class Client {
 
     private suspend fun usersSettings(): Result = TODO("с версии 0.0.2")
 
-    private suspend fun usersPlaylists(): Result = TODO("с версии 0.0.2")
+    suspend fun userPlaylists(vararg kinds: Int, userId: Int? = null) = requestPrimitiveForm<List<Playlist>>(
+        "users",
+        (userId ?: me?.account?.uid ?: throw NotAuthenticatedException()).toString(),
+        "playlists",
+        method = HttpMethod.Post,
+        body = hashMapOf("kinds" to kinds.joinToString(","))
+    )
+
+     suspend fun userPlaylist(kind: Int, userId: Int? = null) = request<Playlist>(
+        "users",
+        (userId ?: me?.account?.uid ?: throw NotAuthenticatedException()).toString(),
+        "playlists",
+        kind.toString()
+    )
+
 
     private suspend fun usersPlaylistsRecommendations(): Result = TODO("с версии 0.0.2")
 
@@ -326,6 +341,13 @@ class Client {
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info") {
         headers { append(HttpHeaders.Authorization, "OAuth $token") }
     }.body<UserInfo>()
+
+    suspend fun playlistList(vararg playlistIds: String) = requestPrimitiveForm<List<Playlist>>(
+        "playlists",
+        "list",
+        method = HttpMethod.Post,
+        body = hashMapOf("playlist-ids" to playlistIds.joinToString(","))
+    )
 }
 
 

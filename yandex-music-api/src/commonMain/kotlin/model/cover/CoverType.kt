@@ -1,4 +1,4 @@
-package model.playlist
+package model.cover
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,5 +12,8 @@ enum class CoverType {
     FromArtistPhotos,
 
     @SerialName("from-album-cover")
-    FromAlbumCover
+    FromAlbumCover,
+
+    @SerialName("mosaic")
+    Mosaic
 }

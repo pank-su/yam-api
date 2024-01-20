@@ -1,7 +1,7 @@
 package model.artist
 
 import kotlinx.serialization.Serializable
-import model.playlist.Cover
+import model.cover.Cover
 
 @Serializable
 data class Artist(
