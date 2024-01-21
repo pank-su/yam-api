@@ -15,9 +15,9 @@ kotlin {
             }
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+//    iosX64()
+//    iosArm64()
+//    iosSimulatorArm64()
     linuxX64()
 
     sourceSets {
@@ -26,11 +26,11 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
             }
         }
-        iosMain {
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
+//        iosMain {
+//            dependencies {
+//                implementation(libs.ktor.client.darwin)
+//            }
+//        }
         jvmMain {
             dependencies {
                 implementation(libs.ktor.client.java)

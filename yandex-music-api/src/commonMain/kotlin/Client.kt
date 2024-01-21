@@ -48,8 +48,9 @@ class Client {
     var httpClientEngine: HttpClientEngine = getHttpClientEngine()
 
     var loggingSettings: Logging.Config.() -> Unit = {
+
         logger = Logger.DEFAULT
-        this.level = LogLevel.ALL
+        this.level = LogLevel.BODY
     }
 
     var requestSettings: HttpRequestBuilder.() -> Unit = {
