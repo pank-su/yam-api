@@ -305,7 +305,7 @@ class Client {
         body = hashMapOf("kinds" to kinds.joinToString(","))
     )
 
-     suspend fun userPlaylist(kind: Int, userId: Int? = null) = request<Playlist>(
+    suspend fun userPlaylist(kind: Int, userId: Int? = null) = request<Playlist>(
         "users",
         (userId ?: me?.account?.uid ?: throw NotAuthenticatedException()).toString(),
         "playlists",
@@ -348,6 +348,16 @@ class Client {
         "list",
         method = HttpMethod.Post,
         body = hashMapOf("playlist-ids" to playlistIds.joinToString(","))
+    )
+
+    suspend fun likeTracks(vararg trackIds: Int) = requestPrimitiveForm<Revision>(
+        "users",
+        (me?.account?.uid ?: status().account.uid).toString(),
+        "likes",
+        "tracks",
+        "add-multiple",
+        method = HttpMethod.Post,
+        body = hashMapOf("track-ids" to trackIds.joinToString(","))
     )
 }
 

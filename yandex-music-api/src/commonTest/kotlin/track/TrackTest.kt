@@ -18,4 +18,14 @@ class TrackTest {
         }
         TrackShort(45792354, Clock.System.now()).fetchTrack(client = client)
     }
+
+    @Test
+    fun likeTest() = runTest{
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+        val client = client {
+            this.token = token!!
+        }
+        client.likeTracks(111008434)
+    }
 }
