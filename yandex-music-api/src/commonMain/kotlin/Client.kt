@@ -359,6 +359,16 @@ class Client {
         method = HttpMethod.Post,
         body = hashMapOf("track-ids" to trackIds.joinToString(","))
     )
+
+    suspend fun unlikeTracks(vararg trackIds: Int) = requestPrimitiveForm<Revision>(
+        "users",
+        (me?.account?.uid ?: status().account.uid).toString(),
+        "likes",
+        "tracks",
+        "remove",
+        method = HttpMethod.Post,
+        body = hashMapOf("track-ids" to trackIds.joinToString(","))
+    )
 }
 
 
