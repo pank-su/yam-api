@@ -9,5 +9,8 @@ enum class Codec {
     MP3,
 
     @SerialName("aac")
-    AAC
+    AAC,
+
+    @SerialName("flac")
+    FLAC
 }
