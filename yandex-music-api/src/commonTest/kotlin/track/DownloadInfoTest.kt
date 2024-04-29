@@ -15,7 +15,13 @@ class DownloadInfoTest {
         client.tracksDownloadInfo(18373917)
         //val bytes = client.tracksDownloadInfo(18373917).value!![1].download(client)
         // SystemFileSystem.sink(Path("/home/panksu/test.mp3")).buffered().write(bytes)
+    }
 
-
+    @Test
+    fun parsingDataFromNewIsValid() = runTest {
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+        val client = client { this.token = token!! }
+        client.tracksDownloadInfoNew(18373917, true)
     }
 }

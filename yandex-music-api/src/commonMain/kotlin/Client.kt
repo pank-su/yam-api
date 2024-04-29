@@ -1,3 +1,4 @@
+
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
@@ -10,6 +11,8 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.*
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -33,7 +36,9 @@ import model.search.Suggestions
 import model.supplement.Supplement
 import model.track.SimilarTracks
 import model.track.Track
+import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import utils.removeCarets
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -114,7 +119,7 @@ class Client {
             appendPathSegments(components.toList())
         }
         headers {
-            append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+            append("X-Yandex-Music-Client", "YandexMusicAndroid/24022571")
             append("USER_AGENT", "Yandex-Music-API")
             append("Accept-Language", language)
 
@@ -161,7 +166,7 @@ class Client {
                 appendPathSegments(components.toList())
             }
             headers {
-                append("X-Yandex-Music-Client", "YandexMusicAndroid/24023231")
+                append("X-Yandex-Music-Client", "YandexMusicAndroid/24022571")
                 append("USER_AGENT", "Yandex-Music-API")
                 if (token != "") {
                     append(HttpHeaders.Authorization, "OAuth $token")
@@ -246,6 +251,29 @@ class Client {
 
     suspend fun tracksDownloadInfo(trackId: Int) =
         requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
+
+    @OptIn(ExperimentalEncodingApi::class, ExperimentalStdlibApi::class)
+    suspend fun tracksDownloadInfoNew(
+        trackId: Int,
+        canUseStreaming: Boolean = false
+    ): ResultPrimitive<List<DownloadInfo>> {
+        val timestamp = Clock.System.now().epochSeconds
+        val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
+        val sign = hmacSign.doFinal("${trackId}${timestamp}".encodeToByteArray()).encodeBase64()
+
+
+        return requestPrimitive<List<DownloadInfo>>(
+            "tracks",
+            trackId.toString(),
+            "download-info",
+            body = hashMapOf(
+                "can_use_streaming" to canUseStreaming.toString().lowercase(),
+                "ts" to timestamp.toString(),
+                "sign" to sign
+            ),
+        )
+
+    } //requestPrimitive<List<DownloadInfo>>()
 
     suspend fun trackSupplement(trackId: Int) = request<Supplement>("tracks", trackId.toString(), "supplement")
 

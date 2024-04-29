@@ -20,7 +20,8 @@ data class DownloadInfo(
     val gain: Boolean,
     val preview: Boolean,
     val downloadInfoUrl: String,
-    val direct: Boolean
+    val direct: Boolean,
+    val container: Container? = null
 ) {
     var directLink: String? = null;
     @OptIn(ExperimentalStdlibApi::class)
