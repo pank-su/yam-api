@@ -7,7 +7,7 @@ import kotlin.test.assertFailsWith
 
 class PermissionAlertsTest {
     @Test
-    fun gettingTest()= runTest{
+    fun parsingDataIsValid() = runTest {
         assertFailsWith<ValidateException> {
             client { }.permissionAlerts()
         }

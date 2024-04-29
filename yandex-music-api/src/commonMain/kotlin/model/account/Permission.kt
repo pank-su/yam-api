@@ -3,6 +3,11 @@ package model.account
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Все возможные права пользователя
+ *
+ * @see Permissions
+ */
 @Serializable
 enum class Permission{
     @SerialName("landing-play") LandingPlay,

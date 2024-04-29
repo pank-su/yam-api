@@ -7,7 +7,7 @@ import kotlin.test.assertFails
 class WizardIsPassedTest {
 
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
 
         assertFails {
             client {

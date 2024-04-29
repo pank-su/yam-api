@@ -8,7 +8,7 @@ import kotlin.test.Test
 
 class DownloadInfoTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         val client = client { this.token = token!! }

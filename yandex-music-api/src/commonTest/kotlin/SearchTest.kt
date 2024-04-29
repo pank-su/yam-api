@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class SearchTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 
@@ -20,7 +20,7 @@ class SearchTest {
     }
 
     @Test
-    fun suggestionGettingTest() = runTest {
+    fun suggestionparsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 

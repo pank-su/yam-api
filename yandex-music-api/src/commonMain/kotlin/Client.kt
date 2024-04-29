@@ -26,6 +26,7 @@ import model.landing.*
 import model.playlist.Playlist
 import model.playlist.TagResult
 import model.rotor.Dashboard
+import model.rotor.StationResult
 import model.search.QueryType
 import model.search.Search
 import model.search.Suggestions
@@ -332,6 +333,11 @@ class Client {
     suspend fun rotorAccountStatus() = request<Status>("rotor", "account", "status")
 
     suspend fun rotorStationsDashboard() = request<Dashboard>("rotor", "stations", "dashboard")
+
+    suspend fun rotorStations(language: Language = Language.ru) = requestPrimitive<List<StationResult>>(
+        "rotor", "stations", "list",
+        body = hashMapOf("language" to Json.encodeToString(language).removeCarets())
+    )
 
     suspend fun tracks(vararg trackIds: Int, withPositions: Boolean = true) = requestPrimitiveForm<List<Track>>(
         "tracks", method = HttpMethod.Post,

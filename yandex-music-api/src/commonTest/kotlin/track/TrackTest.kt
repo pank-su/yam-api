@@ -10,7 +10,7 @@ import kotlin.test.Test
 
 class TrackTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         val client = client {
@@ -20,7 +20,7 @@ class TrackTest {
     }
 
     @Test
-    fun likeTest() = runTest{
+    fun likeTrackIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         val client = client {

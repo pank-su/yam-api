@@ -7,7 +7,7 @@ import kotlin.test.Test
 class LandingTest {
 
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 

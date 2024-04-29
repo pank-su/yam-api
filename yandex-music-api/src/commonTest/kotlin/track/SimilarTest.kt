@@ -6,13 +6,11 @@ import isInvalid
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-class TrackSupplementTest {
+class SimilarTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-        client {
-            this.token = token!!
-        }.trackSupplement(25427091)
+        println(client { }.tracksSimilar(109140203).similarTracks)
     }
 }

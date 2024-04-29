@@ -4,6 +4,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.Result
 
+/**
+ * Статус пользователя, то есть имеет ли он подписки, права и т.п.
+ *
+ * @param account аккаунт пользователя
+ * @param permissions права пользователя
+ * @param subscription подписка пользователя
+ *
+ * @see Account
+ * @see Permissions
+ * @see Subscription
+ */
 
 @Serializable
 data class Status(

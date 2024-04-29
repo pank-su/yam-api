@@ -15,5 +15,8 @@ enum class MetaType {
     PodcastEpisode,
 
     @SerialName("audiobook")
-    AudioBook
+    AudioBook,
+
+    @SerialName("asmr")
+    ASMR
 }

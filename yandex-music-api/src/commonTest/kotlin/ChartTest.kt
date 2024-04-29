@@ -6,7 +6,7 @@ import kotlin.test.Test
 
 class ChartTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 

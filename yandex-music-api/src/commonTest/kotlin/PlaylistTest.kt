@@ -5,7 +5,7 @@ import kotlin.test.Test
 
 class PlaylistTest {
     @Test
-    fun gettingTest() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
 

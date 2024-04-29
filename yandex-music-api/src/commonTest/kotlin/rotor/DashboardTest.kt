@@ -1,18 +1,16 @@
+package rotor
+
 import dsl.client
 import io.getenv
+import isInvalid
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Ignore
 import kotlin.test.Test
 
-class ConsumePromoCodeTest {
-
-    @Ignore
+class DashboardTest {
     @Test
-    fun checkConsume() = runTest {
+    fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-        val client = client {
-            this.token = token!!
-        }
+        client { this.token = token!! }.rotorStationsDashboard()
     }
 }

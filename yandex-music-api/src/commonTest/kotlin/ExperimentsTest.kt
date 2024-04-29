@@ -5,7 +5,7 @@ import kotlin.test.Test
 
 class ExperimentsTest {
     @Test
-    fun gettingTest() = runTest{
+    fun parsingDataIsValid() = runTest {
         client { }.accountExperiments().value?.forEach {
             println("${it.key}: ${it.value}")
         }

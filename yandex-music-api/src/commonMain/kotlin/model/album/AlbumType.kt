@@ -15,5 +15,8 @@ enum class AlbumType {
     Podcast,
 
     @SerialName("audiobook")
-    AudioBook
+    AudioBook,
+
+    @SerialName("asmr")
+    ASMR
 }
