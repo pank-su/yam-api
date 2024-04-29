@@ -13,4 +13,11 @@ class RotorTest {
         if (token.isInvalid()) return@runTest
         client { this.token = token!! }.rotorStations()
     }
+
+    @Test
+    fun creatingNewRotorIsValid() = runTest {
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+        client { this.token = token!! }.rotorSessionNew(listOf("user:onyourwave"))
+    }
 }

@@ -29,6 +29,7 @@ import model.landing.*
 import model.playlist.Playlist
 import model.playlist.TagResult
 import model.rotor.Dashboard
+import model.rotor.Session
 import model.rotor.StationResult
 import model.search.QueryType
 import model.search.Search
@@ -38,7 +39,6 @@ import model.track.SimilarTracks
 import model.track.Track
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import utils.removeCarets
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 
 expect fun getHttpClientEngine(): HttpClientEngine
@@ -138,9 +138,18 @@ class Client {
         return httpClient.request(baseUrl) {
             basicSettings(method, components)
             if (method == HttpMethod.Post) {
-                headers {
-                    append(HttpHeaders.ContentType, "form-encoded")
+                contentType(ContentType.Application.Json)
+                val body = buildString {
+                    append("{")
+
+                    body.forEach {
+                        append("\"${it.key}\": ${it.value}")
+                        append(",")
+                    }
+                    this.setLength(length - 1)
+                    append("}")
                 }
+                setBody(body)
             } else if (method == HttpMethod.Get) {
                 url {
                     body.forEach {
@@ -252,7 +261,6 @@ class Client {
     suspend fun tracksDownloadInfo(trackId: Int) =
         requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
 
-    @OptIn(ExperimentalEncodingApi::class, ExperimentalStdlibApi::class)
     suspend fun tracksDownloadInfoNew(
         trackId: Int,
         canUseStreaming: Boolean = false
@@ -273,7 +281,9 @@ class Client {
             ),
         )
 
-    } //requestPrimitive<List<DownloadInfo>>()
+    }
+
+
 
     suspend fun trackSupplement(trackId: Int) = request<Supplement>("tracks", trackId.toString(), "supplement")
 
@@ -366,6 +376,16 @@ class Client {
         "rotor", "stations", "list",
         body = hashMapOf("language" to Json.encodeToString(language).removeCarets())
     )
+
+    suspend fun rotorSessionNew(seeds: List<String>) =
+        requestPost<Session>(
+            "rotor",
+            "session",
+            "new",
+            body = hashMapOf("seeds" to "[" + seeds.joinToString(",") { "\"$it\"" } + "]",
+                "includeTracksInResponse" to "true")
+        )
+
 
     suspend fun tracks(vararg trackIds: Int, withPositions: Boolean = true) = requestPrimitiveForm<List<Track>>(
         "tracks", method = HttpMethod.Post,
