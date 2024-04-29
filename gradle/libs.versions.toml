@@ -12,7 +12,7 @@ kotlinx-json = "1.6.2"
 logger = "2.0.11"
 xmlutil = "0.86.3"
 hash = "0.4.0"
-io = "0.3.0"
+io = "0.3.3"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
