@@ -16,7 +16,7 @@ data class Album(
     val metaType: MetaType,
     val year: UInt? = null,
     val releaseDate: Instant? = null,
-    val coverUri: String,
+    val coverUri: String? = null,
     val ogImage: String,
     val genre: GenreType? = null,
     val trackCount: Int,
@@ -35,6 +35,7 @@ data class Album(
     val duplicates: List<Album>? = null,
     val volumes: List<List<Track>>? = null
 ) : Result() {
-    fun getCoverUri(size: CoverSize) = "https://${coverUri.replace("%%", size.toString())}"
+    fun getCoverUri(size: CoverSize) =
+        if (coverUri != null) "https://${coverUri?.replace("%%", size.toString())}" else null
     fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
 }

@@ -5,8 +5,10 @@ import model.cover.Cover
 
 @Serializable
 data class Artist(
-    val id: Int, val name: String, val cover: Cover? = null,
-    val various: Boolean,
-    val composer: Boolean,
-    val genres: List<String>
+    val id: Int,
+    @Serializable(with = ArtistNameSerializer::class)
+    val name: String, val cover: Cover? = null,
+    val various: Boolean? = null,
+    val composer: Boolean? = null,
+    val genres: List<String>? = null
 )

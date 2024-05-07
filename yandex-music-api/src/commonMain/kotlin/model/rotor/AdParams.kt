@@ -6,12 +6,12 @@ import utils.IntOrStringSerializer
 
 @Serializable
 data class AdParams(
-    @Serializable(with = IntOrStringSerializer::class) val partnerId: Int,
-    @Serializable(with = IntOrStringSerializer::class) val categoryId: Int,
+    @Serializable(with = IntOrStringSerializer::class) val partnerId: String,
+    @Serializable(with = IntOrStringSerializer::class) val categoryId: String,
     val pageRef: String,
     val targetRef: String,
     val otherParams: String,
     val adVolume: Int,
-    @Serializable(with = IntOrStringSerializer::class) val genreId: Int? = null,
+    @Serializable(with = IntOrStringSerializer::class) val genreId: String? = null,
     val genreName: GenreType? = null
 )

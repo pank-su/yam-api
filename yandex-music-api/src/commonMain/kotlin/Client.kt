@@ -9,6 +9,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
@@ -75,15 +76,25 @@ class Client {
 
     }
 
+    var jsonSettings = Json {
+        ignoreUnknownKeys = true
+
+    }
+
     internal var httpClient = HttpClient(httpClientEngine) {
         install(Logging) {
             loggingSettings()
         }
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-            })
+            json(jsonSettings)
         }
+    }
+
+    suspend inline fun <reified T> HttpResponse.deserialize(): T {
+
+        val body = this.bodyAsText().replace("/\\", "").replace("\\ ", "")
+
+        return jsonSettings.decodeFromString<T>(body)
     }
 
     /**
@@ -111,7 +122,7 @@ class Client {
                     }
                 }
             }
-        }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
+        }.deserialize<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
     }
 
     /**
@@ -134,7 +145,7 @@ class Client {
             }
         }) {
             basicSettings(method, components.toList())
-        }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
+        }.deserialize<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
     }
 
     /**
@@ -200,7 +211,7 @@ class Client {
                     }
                 }
             }
-        }.body<BasicResponse<T>>().result.apply { client = this@Client }
+        }.deserialize<BasicResponse<T>>().result.apply { client = this@Client }
     }
 
     /**
@@ -232,7 +243,7 @@ class Client {
                     append(HttpHeaders.Authorization, "OAuth $token")
                 }
             }
-        }.body<BasicResponse<T>>().result.apply { client = this@Client }
+        }.deserialize<BasicResponse<T>>().result.apply { client = this@Client }
     }
 
     /**
@@ -364,8 +375,8 @@ class Client {
 
     suspend fun tags(tagId: String) = request<TagResult>("tags", tagId, "playlist-ids")
 
-    suspend fun tracksDownloadInfo(trackId: Int) =
-        requestPrimitive<List<DownloadInfo>>("tracks", trackId.toString(), "download-info")
+    suspend fun tracksDownloadInfo(trackId: String) =
+        requestPrimitive<List<DownloadInfo>>("tracks", trackId, "download-info")
 
     suspend fun tracksDownloadInfoNew(
         trackId: Int,
@@ -494,7 +505,7 @@ class Client {
         )
 
 
-    suspend fun tracks(vararg trackIds: Int, withPositions: Boolean = true) = requestPrimitiveForm<List<Track>>(
+    suspend fun tracks(vararg trackIds: String, withPositions: Boolean = true) = requestPrimitiveForm<List<Track>>(
         "tracks", method = HttpMethod.Post,
         body = hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(","))
     )

@@ -48,7 +48,7 @@ data class Playlist(
     private var fullTracks: List<Track>? = null
 
     suspend fun fetchTracks(client: Client): List<Track>? {
-        fullTracks = fullTracks ?: client.tracks(*tracks.map { it.id }.toIntArray()).value
+        fullTracks = fullTracks ?: client.tracks(*tracks.map { it.id }.toTypedArray()).value
         return fullTracks
     }
 

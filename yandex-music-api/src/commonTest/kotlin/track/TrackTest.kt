@@ -16,7 +16,7 @@ class TrackTest {
         val client = client {
             this.token = token!!
         }
-        TrackShort(45792354, Clock.System.now()).fetchTrack(client = client)
+        TrackShort("45792354", Clock.System.now()).fetchTrack(client = client)
     }
 
     @Test

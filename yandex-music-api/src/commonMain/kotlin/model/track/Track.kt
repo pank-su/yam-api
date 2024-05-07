@@ -14,11 +14,11 @@ import utils.IntOrStringSerializer
 @Serializable
 data class Track(
     @Serializable(with = IntOrStringSerializer::class)
-    val id: Int,
+    val id: String,
     val title: String,
     val available: Boolean,
-    val availableForPremiumUsers: Boolean,
-    val availableFullWithoutPermission: Boolean,
+    val availableForPremiumUsers: Boolean? = null,
+    val availableFullWithoutPermission: Boolean? = null,
     val availableForOptions: List<Options> = listOf(),
     val durationMs: Int? = null,
     val previewDurationMs: Int? = null,
@@ -31,11 +31,11 @@ data class Track(
     val major: Major? = null,
     @SerialName("ogImage") val ogImageUri: String? = null,
     val coverUri: String? = null,
-    val lyricsAvailable: Boolean,
+    val lyricsAvailable: Boolean? = null,
     val lyricsInfo: LyricsInfo? = null,
     val derivedColors: DerivedColors? = null,
-    val type: MetaType,
-    val rememberPosition: Boolean,
+    val type: MetaType? = null,
+    val rememberPosition: Boolean? = null,
     val trackSharingFlag: TrackSharingFlag? = null,
     val contentWarning: String? = null
 ) {
@@ -47,7 +47,7 @@ data class Track(
 
     suspend fun fetchDownloadInfo(client: Client): List<DownloadInfo>? {
         if (downloadInfo != null) return downloadInfo
-        downloadInfo = client.tracksDownloadInfo(this.id).value
+        downloadInfo = client.tracksDownloadInfo(this.id.toString()).value
         return downloadInfo
     }
 

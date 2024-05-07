@@ -8,7 +8,6 @@ class AlbumWithTracksTest {
     fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-
         println(client {
             this.token = token!!
         }.albumsWithTracks(4527991))
