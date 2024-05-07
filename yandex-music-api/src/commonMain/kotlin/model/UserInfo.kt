@@ -12,7 +12,7 @@ data class UserInfo(
     @SerialName("real_name") val realName: String,
     @SerialName("first_name") val firstName: String,
     @SerialName("last_name") val lastName: String,
-    val sex: String,
+    val sex: String? = null, // пол может быть не выбран
     @SerialName("default_email") val defaultEmail: String,
     val emails: List<String>,
     val birthday: String,

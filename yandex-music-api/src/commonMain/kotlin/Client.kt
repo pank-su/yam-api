@@ -43,6 +43,19 @@ import utils.removeCarets
 
 expect fun getHttpClientEngine(): HttpClientEngine
 
+/**
+ * Клиент для работы с Яндекс Музыкой
+ *
+ * @property baseUrl ссылка на api Яндекс Музыки
+ * @property token токен пользователя
+ * @property language выбранный язык TODO: переделать на тип Language
+ * @property me текущий статус пользователя, получается при корректном токене
+ * @property httpClientEngine клиент
+ * @property loggingSettings настройки логирования
+ * @property requestSettings дополнительные настройки запроса
+ *
+ *
+ */
 @YandexMusicTagMaker
 class Client {
     var baseUrl: String = "https://api.music.yandex.net"
@@ -53,8 +66,7 @@ class Client {
 
     var httpClientEngine: HttpClientEngine = getHttpClientEngine()
 
-    var loggingSettings: Logging.Config.() -> Unit = {
-
+    var loggingSettings: LoggingConfig.() -> Unit = {
         logger = Logger.DEFAULT
         this.level = LogLevel.BODY
     }
@@ -74,6 +86,15 @@ class Client {
         }
     }
 
+    /**
+     * Запрос примитива, то есть в ответе будет список или другой тип.
+     *
+     * @param components компоненты ссылки
+     * @param method HTTP метод
+     * @param body тело запроса
+     *
+     * @see BasicResponsePrimitive
+     */
     private suspend inline fun <reified T> requestPrimitive(
         vararg components: String,
         method: HttpMethod = HttpMethod.Get,
@@ -82,9 +103,7 @@ class Client {
         return httpClient.request(baseUrl) {
             basicSettings(method, components.toList())
             if (method == HttpMethod.Post) {
-                headers {
-                    append(HttpHeaders.ContentType, "form-encoded")
-                }
+
             } else if (method == HttpMethod.Get) {
                 url {
                     body.forEach {
@@ -95,6 +114,15 @@ class Client {
         }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
     }
 
+    /**
+     * Запрос примитива с помощью формы (например отправка новых настроек пользователя)
+     *
+     * @param components компоненты ссылки
+     * @param method HTTP метод
+     * @param body тело запроса
+     *
+     * @see BasicResponsePrimitive
+     */
     private suspend inline fun <reified T> requestPrimitiveForm(
         vararg components: String,
         method: HttpMethod = HttpMethod.Get,
@@ -109,6 +137,12 @@ class Client {
         }.body<BasicResponsePrimitive<T>>().result.apply { client = this@Client }
     }
 
+    /**
+     * Базовые настройки запроса.
+     *
+     * @param components компоненты ссылки
+     * @param method HTTP метод
+     */
     private fun HttpRequestBuilder.basicSettings(
         method: HttpMethod,
         components: List<String>
@@ -130,6 +164,15 @@ class Client {
     }
 
 
+    /**
+     * Запрос, который возвращает объект описанных моделей
+     *
+     * @param components компоненты ссылки
+     * @param method HTTP метод
+     * @param body тело запроса
+     *
+     * @see Result
+     */
     private suspend inline fun <reified T : Result> request(
         components: List<String>,
         method: HttpMethod = HttpMethod.Get,
@@ -160,6 +203,14 @@ class Client {
         }.body<BasicResponse<T>>().result.apply { client = this@Client }
     }
 
+    /**
+     * Запрос формы, который возвращает объект описанных моделей
+     *
+     * @param components компоненты ссылки
+     * @param body тело запроса
+     *
+     * @see Result
+     */
     internal suspend inline fun <reified T : Result> requestForm(
         vararg components: String,
         body: HashMap<String, String> = hashMapOf()
@@ -184,7 +235,11 @@ class Client {
         }.body<BasicResponse<T>>().result.apply { client = this@Client }
     }
 
-
+    /**
+     * Упрощение запроса request
+     *
+     * @see request
+     */
     private suspend inline fun <reified T : Result> request(
         vararg components: String,
         method: HttpMethod = HttpMethod.Get
@@ -192,6 +247,11 @@ class Client {
         return request(components.toList(), method)
     }
 
+    /**
+     * Упрощение запроса request
+     *
+     * @see request
+     */
     internal suspend inline fun <reified T : Result> requestPost(
         vararg components: String,
         body: HashMap<String, String> = hashMapOf()
@@ -200,35 +260,81 @@ class Client {
     }
 
 
+    /**
+     * Инициализация клиента для определения настроек
+     *
+     */
     suspend fun init(init: Client.() -> Unit) {
         this.init()
         try {
             me = status()
         } catch (e: SessionExpiredException) {
-            println("Токен некореектный или истёк")
+            println("Токен некоректный или истёк") // TODO: replace to normal logger
         }
     }
 
+    /**
+     * Запрос статуса пользователя (/account/status)
+     *
+     * @see Status
+     */
     suspend fun status() = request<Status>("account", "status")
+
+    /**
+     * Запрос настройка пользователя (/account/settings)
+     *
+     * @see UserSettings
+     */
     suspend fun userSettings() = request<UserSettings>("account", "settings")
 
+    /**
+     * Запрос рекламы пользователя (/settings)
+     *
+     * @see Ad
+     */
     suspend fun ads() = request<Ad>("settings")
+
 
     suspend fun permissionAlerts() = request<PermissionAlerts>("permission-alerts")
 
+    /**
+     * Запрос экспериментов для данного аккаунта
+     *
+     * @return словарь всех экспериментов
+     */
     suspend fun accountExperiments() = requestPrimitive<HashMap<String, String>>("account", "experiments")
 
+    /**
+     * Активация промокода
+     *
+     * @param code промокод
+     *
+     * @see PromoCodeStatus
+     */
     suspend fun consumePromoCode(code: String) = requestForm<PromoCodeStatus>(
         "account",
         "consume-promo-code",
         body = hashMapOf("code" to code, "language" to language)
     )
 
+    /**
+     * Получение сгенерированных плейлистов
+     *
+     * @see Feed
+     */
+    @Deprecated("Лучше использовать landing функции", level = DeprecationLevel.WARNING)
     suspend fun feed() = request<Feed>("feed")
 
     suspend fun feedWizardIsPassed() =
         requestPrimitive<HashMap<String, Boolean>>("feed", "wizard", "is-passed").value!!["isWizardPassed"] as Boolean
 
+    /**
+     * Получение landing'а по различным блокам. Для этого также можно использовать отдельные запросы.
+     *
+     * @param blocks получаемые блоки, в зависимости от выбранных блоков, будет разный контент
+     *
+     * @see Landing
+     */
     suspend fun landing(vararg blocks: BlockType) =
         request<Landing>(
             listOf("landing3"),
@@ -334,7 +440,7 @@ class Client {
     suspend fun searchSuggest(part: String) =
         request<Suggestions>(listOf("search", "suggest"), body = hashMapOf("part" to part))
 
-    private suspend fun usersSettings(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersSettings(): Result = TODO("с версии 0.1.5")
 
     suspend fun userPlaylists(vararg kinds: Int, userId: Int? = null) = requestPrimitiveForm<List<Playlist>>(
         "users",
@@ -352,21 +458,21 @@ class Client {
     )
 
 
-    private suspend fun usersPlaylistsRecommendations(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsRecommendations(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsCreate(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsCreate(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsDelete(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsDelete(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsName(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsName(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsVisibility(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsVisibility(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsChange(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsChange(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsInsertTrack(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsInsertTrack(): Result = TODO("с версии 0.1.5")
 
-    private suspend fun usersPlaylistsDeleteTrack(): Result = TODO("с версии 0.0.2")
+    private suspend fun usersPlaylistsDeleteTrack(): Result = TODO("с версии 0.1.5")
 
     suspend fun rotorAccountStatus() = request<Status>("rotor", "account", "status")
 
@@ -377,6 +483,7 @@ class Client {
         body = hashMapOf("language" to Json.encodeToString(language).removeCarets())
     )
 
+    // TODO: работа с сессиями
     suspend fun rotorSessionNew(seeds: List<String>) =
         requestPost<Session>(
             "rotor",
