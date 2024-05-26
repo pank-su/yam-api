@@ -19,4 +19,15 @@ class PlaylistTest {
         }
         //client.playlistList()
     }
+
+    @Test
+    fun getLikes() = runTest {
+        val token = getenv("token")
+        if (token.isInvalid()) return@runTest
+
+        val client = client {
+            this.token = token!!
+        }
+        client.userPlaylist(3, client.userInfo().id.toInt())
+    }
 }

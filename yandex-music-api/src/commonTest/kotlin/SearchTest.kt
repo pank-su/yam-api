@@ -11,6 +11,8 @@ class SearchTest {
         if (token.isInvalid()) return@runTest
 
         println(client { this.token = token!! }.search("Гражданская aбоaрона"))
+        println(client { this.token = token!! }.search("Яблоко"))
+
     }
 
     @Ignore

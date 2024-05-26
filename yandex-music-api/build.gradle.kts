@@ -43,6 +43,7 @@ kotlin {
 //        }
         commonMain {
             dependencies {
+
                 implementation(libs.ktor.client)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.content.neogation)
@@ -76,4 +77,6 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
     }
+
 }
+

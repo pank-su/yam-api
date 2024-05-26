@@ -1,10 +1,10 @@
-
 import dsl.YandexMusicTagMaker
 import exceptions.NotAuthenticatedException
 import exceptions.SessionExpiredException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
@@ -88,11 +88,16 @@ class Client {
         install(ContentNegotiation) {
             json(jsonSettings)
         }
+        install(HttpRequestRetry) {
+            retryOnServerErrors(maxRetries = 5)
+            exponentialDelay()
+        }
     }
 
     suspend inline fun <reified T> HttpResponse.deserialize(): T {
 
-        val body = this.bodyAsText().replace("/\\", "").replace("\\ ", "")
+        // escape all stupid chars
+        val body = this.bodyAsText()/*.replace(Regex("\\\\[a-zA-ZА-Яа-я]+")) { "\\" + it.value }*/
 
         return jsonSettings.decodeFromString<T>(body)
     }
@@ -399,7 +404,6 @@ class Client {
         )
 
     }
-
 
 
     suspend fun trackSupplement(trackId: Int) = request<Supplement>("tracks", trackId.toString(), "supplement")
