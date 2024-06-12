@@ -13,9 +13,9 @@ class FeedTest {
         val client = client {
             this.token = token!!
         }
-        println(client.feed())
+        println(client.landing.feed())
 
-        client.feed().generatedPlaylists.forEach {
+        client.landing.feed().generatedPlaylists.forEach {
             println(it.data.getUrlBackgroundImage(CoverSize.`400x400`))
         }
     }

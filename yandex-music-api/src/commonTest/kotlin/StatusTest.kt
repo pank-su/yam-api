@@ -2,7 +2,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.runBlocking
-import model.account.Permission
+import account.model.Permission
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

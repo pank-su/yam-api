@@ -11,6 +11,6 @@ class SimilarTest {
     fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-        println(client { }.tracksSimilar(109140203).similarTracks)
+        println(client { }.tracks.similar(109140203).similarTracks)
     }
 }

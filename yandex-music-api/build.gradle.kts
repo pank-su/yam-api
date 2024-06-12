@@ -6,6 +6,7 @@ plugins {
 }
 
 kotlin {
+    kotlin.applyDefaultHierarchyTemplate()
     jvm()
     androidTarget {
         publishLibraryVariants("release")

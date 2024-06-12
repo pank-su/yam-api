@@ -11,6 +11,6 @@ class DashboardTest {
     fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-        client { this.token = token!! }.rotorStationsDashboard()
+        client { this.token = token!! }.rotor.stationsDashboard()
     }
 }

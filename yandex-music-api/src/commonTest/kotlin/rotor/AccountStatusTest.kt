@@ -4,7 +4,7 @@ import dsl.client
 import io.getenv
 import isInvalid
 import kotlinx.coroutines.test.runTest
-import model.account.Permission
+import account.model.Permission
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,7 +13,7 @@ class AccountStatusTest {
     fun parsingDataIsValid() = runTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
-        client { this.token = token!! }.rotorAccountStatus()
+        client { this.token = token!! }.rotor.accountStatus()
     }
 
     @Test
@@ -21,7 +21,7 @@ class AccountStatusTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         assertEquals(
-            client { this.token = token!! }.rotorAccountStatus().permissions.values,
+            client { this.token = token!! }.rotor.accountStatus().permissions.values,
             setOf(Permission.RadioSkips)
         )
     }

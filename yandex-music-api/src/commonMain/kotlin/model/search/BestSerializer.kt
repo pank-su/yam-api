@@ -13,12 +13,12 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
 import model.Video
-import model.account.User
+import account.model.User
 import model.album.Album
 import model.artist.Artist
-import model.landing.Podcast
+import landing.model.Podcast
 import model.playlist.Playlist
-import model.track.Track
+import track.model.Track
 
 object BestSerializer : KSerializer<Best> {
     override val descriptor: SerialDescriptor

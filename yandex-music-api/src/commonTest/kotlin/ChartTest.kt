@@ -1,7 +1,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
-import model.landing.ChartOption
+import landing.model.chart.ChartOption
 import kotlin.test.Test
 
 class ChartTest {
@@ -11,7 +11,7 @@ class ChartTest {
         if (token.isInvalid()) return@runTest
 
 
-        val chart = client { }.chart(ChartOption.World)
+        val chart = client { }.landing.chart(ChartOption.World)
         println(chart)
     }
 }

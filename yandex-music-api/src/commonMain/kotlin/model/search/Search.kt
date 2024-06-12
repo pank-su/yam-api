@@ -2,14 +2,13 @@ package model.search
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.Result
 import model.Video
-import model.account.User
+import account.model.User
 import model.album.Album
 import model.artist.Artist
 import model.playlist.Playlist
-import model.supplement.Clip
-import model.track.Track
+import track.model.supplement.Clip
+import track.model.Track
 
 @Serializable
 data class Search(
@@ -32,11 +31,11 @@ data class Search(
     val podcastsEpisodes: SearchResult<Track>? = null,
     val clips: SearchResult<Clip>? = null,
 
-    ) : Result() {
+    )  {
     var type: QueryType = QueryType.All
     internal var page: Int = 0
 
-    suspend fun getPage(page: Int): Search = client!!.search(query = query, isCorrect = isCorrect ?: true, type, page)
+    suspend fun getPage(page: Int): Search = TODO("Добавить это в entity")// client!!.search(query = query, isCorrect = isCorrect ?: true, type, page)
     suspend fun nextPage(): Search = getPage(page + 1)
 
     suspend fun prevPage(): Search = getPage(page - 1)

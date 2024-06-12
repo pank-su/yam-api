@@ -13,6 +13,6 @@ class SupplementTest {
         if (token.isInvalid()) return@runTest
         client {
             this.token = token!!
-        }.trackSupplement(25427091)
+        }.tracks.supplement(25427091)
     }
 }

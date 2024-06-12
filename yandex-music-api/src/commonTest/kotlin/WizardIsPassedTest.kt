@@ -12,13 +12,13 @@ class WizardIsPassedTest {
         assertFails {
             client {
 
-            }.feedWizardIsPassed()
+            }.landing.feedWizardIsPassed()
         }
         val token = getenv("token") ?: return@runTest
         if (token.isBlank()) return@runTest
 
         client {
             this.token = token
-        }.feedWizardIsPassed()
+        }.landing.feedWizardIsPassed()
     }
 }

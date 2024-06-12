@@ -11,6 +11,6 @@ class GenreTest {
         if (token.isInvalid()) return@runTest
         println(client {
             this.token = token!!
-        }.genres().value!!)
+        }.genres())
     }
 }

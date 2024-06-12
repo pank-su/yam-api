@@ -12,7 +12,7 @@ class DownloadInfoTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         val client = client { this.token = token!! }
-        client.tracksDownloadInfo("18373917")
+        client.tracks.downloadInfo("18373917")
         // val bytes = client.tracksDownloadInfo("1a9d4eff-a645-44a6-aa31-5ea7e368714a").value!![1].download(client)
         // SystemFileSystem.sink(Path("/home/panksu/test.mp3")).buffered().write(bytes)
     }
@@ -22,6 +22,6 @@ class DownloadInfoTest {
         val token = getenv("token")
         if (token.isInvalid()) return@runTest
         val client = client { this.token = token!! }
-        client.tracksDownloadInfoNew(18373917, true)
+        client.tracks.downloadInfoNew(18373917, true)
     }
 }

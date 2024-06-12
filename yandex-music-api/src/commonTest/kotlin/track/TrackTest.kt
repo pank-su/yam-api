@@ -5,7 +5,7 @@ import io.getenv
 import isInvalid
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
-import model.track.TrackShort
+import model.playlist.TrackShort
 import kotlin.test.Test
 
 class TrackTest {

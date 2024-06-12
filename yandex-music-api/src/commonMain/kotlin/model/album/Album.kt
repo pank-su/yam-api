@@ -2,18 +2,17 @@ package model.album
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import model.Result
 import model.artist.Artist
 import model.cover.CoverSize
-import model.track.Options
-import model.track.Track
+import track.model.Options
+import track.model.Track
 
 @Serializable
 data class Album(
     val id: Int,
     val title: String,
     val type: AlbumType? = null,
-    val metaType: MetaType,
+    val metaType: AlbumType,
     val year: UInt? = null,
     val releaseDate: Instant? = null,
     val coverUri: String? = null,
@@ -34,7 +33,7 @@ data class Album(
     val trackPosition: TrackPosition? = null,
     val duplicates: List<Album>? = null,
     val volumes: List<List<Track>>? = null
-) : Result() {
+)  {
     fun getCoverUri(size: CoverSize) =
         if (coverUri != null) "https://${coverUri?.replace("%%", size.toString())}" else null
     fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"

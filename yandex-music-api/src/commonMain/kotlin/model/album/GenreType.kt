@@ -518,6 +518,8 @@ enum class GenreType {
     Soviet,
 
     @SerialName("fairytales")
-    FairyTales
+    FairyTales,
 
+    @SerialName("poetrygenre")
+    PoetryGenre
 }

@@ -17,6 +17,12 @@ enum class AlbumType {
     @SerialName("audiobook")
     AudioBook,
 
+    @SerialName("fairy-tale")
+    FairyTale,
+
+    @SerialName("music")
+    Music,
+
     @SerialName("asmr")
     ASMR
 }

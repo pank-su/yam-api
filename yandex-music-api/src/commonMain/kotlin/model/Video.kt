@@ -1,7 +1,7 @@
 package model
 
 import kotlinx.serialization.Serializable
-import model.supplement.VideoProvider
+import track.model.supplement.VideoProvider
 
 @Serializable
 data class Video(

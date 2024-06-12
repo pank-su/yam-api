@@ -12,7 +12,7 @@ class PlaylistTest {
         val client = client {
             this.token = token!!
         }
-        client.feed().generatedPlaylists.forEach {
+        client.landing.feed().generatedPlaylists.forEach {
             val ownerId = it.data.kind
             val playlistId = it.data.uid
             println(client.userPlaylist(ownerId, playlistId))
