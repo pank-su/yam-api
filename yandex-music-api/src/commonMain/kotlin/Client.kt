@@ -30,8 +30,6 @@ import rotor.RotorApi
 import track.TracksApi
 
 
-expect fun getHttpClientEngine(): HttpClientEngine
-
 /**
  * Клиент для работы с Яндекс Музыкой
  *
@@ -53,8 +51,6 @@ class Client {
     var me: Status? = null
 
 
-    var httpClientEngine: HttpClientEngine = getHttpClientEngine()
-
     var loggingSettings: LoggingConfig.() -> Unit = {
         logger = Logger.DEFAULT
         this.level = LogLevel.BODY
@@ -69,7 +65,7 @@ class Client {
 
     }
 
-    internal var httpClient = HttpClient(httpClientEngine) {
+    internal var httpClient = HttpClient {
         install(Logging) {
             loggingSettings()
         }

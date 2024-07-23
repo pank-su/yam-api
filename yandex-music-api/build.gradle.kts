@@ -16,10 +16,8 @@ kotlin {
             }
         }
     }
-//    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
-    //linuxX64()
+
+    linuxX64()
 
     sourceSets {
         androidMain {
@@ -37,11 +35,11 @@ kotlin {
                 implementation(libs.ktor.client.java)
             }
         }
-//        linuxMain {
-//            dependencies {
-//                implementation(libs.ktor.client.curl)
-//            }
-//        }
+        linuxMain {
+            dependencies {
+                implementation(libs.ktor.client.curl)
+            }
+        }
         commonMain {
             dependencies {
 

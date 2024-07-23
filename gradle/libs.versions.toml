@@ -6,13 +6,13 @@ kotlinxDatetime = "0.6.0"
 nexus-publish = "2.0.0-rc-1"
 android-minSdk = "24"
 android-compileSdk = "33"
-ktor = "3.0.0-wasm2"
-kotlinx-corutines = "1.8.0"
+ktor = "3.0.0-beta-2"
+kotlinx-corutines = "1.8.1"
 kotlinx-json = "1.7.0"
 logger = "2.0.13"
 xmlutil = "0.86.3"
 hash = "0.5.1"
-io = "0.3.3"
+io = "0.4.0"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
