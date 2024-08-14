@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import model.artist.Artist
 import model.cover.CoverSize
 import track.model.Options
-import track.model.Track
+import track.model.TrackDTO
 
 @Serializable
 data class Album(
@@ -32,7 +32,7 @@ data class Album(
     val bests: List<Int>,
     val trackPosition: TrackPosition? = null,
     val duplicates: List<Album>? = null,
-    val volumes: List<List<Track>>? = null
+    val volumes: List<List<TrackDTO>>? = null
 )  {
     fun getCoverUri(size: CoverSize) =
         if (coverUri != null) "https://${coverUri?.replace("%%", size.toString())}" else null

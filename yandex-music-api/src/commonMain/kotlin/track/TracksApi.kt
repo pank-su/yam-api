@@ -8,11 +8,11 @@ import model.Revision
 import track.model.downloadInfo.DownloadInfo
 import track.model.supplement.Supplement
 import track.model.SimilarTracks
-import track.model.Track
+import track.model.TrackDTO
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 
 class TracksApi(private val client: Client) {
-    suspend operator fun invoke(vararg trackIds: String, withPositions: Boolean = true): List<Track> =
+    suspend operator fun invoke(vararg trackIds: String, withPositions: Boolean = true): List<TrackDTO> =
         client.requestForm(
             "tracks", method = HttpMethod.Post,
             body = hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(","))

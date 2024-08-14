@@ -1,7 +1,7 @@
 package landing.model.feed
 
 import kotlinx.serialization.Serializable
-import track.model.Track
+import track.model.TrackDTO
 
 
 @Serializable
@@ -10,5 +10,5 @@ data class Event(
     val type: EventType,
     val typeForFrom: String? = null,
     val title: String? = null,
-    val tracks: List<Track>? = null
+    val tracks: List<TrackDTO>? = null
 )

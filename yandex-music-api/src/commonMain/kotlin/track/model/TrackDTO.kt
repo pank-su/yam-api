@@ -5,7 +5,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.album.Album
 import model.album.AlbumType
-import model.album.MetaType
 import model.artist.Artist
 import model.cover.CoverSize
 import track.model.downloadInfo.Codec
@@ -13,7 +12,7 @@ import track.model.downloadInfo.DownloadInfo
 import utils.IntOrStringSerializer
 
 @Serializable
-data class Track(
+data class TrackDTO(
     @Serializable(with = IntOrStringSerializer::class)
     val id: String,
     val title: String,
@@ -42,22 +41,9 @@ data class Track(
 ) {
     var downloadInfo: List<DownloadInfo>? = null
 
-    fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
-    fun getUrlCover(size: CoverSize) = "https://${coverUri?.replace("%%", size.toString())}"
 
 
-    suspend fun fetchDownloadInfo(client: Client): List<DownloadInfo>? {
-        if (downloadInfo != null) return downloadInfo
-        downloadInfo = client.tracks.downloadInfo(this.id.toString())
-        return downloadInfo
-    }
 
-    suspend fun specificDownloadInfo(client: Client, codec: Codec, bitrateInKbps: Int): DownloadInfo {
-        val downloadInfo = this.fetchDownloadInfo(client)
-
-        return downloadInfo?.firstOrNull { it.codec == codec && it.bitrateInKbps == bitrateInKbps }
-            ?: downloadInfo!!.first()
-    }
 
 }
 

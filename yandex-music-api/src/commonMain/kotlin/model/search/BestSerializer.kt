@@ -18,7 +18,7 @@ import model.album.Album
 import model.artist.Artist
 import landing.model.Podcast
 import model.playlist.Playlist
-import track.model.Track
+import track.model.TrackDTO
 
 object BestSerializer : KSerializer<Best> {
     override val descriptor: SerialDescriptor
@@ -32,10 +32,10 @@ object BestSerializer : KSerializer<Best> {
         QueryResponseType.User -> serializer<User>()
         QueryResponseType.Album -> serializer<Album>()
         QueryResponseType.Playlist -> serializer<Playlist>()
-        QueryResponseType.Track -> serializer<Track>()
+        QueryResponseType.Track -> serializer<TrackDTO>()
         QueryResponseType.Podcast -> serializer<Podcast>()
         QueryResponseType.Video -> serializer<Video>()
-        QueryResponseType.PodcastEpisode -> serializer<Track>()
+        QueryResponseType.PodcastEpisode -> serializer<TrackDTO>()
     } as KSerializer<Any>
 
     @OptIn(ExperimentalSerializationApi::class)

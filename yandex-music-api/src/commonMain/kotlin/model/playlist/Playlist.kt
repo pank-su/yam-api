@@ -9,7 +9,7 @@ import account.model.Visibility
 import model.cover.Cover
 import model.cover.CoverSize
 import landing.model.feed.GeneratedPlaylistType
-import track.model.Track
+import track.model.TrackDTO
 
 
 @Serializable
@@ -43,9 +43,9 @@ data class Playlist(
     @SerialName("ogImage") val ogImageUri: String? = null,
     val tracks: List<TrackShort> = listOf()
 ) {
-    private var fullTracks: List<Track>? = null
+    private var fullTracks: List<TrackDTO>? = null
 
-    suspend fun fetchTracks(client: Client): List<Track>? {
+    suspend fun fetchTracks(client: Client): List<TrackDTO>? {
         fullTracks = fullTracks ?: client.tracks(*tracks.map { it.id }.toTypedArray())
         return fullTracks
     }

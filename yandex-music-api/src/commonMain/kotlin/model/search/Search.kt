@@ -8,7 +8,7 @@ import model.album.Album
 import model.artist.Artist
 import model.playlist.Playlist
 import track.model.supplement.Clip
-import track.model.Track
+import track.model.TrackDTO
 
 @Serializable
 data class Search(
@@ -24,11 +24,11 @@ data class Search(
     val artists: SearchResult<Artist>? = null,
     val albums: SearchResult<Album>? = null,
     val playlist: SearchResult<Playlist>? = null,
-    val tracks: SearchResult<Track>? = null,
+    val tracks: SearchResult<TrackDTO>? = null,
     val videos: SearchResult<Video>? = null,
     val users: SearchResult<User>? = null,
     val podcasts: SearchResult<Album>? = null,
-    val podcastsEpisodes: SearchResult<Track>? = null,
+    val podcastsEpisodes: SearchResult<TrackDTO>? = null,
     val clips: SearchResult<Clip>? = null,
 
     )  {
