@@ -14,5 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "yandex-music-api"
-include(":yandex-music-api")
+rootProject.name = "api"
+
+include(":api")
