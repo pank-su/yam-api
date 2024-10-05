@@ -2,7 +2,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.runBlocking
-import account.model.Permission
+import su.pank.yamusic.account.model.Permission
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,7 +1,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
-import landing.model.chart.ChartOption
+import su.pank.yamusic.landing.model.chart.ChartOption
 import kotlin.test.Test
 
 class ChartTest {

@@ -2,11 +2,7 @@ import dsl.client
 import exceptions.NotAuthenticatedException
 import io.getenv
 import kotlinx.coroutines.test.runTest
-import account.model.Theme
-import account.model.UserSettings
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+usic.account.model.UserSimport kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class UserSettingsTest {

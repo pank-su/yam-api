@@ -1,7 +1,7 @@
 import dsl.client
 import io.getenv
 import kotlinx.coroutines.test.runTest
-import landing.model.block.BlockType
+import su.pank.yamusic.landing.model.block.BlockType
 import kotlin.test.Test
 
 class LandingTest {

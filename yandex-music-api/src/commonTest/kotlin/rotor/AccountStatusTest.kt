@@ -4,7 +4,7 @@ import dsl.client
 import io.getenv
 import isInvalid
 import kotlinx.coroutines.test.runTest
-import account.model.Permission
+import su.pank.yamusic.account.model.Permission
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
