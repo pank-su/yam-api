@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "api"
+rootProject.name = "api-core"
 
-include(":api")
+include(":api-core")
