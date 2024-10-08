@@ -19,7 +19,7 @@
             "type": "gradle",
             "workingDir": "$PROJECT_DIR$",
             "tasks": [
-                "dokkaGenerate"
+                ":docs:dokkaGenerate"
             ],
             "args": [
                 ""
