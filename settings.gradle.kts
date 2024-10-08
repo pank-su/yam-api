@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("convention-plugins")
     repositories {
@@ -14,6 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "api-core"
-
 include(":api-core")
+include(":examples:cli")
+include(":docs")

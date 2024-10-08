@@ -116,6 +116,7 @@ class YaMusicApiClient(val networkSettings: NetworkSettings, val language: Langu
 
     // полное получение информации о пользователе
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info") {
+        // TODO: token validation
         headers { append(HttpHeaders.Authorization, "OAuth $token") }
     }.body<UserInfo>()
 
@@ -156,7 +157,7 @@ class YaMusicApiClient(val networkSettings: NetworkSettings, val language: Langu
             append("USER_AGENT", "Yandex-Music-API")
             append("Accept-Language", language.toString())
 
-            if (token != "") {
+            if (token != null) {
                 append(HttpHeaders.Authorization, "OAuth $token")
             }
         }

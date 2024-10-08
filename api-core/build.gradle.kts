@@ -1,9 +1,16 @@
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxJson)
+    // alias(libs.plugins.dokka)
     id("module.publication")
+    id("dokka.convention")
+
 }
+
+
+
 
 kotlin {
 
@@ -21,17 +28,17 @@ kotlin {
     linuxX64()
 
     sourceSets {
-        androidMain {
+        androidUnitTest {
             dependencies {
                 implementation(libs.ktor.client.okhttp)
             }
         }
-        jvmMain {
+        jvmTest {
             dependencies {
                 implementation(libs.ktor.client.java)
             }
         }
-        linuxMain {
+        linuxX64Test {
             dependencies {
                 implementation(libs.ktor.client.curl)
             }
