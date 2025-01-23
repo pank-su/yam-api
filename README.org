@@ -1,6 +1,0 @@
-#+TITLE: Yandex Music API (KMP)
-
-Реализация Yandex Music Api, основываясь на
-репозитории [[https://github.com/MarshalX/yandex-music-api/tree/main][MarshalX]], для Kotlin Multiplatform.
-
-# TODO сделать крутое описание
