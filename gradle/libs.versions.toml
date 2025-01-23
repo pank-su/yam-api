@@ -1,14 +1,15 @@
 [versions]
-agp = "8.5.0"
+agp = "8.5.2"
+dokkaGradlePlugin = "2.0.0"
 getenv = "0.4.0"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 kotlinxDatetime = "0.6.1"
 nexus-publish = "2.0.0-rc-1"
 android-minSdk = "24"
 android-compileSdk = "33"
-ktor = "3.0.0"
-kotlinx-corutines = "1.9.0"
-kotlinx-json = "1.7.3"
+ktor = "3.0.3"
+kotlinx-corutines = "1.10.1"
+kotlinx-json = "1.8.0"
 logger = "2.0.16"
 xmlutil = "0.90.2"
 hash = "0.5.3"
@@ -22,6 +23,7 @@ kotlinxJson = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = 
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 [libraries]
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaGradlePlugin" }
 getenv = { module = "io.github.luca992.getenv-kt:getenv", version.ref = "getenv" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }

@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
 
     id("dokka.convention")
 }
@@ -7,7 +6,7 @@ plugins {
 
 
 dependencies {
-    dokka(projects.apiCore)
+    dokka(projects.core)
 }
 
 // TODO: сделать нормальную генерацию документации

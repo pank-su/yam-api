@@ -3,7 +3,7 @@ plugins {
 }
 
 allprojects {
-    group = "su.pank.yamapi"
+    group = "su.pank.yam-api"
     version = "0.1.0-dev6"
 }
 

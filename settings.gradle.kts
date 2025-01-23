@@ -16,6 +16,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(":api-core")
+include(":core")
 include(":examples:cli")
 include(":docs")

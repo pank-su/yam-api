@@ -29,7 +29,7 @@ kotlin {
     sourceSets {
         nativeMain {
             dependencies {
-                implementation(projects.apiCore)
+                implementation(projects.core)
                 implementation(libs.ktor.client.curl)
 
             }

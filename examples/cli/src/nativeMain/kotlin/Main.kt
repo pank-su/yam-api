@@ -1,5 +1,5 @@
 import kotlinx.coroutines.runBlocking
-import su.pank.yamusic.createYaMusicApiClient
+import su.pank.yamapi.createYaMusicApiClient
 
 fun main() {
     val client = createYaMusicApiClient { }
