@@ -14,7 +14,7 @@ logger = "2.0.16"
 xmlutil = "0.90.2"
 hash = "0.5.3"
 io = "0.5.4"
-dokka = "2.0.0-Beta"
+dokka = "2.0.0"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

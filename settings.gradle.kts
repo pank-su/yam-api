@@ -1,4 +1,7 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "yam-api"
+
+
 
 pluginManagement {
     includeBuild("convention-plugins")
