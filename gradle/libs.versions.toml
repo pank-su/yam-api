@@ -1,23 +1,25 @@
 [versions]
-agp = "8.2.0"
-getenv = "0.3.0"
-kotlin = "1.9.23"
-kotlinxDatetime = "0.5.0"
+agp = "8.5.0"
+getenv = "0.4.0"
+kotlin = "2.0.21"
+kotlinxDatetime = "0.6.1"
 nexus-publish = "2.0.0-rc-1"
 android-minSdk = "24"
 android-compileSdk = "33"
-ktor = "3.0.0-wasm2"
-kotlinx-corutines = "1.8.0"
-kotlinx-json = "1.6.3"
-logger = "2.0.13"
-xmlutil = "0.86.3"
-hash = "0.5.1"
-io = "0.3.3"
+ktor = "3.0.0"
+kotlinx-corutines = "1.9.0"
+kotlinx-json = "1.7.3"
+logger = "2.0.16"
+xmlutil = "0.90.2"
+hash = "0.5.3"
+io = "0.5.4"
+dokka = "2.0.0-Beta"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxJson = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
 [libraries]
 getenv = { module = "io.github.luca992.getenv-kt:getenv", version.ref = "getenv" }

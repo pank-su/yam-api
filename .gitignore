@@ -9,3 +9,5 @@ captures
 local.properties
 xcuserdata
 publish.sh
+.kotlin
+*~

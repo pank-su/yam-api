@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("convention-plugins")
     repositories {
@@ -11,10 +13,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
-
     }
 }
 
-rootProject.name = "yandex-music-api"
-include(":yandex-music-api")
+include(":api-core")
+include(":examples:cli")
+include(":docs")
