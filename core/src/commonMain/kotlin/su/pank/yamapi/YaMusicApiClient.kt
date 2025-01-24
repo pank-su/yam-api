@@ -11,7 +11,6 @@ import model.BasicResponse
 import model.Language
 import model.UserInfo
 import model.album.Album
-import model.genre.Genre
 import model.playlist.Playlist
 import model.playlist.TagResult
 import model.search.QueryType
@@ -20,15 +19,14 @@ import model.search.Suggestions
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.builder.NetworkSettings
-import su.pank.yamapi.dsl.YandexMusicTagMaker
 import su.pank.yamapi.exceptions.ExperimentalYaMusicApi
 import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.LandingApi
+import su.pank.yamapi.model.Genre
 import su.pank.yamapi.rotor.RotorApi
 import su.pank.yamapi.track.TracksApi
 
 
-@YandexMusicTagMaker
 class YaMusicApiClient(val networkSettings: NetworkSettings, val language: Language, val token: String?) {
 
     val httpClient = networkSettings.httpClient
