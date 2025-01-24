@@ -16,16 +16,21 @@ enum class ErrorType {
     NotAuthenticated,
 
     @SerialName("validate")
-    Validate
+    Validate;
+
+    fun toException(message: String): Exception = when (this) {
+        SessionExpired   -> SessionExpiredException(message)
+        NotAuthenticated -> NotAuthenticatedException()
+        Validate         -> ValidateException(message)
+    }
+
 }
 
-val errorTypeToException: HashMap<ErrorType?, (String) -> Unit> = hashMapOf(
-    ErrorType.SessionExpired to { throw SessionExpiredException(it) },
-    ErrorType.NotAuthenticated to { throw NotAuthenticatedException() },
-    ErrorType.Validate to { throw ValidateException(it) },
-    null to { throw SessionExpiredException(it) }
-)
 
 
 @Serializable
 data class Error(@SerialName("name") val type: ErrorType, val message: String)
+
+fun handleError(error: Error){
+    throw error.type.toException(error.message)
+}

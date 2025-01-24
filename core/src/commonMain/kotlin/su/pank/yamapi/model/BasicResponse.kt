@@ -4,7 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-
 @Serializable
 data class BasicResponse<T>(
     val invocationInfo: InvocationInfo,
@@ -14,9 +13,8 @@ data class BasicResponse<T>(
     val result: T
         get() {
             if (_result == null) {
-                errorTypeToException[_error?.type]!!(_error?.message ?: "Неизвестна ошибка")
-                throw Throwable()
+                _error?.let {   handleError(_error) } ?: throw Exception()
             }
-            return _result
+            return _result!!
         }
 }
