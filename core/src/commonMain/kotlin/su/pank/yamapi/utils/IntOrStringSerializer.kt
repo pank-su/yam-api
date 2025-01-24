@@ -7,6 +7,12 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
 
+
+/**
+ * Сериализация типов int или string в string
+ *
+ * @author Pankov Vasya <pank@pank.su>
+ */
 object IntOrStringSerializer : KSerializer<String> {
     override val descriptor: SerialDescriptor
         get() = serialDescriptor<String>()
