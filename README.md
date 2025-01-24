@@ -1,9 +1,10 @@
 ### yam-api
 
-![](https://kotl.in/badges/experimental.svg)
-[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+![](./images/badge.png)
 
-Реализация API Яндекс Музыки в Kotlin Multipltform.
+![](https://kotl.in/badges/experimental.svg) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+
+Реализация API Яндекс Музыки в Kotlin Multiplatform.
 
 В данным момент нет релизов для публичного использования, используйте на свой страх и риск.
 
