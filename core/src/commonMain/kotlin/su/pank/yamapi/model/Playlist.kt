@@ -9,8 +9,8 @@ import su.pank.yamapi.YaMusicApiClient
 import su.pank.yamapi.account.model.User
 import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.landing.model.GeneratedPlaylistType
-import su.pank.yamapi.model.playlist.TrackShort
 import su.pank.yamapi.track.model.TrackData
+import su.pank.yamapi.utils.IntOrStringSerializer
 
 
 @Serializable
@@ -53,4 +53,51 @@ data class Playlist(
 
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
     fun getUrlBackgroundImage(size: CoverSize) = "https://${backgroundImageUrl?.replace("%%", size.toString())}"
+}
+
+
+@Serializable
+data class PlayCounter(val value: UInt, val description: String, val updated: Boolean)
+
+@Serializable
+data class MadeFor(val userInfo: User, val caseForms: CaseForms)
+
+
+@Serializable
+data class CaseForms(
+    @SerialName("accusative")
+    val accusative: String,
+    @SerialName("dative")
+    val dative: String,
+    @SerialName("genitive")
+    val genitive: String,
+    @SerialName("instrumental")
+    val instrumental: String,
+    @SerialName("nominative")
+    val nominative: String,
+    @SerialName("prepositional")
+    val prepositional: String
+)
+
+@Serializable
+data class PlaylistId(val uid: Int, val kind: Int)
+
+@Serializable
+data class TagResult(val tag: Tag, val ids: List<PlaylistId>)
+
+@Serializable
+data class Tag(val id: String, val value: String, val name: String, val ogDescription: String)
+
+
+@Serializable
+data class TrackShort(
+    @Serializable(with = IntOrStringSerializer::class)
+    val id: String,
+    val timestamp: Instant
+) {
+    var track: TrackData? = null
+    suspend fun fetchTrack(client: YaMusicApiClient): TrackData? {
+        track = client.tracks(id)[0]
+        return track
+    }
 }
