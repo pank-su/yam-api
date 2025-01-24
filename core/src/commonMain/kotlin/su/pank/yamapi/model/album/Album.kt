@@ -17,7 +17,7 @@ data class Album(
     val releaseDate: Instant? = null,
     val coverUri: String? = null,
     val ogImage: String,
-    val genre: GenreType? = null,
+    val genre: String? = null,
     val trackCount: Int,
     val likesCount: Int? = null,
     val recent: Boolean,

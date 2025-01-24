@@ -1,7 +1,6 @@
 package su.pank.yamapi.rotor.model
 
 import kotlinx.serialization.Serializable
-import model.album.GenreType
 import su.pank.yamapi.utils.IntOrStringSerializer
 
 @Serializable
@@ -13,5 +12,5 @@ data class AdParams(
     val otherParams: String,
     val adVolume: Int,
     @Serializable(with = IntOrStringSerializer::class) val genreId: String? = null,
-    val genreName: GenreType? = null
+    val genreName: String? = null
 )
