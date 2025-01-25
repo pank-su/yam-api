@@ -13,9 +13,9 @@ import model.UserInfo
 import model.album.Album
 import model.playlist.Playlist
 import model.playlist.TagResult
-import model.search.QueryType
-import model.search.Search
-import model.search.Suggestions
+import su.pank.yamapi.model.search.QueryType
+import su.pank.yamapi.model.search.Search
+import su.pank.yamapi.model.search.Suggestions
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.builder.NetworkSettings
@@ -76,7 +76,7 @@ class YaMusicApiClient(val networkSettings: NetworkSettings, val language: Langu
     suspend fun search(
         query: String,
         isCorrect: Boolean = false,
-        type: QueryType = QueryType.All,
+        type: QueryType = QueryType.All, // TODO: сделать выбор что искать с помощью типов, что может помочь сохранить типизацию
         page: Int = 0,
         playlistInBest: Boolean = false
     ) = request<Search>(

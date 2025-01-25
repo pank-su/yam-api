@@ -1,4 +1,4 @@
-package model.search
+package su.pank.yamapi.model.search
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

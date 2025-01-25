@@ -1,4 +1,4 @@
-package model.search
+package su.pank.yamapi.model.search
 
 
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -20,6 +20,9 @@ import su.pank.yamapi.account.model.User
 import su.pank.yamapi.landing.model.Podcast
 import su.pank.yamapi.track.model.TrackData
 
+/**
+ * Десериализация лучшего подходящего ответа в зависимости от полученного типа
+ */
 object BestSerializer : KSerializer<Best> {
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("BlockEntity") {
