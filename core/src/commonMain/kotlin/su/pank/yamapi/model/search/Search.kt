@@ -2,10 +2,10 @@ package su.pank.yamapi.model.search
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.Video
-import model.artist.Artist
-import model.playlist.Playlist
 import su.pank.yamapi.account.model.User
+import su.pank.yamapi.model.Artist
+import su.pank.yamapi.model.Playlist
+import su.pank.yamapi.model.Video
 import su.pank.yamapi.model.album.Album
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.track.model.supplement.Clip

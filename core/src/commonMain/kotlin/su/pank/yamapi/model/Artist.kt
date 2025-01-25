@@ -1,4 +1,4 @@
-package model.artist
+package su.pank.yamapi.model
 
 import kotlinx.serialization.Serializable
 import model.cover.Cover

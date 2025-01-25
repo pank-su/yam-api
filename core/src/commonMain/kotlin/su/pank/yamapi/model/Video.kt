@@ -1,4 +1,4 @@
-package model
+package su.pank.yamapi.model
 
 import kotlinx.serialization.Serializable
 import su.pank.yamapi.track.model.supplement.VideoProvider

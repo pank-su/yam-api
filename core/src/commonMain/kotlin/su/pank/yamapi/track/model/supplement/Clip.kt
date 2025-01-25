@@ -1,7 +1,7 @@
 package su.pank.yamapi.track.model.supplement
 
 import kotlinx.serialization.Serializable
-import model.artist.Artist
+import su.pank.yamapi.model.Artist
 
 @Serializable
 data class Clip(

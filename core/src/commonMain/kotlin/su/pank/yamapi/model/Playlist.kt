@@ -1,4 +1,4 @@
-package model.playlist
+package su.pank.yamapi.model
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName

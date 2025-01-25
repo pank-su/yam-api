@@ -1,7 +1,7 @@
 package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.Serializable
-import model.playlist.PlaylistId
+import su.pank.yamapi.model.PlaylistId
 
 
 @Serializable

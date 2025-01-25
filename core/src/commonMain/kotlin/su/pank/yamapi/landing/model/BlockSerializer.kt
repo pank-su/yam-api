@@ -11,7 +11,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
-import model.playlist.Playlist
+import su.pank.yamapi.model.Playlist
 import su.pank.yamapi.model.album.Album
 
 

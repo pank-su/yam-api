@@ -2,7 +2,7 @@ package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.playlist.Playlist
+import su.pank.yamapi.model.Playlist
 import su.pank.yamapi.track.model.TrackData
 
 /**
