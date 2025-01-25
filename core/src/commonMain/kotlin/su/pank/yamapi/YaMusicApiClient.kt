@@ -5,7 +5,6 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.datetime.Instant
 import kotlinx.serialization.json.Json
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.account.model.Status
@@ -49,22 +48,6 @@ class YaMusicApiClient(val networkSettings: NetworkSettings, val language: Langu
     suspend fun tags(tagId: String) = request<TagResult>("tags", tagId, "playlist-ids")
 
 
-    suspend fun playAudio(
-        trackId: Int,
-        from: String,
-        albumId: Int,
-        playlistId: String? = null,
-        fromCache: Boolean = false,
-        playId: String? = null,
-        uid: Int? = null,
-        timestamp: Instant? = null,
-        trackLengthSeconds: Int = 0,
-        totalPlayedSeconds: Int = 0,
-        endPositionSeconds: Int = 0,
-        clientNow: Instant? = null
-    ) {
-        TODO("Реализация позже")
-    }
 
     suspend fun albumsWithTracks(albumId: Int) = request<Album>("albums", albumId.toString(), "with-tracks")
 
