@@ -6,8 +6,8 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import model.Language
 import su.pank.yamapi.YaMusicApiClient
+import su.pank.yamapi.model.Language
 
 class YaMusicApiClientBuilder {
     var httpClient: HttpClient? = null

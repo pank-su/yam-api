@@ -1,10 +1,10 @@
 package su.pank.yamapi.rotor
 
 import kotlinx.serialization.json.Json
-import model.Language
 import su.pank.yamapi.YaMusicApiClient
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.exceptions.ExperimentalYaMusicApi
+import su.pank.yamapi.model.Language
 import su.pank.yamapi.rotor.model.Dashboard
 import su.pank.yamapi.rotor.model.Session
 import su.pank.yamapi.rotor.model.StationResult
