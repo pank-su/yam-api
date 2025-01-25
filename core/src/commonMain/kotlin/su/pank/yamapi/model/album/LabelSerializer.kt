@@ -1,4 +1,4 @@
-package model.album
+package su.pank.yamapi.model.album
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -9,6 +9,11 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.json.*
 
+/**
+ * Декодирование [Label], даже если это просто строка
+ *
+ * @see Label
+ */
 object LabelSerializer : KSerializer<Label> {
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("Label") {

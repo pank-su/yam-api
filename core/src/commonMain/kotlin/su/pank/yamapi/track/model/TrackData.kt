@@ -2,9 +2,9 @@ package su.pank.yamapi.track.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.album.Album
 import model.album.AlbumType
 import model.artist.Artist
+import su.pank.yamapi.model.album.Album
 import su.pank.yamapi.utils.IntOrStringSerializer
 import track.model.Options
 import track.model.downloadInfo.DownloadInfo

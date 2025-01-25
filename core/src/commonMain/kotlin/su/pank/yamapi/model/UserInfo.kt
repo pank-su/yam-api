@@ -1,4 +1,4 @@
-package model
+package su.pank.yamapi.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

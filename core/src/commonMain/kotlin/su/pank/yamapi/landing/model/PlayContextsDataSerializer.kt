@@ -11,11 +11,11 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
-import model.album.Album
 import model.artist.Artist
 import model.playlist.Playlist
 import su.pank.yamapi.landing.model.Context
 import su.pank.yamapi.landing.model.PlayContextsData
+import su.pank.yamapi.model.album.Album
 
 object PlayContextsDataSerializer : KSerializer<PlayContextsData> {
     override val descriptor: SerialDescriptor
