@@ -1,11 +1,11 @@
 package su.pank.yamapi.account
 
 import model.PermissionAlerts
-import model.ad.Ad
 import su.pank.yamapi.YaMusicApiClient
 import su.pank.yamapi.account.model.PromoCodeStatus
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.account.model.UserSettings
+import su.pank.yamapi.model.ad.Ad
 
 class AccountApi(private val client: YaMusicApiClient) {
     /**

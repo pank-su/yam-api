@@ -2,7 +2,6 @@ package su.pank.yamapi.model.album
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import model.album.AlbumType
 import model.cover.CoverSize
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.track.model.TrackData

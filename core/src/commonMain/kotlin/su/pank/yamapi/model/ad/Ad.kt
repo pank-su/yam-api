@@ -1,4 +1,4 @@
-package model.ad
+package su.pank.yamapi.model.ad
 
 import kotlinx.serialization.Serializable
 

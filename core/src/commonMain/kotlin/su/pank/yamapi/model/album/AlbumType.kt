@@ -1,4 +1,4 @@
-package model.album
+package su.pank.yamapi.model.album
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
