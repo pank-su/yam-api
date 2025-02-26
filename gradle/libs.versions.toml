@@ -13,7 +13,7 @@ kotlinx-json = "1.8.0"
 logger = "2.0.16"
 xmlutil = "0.90.2"
 hash = "0.6.0"
-io = "0.5.4"
+io = "0.7.0"
 dokka = "2.0.0"
 
 [plugins]
