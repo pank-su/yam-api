@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.cover.Cover
 import model.cover.CoverSize
-import su.pank.yamapi.YaMusicApiClient
+import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.account.model.User
 import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.landing.model.GeneratedPlaylistType
@@ -46,7 +46,7 @@ data class Playlist(
 ) {
     private var fullTracks: List<TrackData>? = null
 
-    suspend fun fetchTracks(client: YaMusicApiClient): List<TrackData>? {
+    suspend fun fetchTracks(client: YamApiClient): List<TrackData>? {
         fullTracks = fullTracks ?: client.tracks(*tracks.map { it.id }.toTypedArray())
         return fullTracks
     }
@@ -96,7 +96,7 @@ data class TrackShort(
     val timestamp: Instant
 ) {
     var track: TrackData? = null
-    suspend fun fetchTrack(client: YaMusicApiClient): TrackData? {
+    suspend fun fetchTrack(client: YamApiClient): TrackData? {
         track = client.tracks(id)[0]
         return track
     }
