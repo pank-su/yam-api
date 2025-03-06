@@ -26,14 +26,12 @@ jobs:
             os: ubuntu-latest
           - target: testDebugUnitTest
             os: ubuntu-latest
-          - target: testReleaseUnitTest
-            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
     - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/actions/wrapper-validation@v3
     - uses: actions/cache@v3
       with:
         path: |

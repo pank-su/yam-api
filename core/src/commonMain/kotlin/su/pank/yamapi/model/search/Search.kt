@@ -49,12 +49,14 @@ data class Search(
 data class Best(val type: QueryResponseType, val result: Any)
 
 
-
 /**
  * Результат поиска различный от выбранного запроса. Этот dataclass упрощает обрабатывать ответ в [Search]
  */
 @Serializable
 data class SearchResult<T>(val total: Int, val perPage: Int, val order: Int, val results: List<T>)
+
+
+
 
 enum class QueryType {
     All,
