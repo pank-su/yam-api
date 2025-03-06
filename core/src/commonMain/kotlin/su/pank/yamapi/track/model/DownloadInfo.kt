@@ -2,7 +2,6 @@ package track.model.downloadInfo
 
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import kotlinx.serialization.SerialName
@@ -40,7 +39,7 @@ data class DownloadInfo(
         if (directLink != null) return directLink
         val xml = client.httpClient.get(downloadInfoUrl) {
             headers {
-                append(HttpHeaders.Authorization, "OAuth ${client.token}")
+                //append(HttpHeaders.Authorization, "OAuth ${client.token}")
             }
         }.body() as String
         directLink = buildDirectLink(xml)

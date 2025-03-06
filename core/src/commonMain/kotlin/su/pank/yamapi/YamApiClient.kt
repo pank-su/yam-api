@@ -2,9 +2,9 @@ package su.pank.yamapi
 
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import su.pank.yamapi.account.AccountApi
@@ -21,13 +21,17 @@ import su.pank.yamapi.utils.setBody
 abstract class YamClient {
     internal abstract val httpClient: HttpClient
 
+    internal  suspend inline fun <reified T> HttpResponse.yabody(): T{
+        return this.body<BasicResponse<T>>().result
+    }
+
     internal suspend inline fun <reified T> get(vararg path: String, block: HttpRequestBuilder.() -> Unit = {}): T {
         return httpClient.get {
             url {
                 path(*path)
             }
             block()
-        }.body()
+        }.yabody()
     }
 
     internal suspend inline fun <reified T, reified R> get(
@@ -43,7 +47,7 @@ abstract class YamClient {
                 }
             }
             block()
-        }.body()
+        }.yabody()
     }
 
     internal suspend inline fun <reified T, reified R> postForm(
@@ -60,7 +64,7 @@ abstract class YamClient {
 
             method = HttpMethod.Post
             block()
-        }.body()
+        }.yabody()
     }
 
 
@@ -78,30 +82,14 @@ abstract class YamClient {
 
             method = HttpMethod.Get
             block()
-        }.body()
+        }.yabody()
     }
 
 }
 
 
-class YamApiClient(override val httpClient: HttpClient, val language: Language, val token: String?) : YamClient() {
+class YamApiClient(override val httpClient: HttpClient, val language: Language) : YamClient() {
 
-    init {
-        httpClient.config {
-            defaultRequest {
-
-                headers {
-                    append("X-Yandex-Music-Client", "YandexMusicAndroid/24022571")
-                    append("USER_AGENT", "Yandex-Music-API")
-                    append("Accept-Language", language.toString())
-
-                    if (token != null) {
-                        append(HttpHeaders.Authorization, "OAuth $token")
-                    }
-                }
-            }
-        }
-    }
 
     var jsonSettings = Json {
         ignoreUnknownKeys = true
@@ -167,7 +155,7 @@ class YamApiClient(override val httpClient: HttpClient, val language: Language, 
     // полное получение информации о пользователе
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info") {
         // TODO: token validation
-        headers { append(HttpHeaders.Authorization, "OAuth $token") }
+        //headers { append(HttpHeaders.Authorization, "OAuth $token") }
     }.body<UserInfo>()
 
     suspend fun playlistList(vararg playlistIds: String): List<Playlist> = postForm(
