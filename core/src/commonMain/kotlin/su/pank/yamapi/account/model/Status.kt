@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Status(
     val account: Account,
-    val permissions: Permissions,
+    val permissions: Permissions?,
     val subscription: Subscription? = null,
     @SerialName("bar-below") val barBellow: BarBellow? = null,
     @SerialName("subeditor") val isSubEditor: Boolean? = null,

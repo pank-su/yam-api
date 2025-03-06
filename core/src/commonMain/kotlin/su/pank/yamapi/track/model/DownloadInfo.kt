@@ -2,7 +2,6 @@ package track.model.downloadInfo
 
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import kotlinx.serialization.SerialName
@@ -11,7 +10,7 @@ import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlElement
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 import org.kotlincrypto.hash.md.MD5
-import su.pank.yamapi.YaMusicApiClient
+import su.pank.yamapi.YamApiClient
 
 val SIGN_SALT = "XGRlBW9FXlekgbPrRHuSiA"
 
@@ -36,18 +35,18 @@ data class DownloadInfo(
         return "https://${info.host}/get-mp3/${sign}/${info.ts}${info.path}"
     }
 
-    suspend fun fetchDirectLink(client: YaMusicApiClient): String? {
+    suspend fun fetchDirectLink(client: YamApiClient): String? {
         if (directLink != null) return directLink
         val xml = client.httpClient.get(downloadInfoUrl) {
             headers {
-                append(HttpHeaders.Authorization, "OAuth ${client.token}")
+                //append(HttpHeaders.Authorization, "OAuth ${client.token}")
             }
         }.body() as String
         directLink = buildDirectLink(xml)
         return directLink
     }
 
-    suspend fun download(client: YaMusicApiClient): ByteArray {
+    suspend fun download(client: YamApiClient): ByteArray {
         val link = directLink ?: fetchDirectLink(client)
         return client.httpClient.get(link!!).body() as ByteArray
     }

@@ -1,14 +1,14 @@
 package su.pank.yamapi.track
 
 import model.cover.CoverSize
-import su.pank.yamapi.YaMusicApiClient
+import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.track.model.TrackData
 import track.model.downloadInfo.Codec
 import track.model.downloadInfo.DownloadInfo
 
 
 class Track(
-    private val client: YaMusicApiClient,
+    private val client: YamApiClient,
     val trackData: TrackData,
 
     ) {

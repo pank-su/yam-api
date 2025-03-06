@@ -1,46 +1,45 @@
 package su.pank.yamapi.track
 
-import io.ktor.http.*
 import io.ktor.util.*
 import kotlinx.datetime.Clock
 import model.Revision
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
-import su.pank.yamapi.YaMusicApiClient
+import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.track.model.supplement.Supplement
 import track.model.SimilarTracks
 import track.model.downloadInfo.DownloadInfo
 
-class TracksApi(private val client: YaMusicApiClient) {
+class TracksApi(private val client: YamApiClient) {
     suspend operator fun invoke(vararg trackIds: String, withPositions: Boolean = true): List<TrackData> =
-        client.requestForm(
-            "tracks", method = HttpMethod.Post,
-            body = hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(","))
+        client.postForm(
+            hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
+            "tracks",
         )
 
-    suspend fun like(vararg trackIds: Int) = client.requestForm<Revision>(
+
+    suspend fun like(vararg trackIds: Int): Revision = client.postForm(
+        hashMapOf("track-ids" to trackIds.joinToString(",")),
         "users",
-        (client.me?.account?.uid ?: client.account.status().account.uid).toString(),
+        (null ?: client.account.status().account.uid).toString(), // FIXME
         "likes",
         "tracks",
         "add-multiple",
-        method = HttpMethod.Post,
-        body = hashMapOf("track-ids" to trackIds.joinToString(","))
     )
 
-    suspend fun unlike(vararg trackIds: Int) = client.requestForm<Revision>(
+
+    suspend fun unlike(vararg trackIds: Int): Revision = client.postForm(
+        hashMapOf("track-ids" to trackIds.joinToString(",")),
         "users",
-        (client.me?.account?.uid ?: client.account.status().account.uid).toString(),
+        (null ?: client.account.status().account.uid).toString(), // fixme
         "likes",
         "tracks",
         "remove",
-        method = HttpMethod.Post,
-        body = hashMapOf("track-ids" to trackIds.joinToString(","))
     )
 
-    suspend fun similar(trackId: Int) = client.request<SimilarTracks>("tracks", trackId.toString(), "similar")
+    suspend fun similar(trackId: Int) = client.get<SimilarTracks>("tracks", trackId.toString(), "similar")
 
-    suspend fun supplement(trackId: Int) = client.request<Supplement>("tracks", trackId.toString(), "supplement")
+    suspend fun supplement(trackId: Int) = client.get<Supplement>("tracks", trackId.toString(), "supplement")
 
 
     suspend fun lyrics(trackId: Int, format: String = "TEXT"): Nothing =
@@ -48,7 +47,7 @@ class TracksApi(private val client: YaMusicApiClient) {
 
 
     suspend fun downloadInfo(trackId: String) =
-        client.request<List<DownloadInfo>>("tracks", trackId, "download-info")
+        client.get<List<DownloadInfo>>("tracks", trackId, "download-info")
 
     suspend fun downloadInfoNew(
         trackId: Int,
@@ -58,18 +57,16 @@ class TracksApi(private val client: YaMusicApiClient) {
         val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
         val sign = hmacSign.doFinal("${trackId}${timestamp}".encodeToByteArray()).encodeBase64()
 
-        return client.request(
-            listOf(
-                "tracks",
-                trackId.toString(),
-                "download-info"
-            ),
-            method = HttpMethod.Get,
-            body = hashMapOf(
+        return client.form(
+            hashMapOf(
                 "can_use_streaming" to canUseStreaming.toString().lowercase(),
                 "ts" to timestamp.toString(),
                 "sign" to sign
             ),
+            "tracks",
+            trackId.toString(),
+            "download-info"
+
         )
 
     }
