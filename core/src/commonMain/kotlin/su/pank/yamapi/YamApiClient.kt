@@ -102,7 +102,7 @@ class YamApiClient(override val httpClient: HttpClient, val language: Language) 
 
 
     @ExperimentalYaMusicApi
-    val rotor: RotorApi = RotorApi(this)
+    private val rotor: RotorApi = RotorApi(this) // TODO
 
     val tracks: TracksApi = TracksApi(this)
 
@@ -114,12 +114,11 @@ class YamApiClient(override val httpClient: HttpClient, val language: Language) 
 
     suspend fun albumsWithTracks(albumId: Int) = get<Album>("albums", albumId.toString(), "with-tracks")
 
-    suspend fun search(query: String, searchRequestBuilder: SearchRequestBuilder.() -> Unit) {
+    suspend fun search(query: String, builder: SearchRequestBuilder.() -> Unit) =
+        search(SearchRequestBuilder().apply { builder() }.build(query))
 
 
-    }
-
-    internal suspend fun search(searchRequest: SearchRequest): Search =
+    private suspend fun search(searchRequest: SearchRequest): Search =
         get(
             searchRequest,
             "search"
@@ -153,10 +152,7 @@ class YamApiClient(override val httpClient: HttpClient, val language: Language) 
 
 
     // полное получение информации о пользователе
-    suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info") {
-        // TODO: token validation
-        //headers { append(HttpHeaders.Authorization, "OAuth $token") }
-    }.body<UserInfo>()
+    suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
 
     suspend fun playlistList(vararg playlistIds: String): List<Playlist> = postForm(
         hashMapOf("playlist-ids" to playlistIds.joinToString(",")),
