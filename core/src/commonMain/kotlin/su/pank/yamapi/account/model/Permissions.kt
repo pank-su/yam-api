@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
+
 package su.pank.yamapi.account.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Права пользователя

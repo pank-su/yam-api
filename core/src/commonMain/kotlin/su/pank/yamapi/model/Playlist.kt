@@ -1,6 +1,7 @@
+@file:OptIn(ExperimentalTime::class)
+
 package su.pank.yamapi.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import model.cover.Cover
@@ -11,6 +12,8 @@ import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.landing.model.GeneratedPlaylistType
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.utils.IntOrStringSerializer
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 
 @Serializable

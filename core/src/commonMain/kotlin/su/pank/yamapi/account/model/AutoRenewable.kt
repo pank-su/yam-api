@@ -1,7 +1,8 @@
 package su.pank.yamapi.account.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Описание подписки
@@ -13,6 +14,7 @@ import kotlinx.serialization.Serializable
  * @param productId ID продукта
  * @param orderId ID заказа
  */
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class AutoRenewable(
     val expires: Instant,

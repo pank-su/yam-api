@@ -8,7 +8,7 @@ inline fun <reified T> ParametersBuilder.setBody(body: T) {
     val json: Json = Json { encodeDefaults = true }
 
     // Сериализуем объект в JsonElement
-    val element = json.encodeToJsonElement(this)
+    val element = json.encodeToJsonElement(body)
     require(element is JsonObject) {
         "Ожидался JsonObject, но получил ${element::class.simpleName}"
     }
