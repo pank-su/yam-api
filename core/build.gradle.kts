@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -17,11 +18,10 @@ kotlin {
     jvm()
     androidTarget {
         publishLibraryVariants("release")
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
         }
+
     }
 
     linuxX64()
@@ -63,6 +63,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+                implementation(libs.ktor.client.mock)
                 implementation(libs.coroutines.test)
                 implementation(libs.getenv)
                 implementation(libs.io)

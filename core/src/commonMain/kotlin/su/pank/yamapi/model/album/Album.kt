@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package su.pank.yamapi.model.album
 
 import kotlinx.datetime.Instant
@@ -6,6 +8,7 @@ import model.cover.CoverSize
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.track.model.TrackData
 import track.model.Options
+import kotlin.time.ExperimentalTime
 
 @Serializable
 data class Album(
