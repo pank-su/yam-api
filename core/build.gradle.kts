@@ -73,7 +73,7 @@ kotlin {
 }
 
 android {
-    namespace = "su.pank.yamusic"
+    namespace = "su.pank.yamapi"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -82,3 +82,9 @@ android {
 
 }
 
+
+dokka {
+    dokkaSourceSets.configureEach {
+        includes.from("Core.md")
+    }
+}

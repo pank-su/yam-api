@@ -1,5 +1,4 @@
 plugins {
-
     id("dokka.convention")
 }
 
@@ -11,7 +10,7 @@ dependencies {
 
 // TODO: сделать нормальную генерацию документации
 dokka {
-    moduleName.set("yandex-music-api")
+    moduleName.set("yam-api")
 
 
 
