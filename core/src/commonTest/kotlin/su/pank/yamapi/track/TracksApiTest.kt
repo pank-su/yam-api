@@ -4,11 +4,11 @@ package su.pank.yamapi.track
 
 import io.ktor.http.fullPath
 import kotlinx.coroutines.test.runTest
-import model.Revision
 import su.pank.yamapi.account.model.Account
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.createMockedYamApiClient
 import su.pank.yamapi.mockJsonResponse
+import su.pank.yamapi.model.Revision
 import su.pank.yamapi.testJson
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.wrapWithBasicResponse
