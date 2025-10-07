@@ -1,20 +1,18 @@
 @file:OptIn(ExperimentalTime::class)
 
-package su.pank.yamapi.model
+package su.pank.yamapi.playlist.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import model.cover.Cover
-import model.cover.CoverSize
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.account.model.User
 import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.landing.model.GeneratedPlaylistType
+import su.pank.yamapi.model.cover.*
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.utils.IntOrStringSerializer
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-
 
 @Serializable
 data class Playlist(
@@ -45,7 +43,7 @@ data class Playlist(
     val everPlayed: Boolean? = null,
     val durationMs: Int? = null,
     @SerialName("ogImage") val ogImageUri: String? = null,
-    val tracks: List<TrackShort> = listOf()
+    val tracks: List<TrackShort> = listOf(),
 ) {
     private var fullTracks: List<TrackData>? = null
 
@@ -55,16 +53,22 @@ data class Playlist(
     }
 
     fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
+
     fun getUrlBackgroundImage(size: CoverSize) = "https://${backgroundImageUrl?.replace("%%", size.toString())}"
 }
 
+@Serializable
+data class PlayCounter(
+    val value: UInt,
+    val description: String,
+    val updated: Boolean,
+)
 
 @Serializable
-data class PlayCounter(val value: UInt, val description: String, val updated: Boolean)
-
-@Serializable
-data class MadeFor(val userInfo: User, val caseForms: CaseForms)
-
+data class MadeFor(
+    val userInfo: User,
+    val caseForms: CaseForms,
+)
 
 @Serializable
 data class CaseForms(
@@ -79,26 +83,37 @@ data class CaseForms(
     @SerialName("nominative")
     val nominative: String,
     @SerialName("prepositional")
-    val prepositional: String
+    val prepositional: String,
 )
 
 @Serializable
-data class PlaylistId(val uid: Int, val kind: Int)
+data class PlaylistId(
+    val uid: Int,
+    val kind: Int,
+)
 
 @Serializable
-data class TagResult(val tag: Tag, val ids: List<PlaylistId>)
+data class TagResult(
+    val tag: Tag,
+    val ids: List<PlaylistId>,
+)
 
 @Serializable
-data class Tag(val id: String, val value: String, val name: String, val ogDescription: String)
-
+data class Tag(
+    val id: String,
+    val value: String,
+    val name: String,
+    val ogDescription: String,
+)
 
 @Serializable
 data class TrackShort(
     @Serializable(with = IntOrStringSerializer::class)
     val id: String,
-    val timestamp: Instant
+    val timestamp: Instant,
 ) {
     var track: TrackData? = null
+
     suspend fun fetchTrack(client: YamApiClient): TrackData? {
         track = client.tracks(id)[0]
         return track

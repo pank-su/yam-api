@@ -1,4 +1,4 @@
-package model.cover
+package su.pank.yamapi.model.cover
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,5 +15,5 @@ enum class CoverType {
     FromAlbumCover,
 
     @SerialName("mosaic")
-    Mosaic
+    Mosaic,
 }

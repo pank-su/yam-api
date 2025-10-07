@@ -8,158 +8,158 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import su.pank.yamapi.account.AccountApi
+import su.pank.yamapi.album.AlbumsApi
+import su.pank.yamapi.album.model.Album
 import su.pank.yamapi.exceptions.ExperimentalYaMusicApi
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
-import su.pank.yamapi.model.album.Album
 import su.pank.yamapi.model.search.*
+import su.pank.yamapi.playlist.PlaylistsApi
+import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.TagResult
 import su.pank.yamapi.rotor.RotorApi
 import su.pank.yamapi.track.TracksApi
 import su.pank.yamapi.utils.setBody
 
-
 abstract class YamClient {
     internal abstract val httpClient: HttpClient
 
-    internal  suspend inline fun <reified T> HttpResponse.yabody(): T{
-        return this.body<BasicResponse<T>>().result
-    }
+    // ёбидоёби
 
-    internal suspend inline fun <reified T> get(vararg path: String, block: HttpRequestBuilder.() -> Unit = {}): T {
-        return httpClient.get {
-            url {
-                path(*path)
-            }
-            block()
-        }.yabody()
-    }
+    /**
+     * Получение тела из поля result возвращаемых данных
+     */
+    internal suspend inline fun <reified T> HttpResponse.yabody(): T = this.body<BasicResponse<T>>().result
+
+    // Настроенные get на установку тела как параметров
+
+    internal suspend inline fun <reified T> get(
+        vararg path: String,
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): T =
+        httpClient
+            .get {
+                url {
+                    path(*path)
+                }
+                block()
+            }.yabody()
 
     internal suspend inline fun <reified T, reified R> get(
         body: R,
         vararg path: String,
-        block: HttpRequestBuilder.() -> Unit = {}
-    ): T {
-        return httpClient.get {
-            url {
-                path(*path)
-                parameters {
-                    setBody(body)
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): T =
+        httpClient
+            .get {
+                url {
+                    path(*path)
+                    parameters {
+                        setBody(body)
+                    }
                 }
-            }
-            block()
-        }.yabody()
-    }
+                block()
+            }.yabody()
 
     internal suspend inline fun <reified T, reified R> postForm(
         body: R,
         vararg path: String,
-        block: HttpRequestBuilder.() -> Unit = {}
-    ): T {
-        return httpClient.submitForm(
-            formParameters = parameters { setBody(body) }
-        ) {
-            url {
-                path(*path)
-            }
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): T =
+        httpClient
+            .submitForm(
+                formParameters = parameters { setBody(body) },
+            ) {
+                url {
+                    path(*path)
+                }
 
-            method = HttpMethod.Post
-            block()
-        }.yabody()
-    }
-
+                method = HttpMethod.Post
+                block()
+            }.yabody()
 
     internal suspend inline fun <reified T, reified R> form(
         body: R,
         vararg path: String,
-        block: HttpRequestBuilder.() -> Unit = {}
-    ): T {
-        return httpClient.submitForm(
-            formParameters = parameters { setBody(body) }
-        ) {
-            url {
-                path(*path)
-            }
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): T =
+        httpClient
+            .submitForm(
+                formParameters = parameters { setBody(body) },
+            ) {
+                url {
+                    path(*path)
+                }
 
-            method = HttpMethod.Get
-            block()
-        }.yabody()
-    }
-
+                method = HttpMethod.Get
+                block()
+            }.yabody()
 }
 
-
-class YamApiClient(override val httpClient: HttpClient, val language: Language) : YamClient() {
-
-
-    var jsonSettings = Json {
-        ignoreUnknownKeys = true
-    }
+class YamApiClient(
+    override val httpClient: HttpClient,
+    val language: Language,
+) : YamClient() {
+    var jsonSettings =
+        Json {
+            ignoreUnknownKeys = true
+        }
 
     val account: AccountApi = AccountApi(this)
 
-
     val landing: LandingApi = LandingApi(this)
 
+    val playlists: PlaylistsApi = PlaylistsApi(this)
+
+    val albums: AlbumsApi = AlbumsApi(this)
 
     @ExperimentalYaMusicApi
-    private val rotor: RotorApi = RotorApi(this) // TODO
+    private val rotor: RotorApi = RotorApi(this)
 
     val tracks: TracksApi = TracksApi(this)
-
 
     suspend fun genres(): List<Genre> = get("genres")
 
     suspend fun tags(tagId: String) = get<TagResult>("tags", tagId, "playlist-ids")
 
+    suspend fun albumsWithTracks(albumId: Int): Album = albums.withTracks(albumId)
 
-    suspend fun albumsWithTracks(albumId: Int) = get<Album>("albums", albumId.toString(), "with-tracks")
-
-    suspend fun search(query: String, builder: SearchRequestBuilder.() -> Unit) =
-        search(SearchRequestBuilder().apply { builder() }.build(query))
-
+    suspend fun search(
+        query: String,
+        builder: SearchRequestBuilder.() -> Unit,
+    ) = search(SearchRequestBuilder().apply { builder() }.build(query))
 
     private suspend fun search(searchRequest: SearchRequest): Search =
         get(
             searchRequest,
-            "search"
+            "search",
         )
+
     suspend fun search(
         query: String,
         isCorrect: Boolean = false,
         type: QueryType = QueryType.All, // TODO: сделать выбор что искать с помощью типов, что может помочь сохранить типизацию
         page: Int = 0,
-        playlistInBest: Boolean = false
+        playlistInBest: Boolean = false,
     ) = search(SearchRequest(query, isCorrect, type, page, playlistInBest))
 
-    suspend fun searchSuggest(part: String) = get<Suggestions>("search", "suggest") {
-        parameter("part", part)
-    }
+    suspend fun searchSuggest(part: String) =
+        get<Suggestions>("search", "suggest") {
+            parameter("part", part)
+        }
 
+    suspend fun userPlaylists(
+        vararg kinds: Int,
+        userId: Int? = null,
+    ): List<Playlist> = playlists.byKinds(*kinds, userId = userId)
 
-    suspend fun userPlaylists(vararg kinds: Int, userId: Int? = null): List<Playlist> = postForm(
-        hashMapOf("kinds" to kinds.joinToString(",")),
-        "users",
-        (userId).toString(),
-        "playlists",
-    )
-
-    suspend fun userPlaylist(kind: Int, userId: Int? = null) = get<Playlist>(
-        "users",
-        (userId).toString(),
-        "playlists",
-        kind.toString()
-    )
-
+    suspend fun userPlaylist(
+        kind: Int,
+        userId: Int? = null,
+    ): Playlist = playlists.byKind(kind, userId)
 
     // полное получение информации о пользователе
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
 
-    suspend fun playlistList(vararg playlistIds: String): List<Playlist> = postForm(
-        hashMapOf("playlist-ids" to playlistIds.joinToString(",")),
-        "playlists",
-        "list",
-
-        )
+    suspend fun playlistList(vararg playlistIds: String): List<Playlist> = playlists.listByIds(*playlistIds)
 }
-
-

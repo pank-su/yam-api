@@ -1,14 +1,13 @@
 package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.Serializable
-import su.pank.yamapi.model.PlaylistId
-
+import su.pank.yamapi.playlist.model.PlaylistId
 
 @Serializable
 data class Landing(
     val pumpkin: Boolean,
     val contentId: String,
-    val blocks: List<Block>
+    val blocks: List<Block>,
 )
 
 @Serializable
@@ -18,5 +17,6 @@ data class LandingList(
     val title: String,
     val id: String? = null,
     val newReleases: List<Int> = listOf(),
-    val newPlaylists: List<PlaylistId> = listOf(), val podcasts: List<Int> = listOf()
+    val newPlaylists: List<PlaylistId> = listOf(),
+    val podcasts: List<Int> = listOf(),
 )

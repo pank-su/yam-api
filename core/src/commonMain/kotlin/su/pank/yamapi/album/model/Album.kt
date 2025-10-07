@@ -1,14 +1,14 @@
 @file:OptIn(ExperimentalTime::class)
 
-package su.pank.yamapi.model.album
+package su.pank.yamapi.album.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import model.cover.CoverSize
 import su.pank.yamapi.model.Artist
+import su.pank.yamapi.model.cover.CoverSize
 import su.pank.yamapi.track.model.TrackData
 import track.model.Options
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Serializable
 data class Album(
@@ -35,16 +35,18 @@ data class Album(
     val bests: List<Int>,
     val trackPosition: TrackPosition? = null,
     val duplicates: List<Album>? = null,
-    val volumes: List<List<TrackData>>? = null
-)  {
-    fun getCoverUri(size: CoverSize) =
-        if (coverUri != null) "https://${coverUri.replace("%%", size.toString())}" else null
+    val volumes: List<List<TrackData>>? = null,
+) {
+    fun getCoverUri(size: CoverSize) = if (coverUri != null) "https://${coverUri.replace("%%", size.toString())}" else null
+
     fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
 }
 
-
 @Serializable(with = LabelSerializer::class)
-data class Label(val id: Int, val name: String)
+data class Label(
+    val id: Int,
+    val name: String,
+)
 
 /**
  * Позиция трека в альбоме
@@ -52,4 +54,7 @@ data class Label(val id: Int, val name: String)
  * @see Album
  */
 @Serializable
-data class TrackPosition(val volume: Int, val index: Int)
+data class TrackPosition(
+    val volume: Int,
+    val index: Int,
+)

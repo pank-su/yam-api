@@ -1,5 +1,11 @@
-package model.cover
+package su.pank.yamapi.model.cover
 
 enum class CoverSize {
-    `50x50`, `100x100`, `200x200`, `400x400`, `600x600`, `800x800`, `1000x1000`
+    `50x50`,
+    `100x100`,
+    `200x200`,
+    `400x400`,
+    `600x600`,
+    `800x800`,
+    `1000x1000`,
 }

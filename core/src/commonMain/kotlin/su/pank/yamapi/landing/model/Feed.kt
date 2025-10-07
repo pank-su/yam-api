@@ -5,9 +5,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import su.pank.yamapi.model.Playlist
+import su.pank.yamapi.playlist.model.Playlist
 import su.pank.yamapi.track.model.TrackData
-
 
 @Serializable
 data class Feed(
@@ -16,7 +15,7 @@ data class Feed(
     val isWizardPassed: Boolean,
     val generatedPlaylists: List<GeneratedPlaylist>,
     val today: LocalDate,
-    val days: List<Day>
+    val days: List<Day>,
 )
 
 @Serializable
@@ -24,7 +23,7 @@ data class GeneratedPlaylist(
     val type: GeneratedPlaylistType,
     val ready: Boolean,
     val notify: Boolean,
-    val data: Playlist
+    val data: Playlist,
 )
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -46,11 +45,14 @@ enum class GeneratedPlaylistType {
     @JsonNames("missed_likes", "missedLikes")
     MissedLikes,
 
-    rewind2023
+    rewind2023,
 }
 
 @Serializable
-data class Day(val day: LocalDate, val events: List<Event>)
+data class Day(
+    val day: LocalDate,
+    val events: List<Event>,
+)
 
 // TODO: добавить преобразование в нормальные треки
 @Serializable
@@ -59,7 +61,7 @@ data class Event(
     val type: EventType,
     val typeForFrom: String? = null,
     val title: String? = null,
-    val tracks: List<TrackData>? = null
+    val tracks: List<TrackData>? = null,
 )
 
 @Serializable
@@ -80,5 +82,5 @@ enum class EventType {
     Notification,
 
     @SerialName("social-tracks")
-    SocialTracks
+    SocialTracks,
 }

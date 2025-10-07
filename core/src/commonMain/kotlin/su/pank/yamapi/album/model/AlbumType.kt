@@ -1,4 +1,4 @@
-package su.pank.yamapi.model.album
+package su.pank.yamapi.album.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,5 +24,5 @@ enum class AlbumType {
     Music,
 
     @SerialName("asmr")
-    ASMR
+    ASMR,
 }
