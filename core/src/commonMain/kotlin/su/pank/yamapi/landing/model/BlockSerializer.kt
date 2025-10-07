@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
 import su.pank.yamapi.album.model.Album
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 
 object BlockSerializer : KSerializer<BlockEntity> {
     override val descriptor: SerialDescriptor
@@ -29,7 +29,7 @@ object BlockSerializer : KSerializer<BlockEntity> {
             BlockType.PersonalPlaylists -> serializer<GeneratedPlaylist>()
             BlockType.Promotions -> serializer<Promotion>()
             BlockType.NewReleases -> serializer<Album>()
-            BlockType.NewPlaylists -> serializer<Playlist>()
+            BlockType.NewPlaylists -> serializer<PlaylistData>()
             BlockType.Mixes -> serializer<MixLink>()
             BlockType.Chart -> serializer<ChartItem>()
             BlockType.Artists -> serializer<GeneratedPlaylist>()

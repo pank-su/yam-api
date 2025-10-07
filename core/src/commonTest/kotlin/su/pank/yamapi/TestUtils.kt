@@ -1,4 +1,6 @@
 
+@file:Suppress("JUnitTest")
+
 package su.pank.yamapi
 
 import io.ktor.client.HttpClient
@@ -14,44 +16,44 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import su.pank.yamapi.model.Language
 
-val testJson = Json {
-    ignoreUnknownKeys = true
-    prettyPrint = true
-}
+val testJson =
+    Json {
+        ignoreUnknownKeys = true
+    }
 
 fun createMockedYamApiClient(handler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData): YamApiClient {
-    val mockEngine = MockEngine { request ->
+    val mockEngine =
+        MockEngine { request ->
 
-        handler(this, request)
-    }
-
-    val client = HttpClient(mockEngine) {
-        install(ContentNegotiation) {
-            json(testJson)
+            handler(this, request)
         }
-    }
+
+    val client =
+        HttpClient(mockEngine) {
+            install(ContentNegotiation) {
+                json(testJson)
+            }
+        }
 
     return YamApiClient(client, Language.ru)
 }
 
-fun mockJsonResponse(content: String): suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData {
-    return {
+fun mockJsonResponse(content: String): suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData =
+    {
         respond(
             content = content,
-            headers = headersOf(HttpHeaders.ContentType, "application/json")
+            headers = headersOf(HttpHeaders.ContentType, "application/json"),
         )
     }
-}
 
-fun wrapWithBasicResponse(resultJson: String): String {
-    return """
-        {
-            "invocationInfo": {
-                "hostname": "testhost",
-                "req-id": "test-req-id",
-                "exec-duration-millis": 100
-            },
-            "result": $resultJson
-        }
+fun wrapWithBasicResponse(resultJson: String): String =
+    """
+    {
+        "invocationInfo": {
+            "hostname": "testhost",
+            "req-id": "test-req-id",
+            "exec-duration-millis": 100
+        },
+        "result": $resultJson
+    }
     """.trimIndent()
-}

@@ -15,7 +15,7 @@ import su.pank.yamapi.album.model.Album
 import su.pank.yamapi.landing.model.Context
 import su.pank.yamapi.landing.model.PlayContextsData
 import su.pank.yamapi.model.Artist
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 
 object PlayContextsDataSerializer : KSerializer<PlayContextsData> {
     override val descriptor: SerialDescriptor
@@ -30,7 +30,7 @@ object PlayContextsDataSerializer : KSerializer<PlayContextsData> {
     @Suppress("UNCHECKED_CAST")
     private fun getDataSerializer(type: Context): KSerializer<Any> =
         when (type) {
-            Context.Playlist -> serializer<Playlist>()
+            Context.Playlist -> serializer<PlaylistData>()
             Context.Album -> serializer<Album>()
             Context.Artist -> serializer<Artist>()
         } as KSerializer<Any>

@@ -5,14 +5,13 @@ package su.pank.yamapi.playlist
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.http.fullPath
 import kotlinx.coroutines.test.runTest
-
 import su.pank.yamapi.account.model.Account
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.account.model.User
 import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.createMockedYamApiClient
 import su.pank.yamapi.mockJsonResponse
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.testJson
 import su.pank.yamapi.wrapWithBasicResponse
 import kotlin.test.Test
@@ -26,7 +25,7 @@ class PlaylistsApiTest {
     fun `fetch playlist by kind`() =
         runTest {
             val playlist =
-                Playlist(
+                PlaylistData(
                     owner = User(uid = 111, login = "owner"),
                     cover = null,
                     coverWithoutText = null,
@@ -68,7 +67,7 @@ class PlaylistsApiTest {
 
             val result = api.byKind(kind = 999, userId = 111)
 
-            assertEquals(playlist, result)
+            assertEquals(playlist, result.playlistData)
         }
 
     @Test

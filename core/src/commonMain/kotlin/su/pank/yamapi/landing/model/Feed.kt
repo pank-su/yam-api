@@ -5,7 +5,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.track.model.TrackData
 
 @Serializable
@@ -23,7 +23,7 @@ data class GeneratedPlaylist(
     val type: GeneratedPlaylistType,
     val ready: Boolean,
     val notify: Boolean,
-    val data: Playlist,
+    val data: PlaylistData,
 )
 
 @OptIn(ExperimentalSerializationApi::class)

@@ -2,7 +2,7 @@ package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.track.model.TrackData
 
 /**
@@ -24,7 +24,7 @@ data class ChartInfo(
     val typeForFrom: String,
     val title: String,
     val menu: ChartInfoMenu,
-    val chart: Playlist? = null,
+    val chart: PlaylistData? = null,
     val chartDescription: String? = null,
 )
 
