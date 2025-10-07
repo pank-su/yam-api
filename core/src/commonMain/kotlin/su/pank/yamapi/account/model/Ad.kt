@@ -1,4 +1,4 @@
-package su.pank.yamapi.model.ad
+package su.pank.yamapi.account.model
 
 import kotlinx.serialization.Serializable
 
@@ -8,5 +8,5 @@ data class Ad(
     val inAppProducts: List<AppProduct>,
     val nativeProducts: List<AppProduct>,
     val webPaymentUrl: String,
-    val promoCodesEnabled: Boolean
+    val promoCodesEnabled: Boolean,
 )

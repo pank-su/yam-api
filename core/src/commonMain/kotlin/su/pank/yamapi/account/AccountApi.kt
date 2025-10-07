@@ -1,13 +1,15 @@
 package su.pank.yamapi.account
 
-import model.PermissionAlerts
 import su.pank.yamapi.YamApiClient
+import su.pank.yamapi.account.model.Ad
+import su.pank.yamapi.account.model.PermissionAlerts
 import su.pank.yamapi.account.model.PromoCodeStatus
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.account.model.UserSettings
-import su.pank.yamapi.model.ad.Ad
 
-class AccountApi(private val client: YamApiClient) {
+class AccountApi(
+    private val client: YamApiClient,
+) {
     /**
      * Запрос статуса пользователя (/account/status)
      *
@@ -29,25 +31,29 @@ class AccountApi(private val client: YamApiClient) {
      */
     suspend fun ads() = client.get<Ad>("settings")
 
-
     suspend fun permissionAlerts() = client.get<PermissionAlerts>("permission-alerts")
 
     /**
-     * Запрос экспериментов для данного аккаунта
+     * Запрос экспериментов для данного аккаунта (/account/experiments)
      *
      * @return словарь всех экспериментов
      */
     suspend fun experiments() = client.get<HashMap<String, String>>("account", "experiments")
 
     /**
-     * Активация промокода
+     * Активация промокода (/account/consume-promo-code)
      *
      * @param code промокод
      *
      * @see PromoCodeStatus
      */
-    suspend fun consumePromoCode(code: String): PromoCodeStatus = client.form(hashMapOf("code" to code, "language" to client.language.toString()),
-        "account",
-        "consume-promo-code",
-    )
+    suspend fun consumePromoCode(code: String): PromoCodeStatus =
+        client.form(
+            hashMapOf(
+                "code" to code,
+                "language" to client.language.toString(),
+            ),
+            "account",
+            "consume-promo-code",
+        )
 }

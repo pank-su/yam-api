@@ -1,4 +1,4 @@
-package model.cover
+package su.pank.yamapi.model.cover
 
 import kotlinx.serialization.Serializable
 
@@ -9,9 +9,7 @@ data class Cover(
     val prefix: String? = null,
     val dir: String? = null,
     val version: String? = null,
-    val custom: Boolean? = null
+    val custom: Boolean? = null,
 ) {
-
-
     fun getUrl(size: CoverSize) = "https://${uri.replace("%%", size.toString())}"
 }

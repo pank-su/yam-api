@@ -2,7 +2,7 @@ package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import su.pank.yamapi.model.Playlist
+import su.pank.yamapi.playlist.model.Playlist
 import su.pank.yamapi.track.model.TrackData
 
 /**
@@ -25,28 +25,39 @@ data class ChartInfo(
     val title: String,
     val menu: ChartInfoMenu,
     val chart: Playlist? = null,
-    val chartDescription: String? = null
+    val chartDescription: String? = null,
 )
 
+@Serializable
+data class Chart(
+    val position: Int,
+    val progress: String,
+    val listeners: Int,
+    val shift: Int,
+)
 
 @Serializable
-data class Chart(val position: Int, val progress: String, val listeners: Int, val shift: Int)
+data class ChartInfoMenu(
+    val items: List<ChartInfoMenuItem>,
+)
 
 @Serializable
-data class ChartInfoMenu(val items: List<ChartInfoMenuItem>)
-
+data class ChartInfoMenuItem(
+    val title: String,
+    val url: String,
+    val selected: Boolean? = null,
+)
 
 @Serializable
-data class ChartInfoMenuItem(val title: String, val url: String, val selected: Boolean? = null)
-
-
-@Serializable
-data class ChartItem(val track: TrackData, val chart: Chart)
+data class ChartItem(
+    val track: TrackData,
+    val chart: Chart,
+)
 
 enum class ChartOption {
     @SerialName("world")
     World,
 
     @SerialName("russia")
-    Russia
+    Russia,
 }

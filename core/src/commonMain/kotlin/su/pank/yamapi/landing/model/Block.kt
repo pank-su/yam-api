@@ -4,8 +4,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import su.pank.yamapi.model.album.Album
-
+import su.pank.yamapi.album.model.Album
 
 @Serializable
 data class Block(
@@ -13,15 +12,14 @@ data class Block(
     val type: BlockType,
     val typeForFrom: BlockType,
     val title: String,
-    val entities: List<BlockEntity>
+    val entities: List<BlockEntity>,
 )
-
 
 @Serializable(with = BlockSerializer::class)
 data class BlockEntity(
     val id: String,
     val type: BlockType,
-    val data: Any
+    val data: Any,
 )
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -53,7 +51,6 @@ enum class BlockType {
     @SerialName("artists")
     Artists,
 
-
     @SerialName("albums")
     @JsonNames("album", "albums")
     Albums,
@@ -68,8 +65,6 @@ enum class BlockType {
     @SerialName("podcasts")
     @JsonNames("non-music_main_podcasts", "podcasts", "podcast")
     Podcasts,
-
-
 }
 
 @Serializable
@@ -84,10 +79,12 @@ data class MixLink(
     val coverUri: String? = null,
 )
 
+@Serializable
+data class Promotion(
+    val title: String,
+)
 
 @Serializable
-data class Promotion(val title: String)
-
-
-@Serializable
-data class Podcast(val podcast: Album)
+data class Podcast(
+    val podcast: Album,
+)

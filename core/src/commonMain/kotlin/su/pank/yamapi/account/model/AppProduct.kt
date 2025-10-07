@@ -1,4 +1,4 @@
-package su.pank.yamapi.model.ad
+package su.pank.yamapi.account.model
 
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.serialization.SerialName
@@ -25,22 +25,24 @@ data class AppProduct(
     val vendorTrialAvailable: Boolean? = null,
     val familySub: Boolean? = null,
     val trialAvailable: Boolean? = null,
-    val family: Boolean? = null
+    val family: Boolean? = null,
 )
 
 @Serializable
 enum class TypeProduct {
     @SerialName("subscription")
-    Subscription
+    Subscription,
 }
 
 @Serializable
-data class Price(val amount: Float, val currency: Currency)
+data class Price(
+    val amount: Float,
+    val currency: Currency,
+)
 
 enum class Currency {
-    RUB
+    RUB,
 } // TODO: add more
-
 
 @Serializable
 enum class Feature {
@@ -54,9 +56,8 @@ enum class Feature {
     BasicKinopoisk,
 }
 
-
 @Serializable
 enum class PaymentMethod {
     @SerialName("card")
-    Card
+    Card,
 }

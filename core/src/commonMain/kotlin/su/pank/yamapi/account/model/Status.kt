@@ -27,7 +27,9 @@ data class Status(
     val plus: Plus? = null,
     val defaultEmail: String? = null,
     @SerialName("userhash") val userHash: String? = null
-)
+){
+    val hasSubscription: Boolean = plus != null && subscription != null
+}
 
 /**
  * Описание наличия подписки у пользователя

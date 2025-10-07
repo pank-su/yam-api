@@ -2,9 +2,9 @@ package su.pank.yamapi.track.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumType
 import su.pank.yamapi.model.Artist
-import su.pank.yamapi.model.album.Album
-import su.pank.yamapi.model.album.AlbumType
 import su.pank.yamapi.utils.IntOrStringSerializer
 import track.model.Options
 import track.model.downloadInfo.DownloadInfo
@@ -35,15 +35,14 @@ data class TrackData(
     val type: AlbumType? = null,
     val rememberPosition: Boolean? = null,
     val trackSharingFlag: TrackSharingFlag? = null,
-    val contentWarning: String? = null
+    val contentWarning: String? = null,
 ) {
     var downloadInfo: List<DownloadInfo>? = null
-
-
 }
 
 enum class TrackSharingFlag {
-    VIDEO_ALLOWED, COVER_ONLY
+    VIDEO_ALLOWED,
+    COVER_ONLY,
 }
 
 @Serializable
@@ -51,17 +50,19 @@ data class R128(
     @SerialName("i")
     val i: Double,
     @SerialName("tp")
-    val tp: Double
+    val tp: Double,
 )
 
 @Serializable
-data class Major(val id: Int, val name: String)
-
+data class Major(
+    val id: Int,
+    val name: String,
+)
 
 @Serializable
 data class LyricsInfo(
     @SerialName("hasAvailableSyncLyrics")
     val hasAvailableSyncLyrics: Boolean,
     @SerialName("hasAvailableTextLyrics")
-    val hasAvailableTextLyrics: Boolean
+    val hasAvailableTextLyrics: Boolean,
 )
