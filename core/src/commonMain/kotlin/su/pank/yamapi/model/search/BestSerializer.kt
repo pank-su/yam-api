@@ -16,7 +16,7 @@ import su.pank.yamapi.album.model.Album
 import su.pank.yamapi.landing.model.Podcast
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Video
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.track.model.TrackData
 
 /**
@@ -35,7 +35,7 @@ object BestSerializer : KSerializer<Best> {
             QueryResponseType.Artist -> serializer<Artist>()
             QueryResponseType.User -> serializer<User>()
             QueryResponseType.Album -> serializer<Album>()
-            QueryResponseType.Playlist -> serializer<Playlist>()
+            QueryResponseType.Playlist -> serializer<PlaylistData>()
             QueryResponseType.Track -> serializer<TrackData>()
             QueryResponseType.Podcast -> serializer<Podcast>()
             QueryResponseType.Video -> serializer<Video>()

@@ -13,64 +13,75 @@ import track.model.downloadInfo.DownloadInfo
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class TracksApi(private val client: YamApiClient) {
-    suspend operator fun invoke(vararg trackIds: String, withPositions: Boolean = true): List<TrackData> =
+class TracksApi(
+    private val client: YamApiClient,
+) {
+    suspend operator fun invoke(
+        vararg trackIds: String,
+        withPositions: Boolean = true,
+    ): List<Track> =
+        client
+            .postForm<List<TrackData>, Map<String, String>>(
+                hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
+                "tracks",
+            ).map { Track(client, it) }
+
+    suspend fun like(vararg trackIds: Int): Revision =
         client.postForm(
-            hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
+            hashMapOf("track-ids" to trackIds.joinToString(",")),
+            "users",
+            (
+                null ?: client.account
+                    .status()
+                    .account.uid
+            ).toString(), // FIXME
+            "likes",
             "tracks",
+            "add-multiple",
         )
 
-
-    suspend fun like(vararg trackIds: Int): Revision = client.postForm(
-        hashMapOf("track-ids" to trackIds.joinToString(",")),
-        "users",
-        (null ?: client.account.status().account.uid).toString(), // FIXME
-        "likes",
-        "tracks",
-        "add-multiple",
-    )
-
-
-    suspend fun unlike(vararg trackIds: Int): Revision = client.postForm(
-        hashMapOf("track-ids" to trackIds.joinToString(",")),
-        "users",
-        (null ?: client.account.status().account.uid).toString(), // fixme
-        "likes",
-        "tracks",
-        "remove",
-    )
+    suspend fun unlike(vararg trackIds: Int): Revision =
+        client.postForm(
+            hashMapOf("track-ids" to trackIds.joinToString(",")),
+            "users",
+            (
+                null ?: client.account
+                    .status()
+                    .account.uid
+            ).toString(), // fixme
+            "likes",
+            "tracks",
+            "remove",
+        )
 
     suspend fun similar(trackId: Int) = client.get<SimilarTracks>("tracks", trackId.toString(), "similar")
 
     suspend fun supplement(trackId: Int) = client.get<Supplement>("tracks", trackId.toString(), "supplement")
 
+    suspend fun lyrics(
+        trackId: Int,
+        format: String = "TEXT",
+    ): Nothing = TODO("Необходима реализация get_sign_request")
 
-    suspend fun lyrics(trackId: Int, format: String = "TEXT"): Nothing =
-        TODO("Необходима реализация get_sign_request")
-
-
-    suspend fun downloadInfo(trackId: String) =
-        client.get<List<DownloadInfo>>("tracks", trackId, "download-info")
+    suspend fun downloadInfo(trackId: String) = client.get<List<DownloadInfo>>("tracks", trackId, "download-info")
 
     suspend fun downloadInfoNew(
         trackId: Int,
-        canUseStreaming: Boolean = false
+        canUseStreaming: Boolean = false,
     ): List<DownloadInfo> {
         val timestamp = Clock.System.now().epochSeconds
         val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
-        val sign = hmacSign.doFinal("${trackId}${timestamp}".encodeToByteArray()).encodeBase64()
+        val sign = hmacSign.doFinal("${trackId}$timestamp".encodeToByteArray()).encodeBase64()
 
         return client.form(
             hashMapOf(
                 "can_use_streaming" to canUseStreaming.toString().lowercase(),
                 "ts" to timestamp.toString(),
-                "sign" to sign
+                "sign" to sign,
             ),
             "tracks",
             trackId.toString(),
-            "download-info"
-
+            "download-info",
         )
-
     }
 }

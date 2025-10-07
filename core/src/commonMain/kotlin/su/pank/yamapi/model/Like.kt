@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import su.pank.yamapi.album.model.Album
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -18,7 +18,7 @@ data class Like(
     val timestamp: Instant? = null,
     val album: Album? = null,
     val artist: Artist? = null,
-    val playlist: Playlist? = null,
+    val playlist: PlaylistData? = null,
     @JsonNames("shortDescription", "short_description")
     val shortDescription: String? = null,
     val description: String? = null,

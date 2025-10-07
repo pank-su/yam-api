@@ -18,7 +18,7 @@ class Track(
 
     fun getUrlCover(size: CoverSize) = "https://${trackData.coverUri?.replace("%%", size.toString())}"
 
-    private suspend fun fetchDownloadInfo(): List<DownloadInfo> = client.tracks.downloadInfo(this.id.toString())
+    private suspend fun fetchDownloadInfo(): List<DownloadInfo> = client.tracks.downloadInfo(this.id)
 
     suspend fun downloadInfo(
         codec: Codec,
@@ -28,5 +28,9 @@ class Track(
 
         return downloadInfo.firstOrNull { it.codec == codec && it.bitrateInKbps == bitrateInKbps }
             ?: downloadInfo.first()
+    }
+
+    override fun toString(): String {
+        return "Track(id=$id, title=$title, artist=$artist)"
     }
 }

@@ -4,40 +4,46 @@ import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.account.model.Visibility
 import su.pank.yamapi.model.Like
 import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.playlist.model.PlaylistRecommendations
 
 class PlaylistsApi(
     private val client: YamApiClient,
 ) {
     suspend fun list(userId: Int? = null): List<Playlist> =
-        client.get(
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            "list",
-        )
+        client
+            .get<List<PlaylistData>>(
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                "list",
+            ).map { Playlist(client, it) }
 
     suspend fun byKind(
         kind: Int,
         userId: Int? = null,
     ): Playlist =
-        client.get(
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            kind.toString(),
+        Playlist(
+            client,
+            client.get(
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                kind.toString(),
+            ),
         )
 
     suspend fun byKinds(
         vararg kinds: Int,
         userId: Int? = null,
     ): List<Playlist> =
-        client.postForm(
-            hashMapOf("kinds" to kinds.joinToString(",")),
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-        )
+        client
+            .postForm<List<PlaylistData>, Map<String, String>>(
+                hashMapOf("kinds" to kinds.joinToString(",")),
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+            ).map { Playlist(client, it) }
 
     suspend fun recommendations(
         kind: Int,
@@ -56,15 +62,18 @@ class PlaylistsApi(
         visibility: Visibility = Visibility.PUBLIC,
         userId: Int? = null,
     ): Playlist =
-        client.postForm(
-            hashMapOf(
-                "title" to title,
-                "visibility" to visibility.toApiValue(),
+        Playlist(
+            client,
+            client.postForm(
+                hashMapOf(
+                    "title" to title,
+                    "visibility" to visibility.toApiValue(),
+                ),
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                "create",
             ),
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            "create",
         )
 
     suspend fun delete(
@@ -85,13 +94,16 @@ class PlaylistsApi(
         name: String,
         userId: Int? = null,
     ): Playlist =
-        client.postForm(
-            hashMapOf("value" to name),
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            kind.toString(),
-            "name",
+        Playlist(
+            client,
+            client.postForm(
+                hashMapOf("value" to name),
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                kind.toString(),
+                "name",
+            ),
         )
 
     suspend fun changeVisibility(
@@ -99,13 +111,16 @@ class PlaylistsApi(
         visibility: Visibility,
         userId: Int? = null,
     ): Playlist =
-        client.postForm(
-            hashMapOf("value" to visibility.toApiValue()),
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            kind.toString(),
-            "visibility",
+        Playlist(
+            client,
+            client.postForm(
+                hashMapOf("value" to visibility.toApiValue()),
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                kind.toString(),
+                "visibility",
+            ),
         )
 
     suspend fun change(
@@ -114,17 +129,20 @@ class PlaylistsApi(
         revision: Int,
         userId: Int? = null,
     ): Playlist =
-        client.postForm(
-            hashMapOf(
-                "kind" to kind.toString(),
-                "revision" to revision.toString(),
-                "diff" to diff,
+        Playlist(
+            client,
+            client.postForm(
+                hashMapOf(
+                    "kind" to kind.toString(),
+                    "revision" to revision.toString(),
+                    "diff" to diff,
+                ),
+                "users",
+                resolveUserId(userId).toString(),
+                "playlists",
+                kind.toString(),
+                "change",
             ),
-            "users",
-            resolveUserId(userId).toString(),
-            "playlists",
-            kind.toString(),
-            "change",
         )
 
     suspend fun insertTrack(
@@ -191,11 +209,12 @@ class PlaylistsApi(
         )
 
     suspend fun listByIds(vararg playlistIds: String): List<Playlist> =
-        client.postForm(
-            hashMapOf("playlist-ids" to playlistIds.joinToString(",")),
-            "playlists",
-            "list",
-        )
+        client
+            .postForm<List<PlaylistData>, Map<String, String>>(
+                hashMapOf("playlist-ids" to playlistIds.joinToString(",")),
+                "playlists",
+                "list",
+            ).map { Playlist(client, it) }
 
     suspend fun collectiveJoin(
         userId: Int,

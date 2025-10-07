@@ -6,7 +6,7 @@ import su.pank.yamapi.account.model.User
 import su.pank.yamapi.album.model.Album
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Video
-import su.pank.yamapi.playlist.model.Playlist
+import su.pank.yamapi.playlist.model.PlaylistData
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.track.model.supplement.Clip
 
@@ -23,7 +23,7 @@ data class Search(
     val best: Best? = null,
     val artists: SearchResult<Artist>? = null,
     val albums: SearchResult<Album>? = null,
-    val playlist: SearchResult<Playlist>? = null,
+    val playlist: SearchResult<PlaylistData>? = null,
     val tracks: SearchResult<TrackData>? = null,
     val videos: SearchResult<Video>? = null,
     val users: SearchResult<User>? = null,
