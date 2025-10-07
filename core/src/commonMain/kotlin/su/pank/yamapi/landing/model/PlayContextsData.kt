@@ -2,7 +2,6 @@ package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import landing.model.PlayContextsDataSerializer
 
 
 @Serializable(with = PlayContextsDataSerializer::class)

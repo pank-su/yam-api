@@ -1,4 +1,4 @@
-package model
+package su.pank.yamapi.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class InvocationInfo(
     @SerialName("hostname") val hostName: String,
     @SerialName("req-id") val reqId: String,
-    @SerialName("exec-duration-millis") val execMillis: Int = 0
+    @SerialName("exec-duration-millis") val execMillis: Int = 0,
 )

@@ -2,12 +2,12 @@
 
 package su.pank.yamapi.account.model
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Serializable
 data class UserSettings(

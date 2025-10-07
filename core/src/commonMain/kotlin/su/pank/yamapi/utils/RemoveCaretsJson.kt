@@ -1,4 +1,8 @@
 package su.pank.yamapi.utils
 
-fun String.removeCarets() =
-    this.substring(1..<this.length - 1)
+/**
+ * Удаляет кавычки из строки.
+ *
+ * @return Строка без кавычек.
+ */
+fun String.removeCarets() = this.substring(1..<this.length - 1)

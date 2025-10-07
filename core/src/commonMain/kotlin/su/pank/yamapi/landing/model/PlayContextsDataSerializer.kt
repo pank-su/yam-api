@@ -1,4 +1,4 @@
-package landing.model
+package su.pank.yamapi.landing.model
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

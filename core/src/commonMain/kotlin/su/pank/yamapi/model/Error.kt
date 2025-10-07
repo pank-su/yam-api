@@ -1,4 +1,4 @@
-package model
+package su.pank.yamapi.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,7 +6,9 @@ import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.exceptions.SessionExpiredException
 import su.pank.yamapi.exceptions.ValidateException
 
-
+/**
+ * Типы ошибок.
+ */
 @Serializable
 enum class ErrorType {
     @SerialName("session-expired")
@@ -16,21 +18,39 @@ enum class ErrorType {
     NotAuthenticated,
 
     @SerialName("validate")
-    Validate;
+    Validate,
 
-    fun toException(message: String): Exception = when (this) {
-        SessionExpired   -> SessionExpiredException(message)
-        NotAuthenticated -> NotAuthenticatedException()
-        Validate         -> ValidateException(message)
-    }
+    ;
 
+    /**
+     * Преобразует в исключение.
+     *
+     * @param message Сообщение.
+     * @return Исключение.
+     */
+    fun toException(message: String): Exception =
+        when (this) {
+            SessionExpired -> SessionExpiredException(message)
+            NotAuthenticated -> NotAuthenticatedException()
+            Validate -> ValidateException(message)
+        }
 }
 
-
-
+/**
+ * Описание ошибки.
+ *
+ * @param type Тип ошибки.
+ * @param message Сообщение ошибки.
+ */
 @Serializable
-data class Error(@SerialName("name") val type: ErrorType, val message: String)
+data class Error(
+    @SerialName("name") val type: ErrorType,
+    val message: String,
+)
 
-fun handleError(error: Error){
-    throw error.type.toException(error.message)
-}
+/**
+ * Обрабатывает ошибку, выбрасывая исключение.
+ *
+ * @param error Ошибка.
+ */
+fun handleError(error: Error): Unit = throw error.type.toException(error.message)

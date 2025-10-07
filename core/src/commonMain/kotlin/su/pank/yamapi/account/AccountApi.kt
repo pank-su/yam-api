@@ -7,6 +7,11 @@ import su.pank.yamapi.account.model.PromoCodeStatus
 import su.pank.yamapi.account.model.Status
 import su.pank.yamapi.account.model.UserSettings
 
+/**
+ * API для работы с аккаунтом пользователя.
+ *
+ * @param client Клиент YamApiClient.
+ */
 class AccountApi(
     private val client: YamApiClient,
 ) {
@@ -31,6 +36,11 @@ class AccountApi(
      */
     suspend fun ads() = client.get<Ad>("settings")
 
+    /**
+     * Запрос оповещений о разрешениях.
+     *
+     * @return Оповещения о разрешениях.
+     */
     suspend fun permissionAlerts() = client.get<PermissionAlerts>("permission-alerts")
 
     /**

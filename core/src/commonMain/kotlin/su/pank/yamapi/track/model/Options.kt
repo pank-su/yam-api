@@ -1,4 +1,4 @@
-package track.model
+package su.pank.yamapi.track.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class Options {
     @SerialName("bookmate")
-    Bookmate
+    Bookmate,
 }

@@ -1,3 +1,10 @@
 package su.pank.yamapi.exceptions
 
-class ValidateException(override val message: String) : Exception()
+/**
+ * Исключение валидации.
+ *
+ * @param message Сообщение.
+ */
+class ValidateException(
+    override val message: String,
+) : Exception()

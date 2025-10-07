@@ -2,8 +2,10 @@ package su.pank.yamapi.builder
 
 import su.pank.yamapi.YamApiClient
 
-
-fun createYaMusicApiClient(config: YaMusicApiClientBuilder.() -> Unit): YamApiClient {
-
-    return YaMusicApiClientBuilder().apply(config).build()
-}
+/**
+ * Создает клиент YamApiClient с использованием конфигурации.
+ *
+ * @param config Конфигурация билдера.
+ * @return YamApiClient
+ */
+fun createYaMusicApiClient(config: YaMusicApiClientBuilder.() -> Unit): YamApiClient = YaMusicApiClientBuilder().apply(config).build()
