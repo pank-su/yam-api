@@ -15,12 +15,14 @@ xmlutil = "0.91.2"
 hash = "0.7.1"
 io = "0.8.0"
 dokka = "2.0.0"
+clikt = "5.0.3"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxJson = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [libraries]
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaGradlePlugin" }
@@ -46,6 +48,9 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 logger = { module = "org.slf4j:slf4j-simple", version.ref = "logger" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-json" }
 
+
 xmlutil = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
 md5 = { module = "org.kotlincrypto.hash:md", version.ref = "hash" }
 io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "io" }
+
+clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
