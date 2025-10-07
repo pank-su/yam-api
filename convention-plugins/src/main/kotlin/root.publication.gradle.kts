@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "su.pank.yam-api"
-    version = "0.1.0-dev6"
+    version = "1.0.0-dev"
 }
 
 nexusPublishing {
