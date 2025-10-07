@@ -10,12 +10,11 @@ import kotlinx.serialization.json.Json
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
 import su.pank.yamapi.album.model.Album
-import su.pank.yamapi.exceptions.ExperimentalYaMusicApi
+import su.pank.yamapi.exceptions.ExperimentalYamApi
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
 import su.pank.yamapi.model.search.*
 import su.pank.yamapi.playlist.PlaylistsApi
-import su.pank.yamapi.playlist.model.Playlist
 import su.pank.yamapi.playlist.model.TagResult
 import su.pank.yamapi.rotor.RotorApi
 import su.pank.yamapi.track.TracksApi
@@ -131,7 +130,8 @@ class YamApiClient(
      */
     val albums: AlbumsApi = AlbumsApi(this)
 
-    @ExperimentalYaMusicApi
+    // TODO: replace to module
+    @ExperimentalYamApi
     private val rotor: RotorApi = RotorApi(this)
 
     /**
@@ -210,41 +210,11 @@ class YamApiClient(
         }
 
     /**
-     * Получает плейлисты пользователя.
-     *
-     * @param kinds Виды плейлистов.
-     * @param userId Идентификатор пользователя.
-     * @return Список плейлистов.
-     */
-    suspend fun userPlaylists(
-        vararg kinds: Int,
-        userId: Int? = null,
-    ): List<Playlist> = playlists.byKinds(*kinds, userId = userId)
-
-    /**
-     * Получает плейлист пользователя.
-     *
-     * @param kind Вид плейлиста.
-     * @param userId Идентификатор пользователя.
-     * @return Плейлист.
-     */
-    suspend fun userPlaylist(
-        kind: Int,
-        userId: Int? = null,
-    ): Playlist = playlists.byKind(kind, userId)
-
-    /**
      * Получает полную информацию о пользователе.
      *
      * @return Информация о пользователе.
      */
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
 
-    /**
-     * Получает список плейлистов по идентификаторам.
-     *
-     * @param playlistIds Идентификаторы плейлистов.
-     * @return Список плейлистов.
-     */
-    suspend fun playlistList(vararg playlistIds: String): List<Playlist> = playlists.listByIds(*playlistIds)
+
 }

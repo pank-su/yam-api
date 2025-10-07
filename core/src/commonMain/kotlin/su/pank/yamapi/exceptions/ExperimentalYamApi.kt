@@ -7,4 +7,4 @@ package su.pank.yamapi.exceptions
     """То что вы хотите использовать находится на стадии разработки,
     |в любой момент может произойти его изменение в последующих версиях""",
 )
-annotation class ExperimentalYaMusicApi
+annotation class ExperimentalYamApi

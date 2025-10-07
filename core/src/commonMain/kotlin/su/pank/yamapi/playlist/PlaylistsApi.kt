@@ -10,6 +10,16 @@ import su.pank.yamapi.playlist.model.PlaylistRecommendations
 class PlaylistsApi(
     private val client: YamApiClient,
 ) {
+
+    /**
+     * Получает список плейлистов по идентификаторам.
+     *
+     * @param playlistIds Идентификаторы плейлистов.
+     * @return Список плейлистов.
+     */
+    suspend operator fun invoke(vararg playlistIds: String): List<Playlist> = listByIds(*playlistIds)
+
+
     suspend fun list(userId: Int? = null): List<Playlist> =
         client
             .get<List<PlaylistData>>(
@@ -19,6 +29,15 @@ class PlaylistsApi(
                 "list",
             ).map { Playlist(client, it) }
 
+    /**
+     * Получает плейлист пользователя.
+     *
+     * @param kind Вид плейлиста.
+     * @param userId Идентификатор пользователя.
+     * @return Плейлист.
+     *
+     * @see Playlist
+     */
     suspend fun byKind(
         kind: Int,
         userId: Int? = null,
@@ -33,6 +52,13 @@ class PlaylistsApi(
             ),
         )
 
+    /**
+     * Получает плейлисты пользователя.
+     *
+     * @param kinds Виды плейлистов.
+     * @param userId Идентификатор пользователя.
+     * @return Список плейлистов.
+     */
     suspend fun byKinds(
         vararg kinds: Int,
         userId: Int? = null,
