@@ -1,4 +1,4 @@
-package track.model.downloadInfo
+package su.pank.yamapi.track.model
 
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -14,7 +14,6 @@ import su.pank.yamapi.YamApiClient
 
 val SIGN_SALT = "XGRlBW9FXlekgbPrRHuSiA"
 
-
 @Serializable
 data class DownloadInfo(
     val codec: Codec,
@@ -23,7 +22,7 @@ data class DownloadInfo(
     val preview: Boolean,
     val downloadInfoUrl: String,
     val direct: Boolean,
-    val container: Container? = null
+    val container: Container? = null,
 ) {
     var directLink: String? = null
 
@@ -32,16 +31,18 @@ data class DownloadInfo(
         val info = XML { autoPolymorphic = true }.decodeFromString(DownloadInfoXML.serializer(), xml)
         val sign = MD5().digest((SIGN_SALT + info.path.substring(1) + info.s).toByteArray(Charsets.UTF_8)).toHexString()
 
-        return "https://${info.host}/get-mp3/${sign}/${info.ts}${info.path}"
+        return "https://${info.host}/get-mp3/$sign/${info.ts}${info.path}"
     }
 
     suspend fun fetchDirectLink(client: YamApiClient): String? {
         if (directLink != null) return directLink
-        val xml = client.httpClient.get(downloadInfoUrl) {
-            headers {
-                //append(HttpHeaders.Authorization, "OAuth ${client.token}")
-            }
-        }.body() as String
+        val xml =
+            client.httpClient
+                .get(downloadInfoUrl) {
+                    headers {
+                        // append(HttpHeaders.Authorization, "OAuth ${client.token}")
+                    }
+                }.body() as String
         directLink = buildDirectLink(xml)
         return directLink
     }
@@ -51,7 +52,6 @@ data class DownloadInfo(
         return client.httpClient.get(link!!).body() as ByteArray
     }
 }
-
 
 @Serializable
 @XmlSerialName("download-info")
@@ -65,9 +65,8 @@ internal data class DownloadInfoXML(
     @XmlElement(true)
     val region: Int,
     @XmlElement(true)
-    val s: String
+    val s: String,
 )
-
 
 @Serializable
 enum class Codec {
@@ -78,12 +77,11 @@ enum class Codec {
     AAC,
 
     @SerialName("flac")
-    FLAC
+    FLAC,
 }
 
 @Serializable
 enum class Container {
     @SerialName("hls")
-    HLS
+    HLS,
 }
-

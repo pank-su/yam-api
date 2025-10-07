@@ -5,8 +5,8 @@ package su.pank.yamapi.album.model
 import kotlinx.serialization.Serializable
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.cover.CoverSize
+import su.pank.yamapi.track.model.Options
 import su.pank.yamapi.track.model.TrackData
-import track.model.Options
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 

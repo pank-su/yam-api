@@ -96,6 +96,12 @@ abstract class YamClient {
             }.yabody()
 }
 
+/**
+ * Основной клиент для взаимодействия с API Яндекс.Музыки.
+ *
+ * @param httpClient HTTP клиент для выполнения запросов.
+ * @param language Язык для запросов.
+ */
 class YamApiClient(
     override val httpClient: HttpClient,
     val language: Language,
@@ -105,25 +111,64 @@ class YamApiClient(
             ignoreUnknownKeys = true
         }
 
+    /**
+     * API для работы с аккаунтом пользователя.
+     */
     val account: AccountApi = AccountApi(this)
 
+    /**
+     * API для работы с лендингом.
+     */
     val landing: LandingApi = LandingApi(this)
 
+    /**
+     * API для работы с плейлистами.
+     */
     val playlists: PlaylistsApi = PlaylistsApi(this)
 
+    /**
+     * API для работы с альбомами.
+     */
     val albums: AlbumsApi = AlbumsApi(this)
 
     @ExperimentalYaMusicApi
     private val rotor: RotorApi = RotorApi(this)
 
+    /**
+     * API для работы с треками.
+     */
     val tracks: TracksApi = TracksApi(this)
 
+    /**
+     * Получает список жанров.
+     *
+     * @return Список жанров.
+     */
     suspend fun genres(): List<Genre> = get("genres")
 
+    /**
+     * Получает плейлисты по тегу.
+     *
+     * @param tagId Идентификатор тега.
+     * @return Результат с плейлистами.
+     */
     suspend fun tags(tagId: String) = get<TagResult>("tags", tagId, "playlist-ids")
 
+    /**
+     * Получает альбом с треками.
+     *
+     * @param albumId Идентификатор альбома.
+     * @return Альбом с треками.
+     */
     suspend fun albumsWithTracks(albumId: Int): Album = albums.withTracks(albumId)
 
+    /**
+     * Выполняет поиск с использованием билдера запроса.
+     *
+     * @param query Строка запроса.
+     * @param builder Билдер для настройки запроса.
+     * @return Результаты поиска.
+     */
     suspend fun search(
         query: String,
         builder: SearchRequestBuilder.() -> Unit,
@@ -135,6 +180,16 @@ class YamApiClient(
             "search",
         )
 
+    /**
+     * Выполняет поиск.
+     *
+     * @param query Строка запроса.
+     * @param isCorrect Корректировать ли запрос.
+     * @param type Тип поиска.
+     * @param page Номер страницы.
+     * @param playlistInBest Включать ли плейлисты в лучшие результаты.
+     * @return Результаты поиска.
+     */
     suspend fun search(
         query: String,
         isCorrect: Boolean = false,
@@ -143,23 +198,53 @@ class YamApiClient(
         playlistInBest: Boolean = false,
     ) = search(SearchRequest(query, isCorrect, type, page, playlistInBest))
 
+    /**
+     * Получает предложения для поиска.
+     *
+     * @param part Часть запроса.
+     * @return Предложения.
+     */
     suspend fun searchSuggest(part: String) =
         get<Suggestions>("search", "suggest") {
             parameter("part", part)
         }
 
+    /**
+     * Получает плейлисты пользователя.
+     *
+     * @param kinds Виды плейлистов.
+     * @param userId Идентификатор пользователя.
+     * @return Список плейлистов.
+     */
     suspend fun userPlaylists(
         vararg kinds: Int,
         userId: Int? = null,
     ): List<Playlist> = playlists.byKinds(*kinds, userId = userId)
 
+    /**
+     * Получает плейлист пользователя.
+     *
+     * @param kind Вид плейлиста.
+     * @param userId Идентификатор пользователя.
+     * @return Плейлист.
+     */
     suspend fun userPlaylist(
         kind: Int,
         userId: Int? = null,
     ): Playlist = playlists.byKind(kind, userId)
 
-    // полное получение информации о пользователе
+    /**
+     * Получает полную информацию о пользователе.
+     *
+     * @return Информация о пользователе.
+     */
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
 
+    /**
+     * Получает список плейлистов по идентификаторам.
+     *
+     * @param playlistIds Идентификаторы плейлистов.
+     * @return Список плейлистов.
+     */
     suspend fun playlistList(vararg playlistIds: String): List<Playlist> = playlists.listByIds(*playlistIds)
 }

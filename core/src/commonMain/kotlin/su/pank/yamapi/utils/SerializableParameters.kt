@@ -3,7 +3,12 @@ package su.pank.yamapi.utils
 import io.ktor.http.*
 import kotlinx.serialization.json.*
 
-// 1. Функция-расширение для преобразования сериализуемого объекта в Parameters:
+/**
+ * Преобразует сериализуемый объект в параметры.
+ *
+ * @param T Тип объекта.
+ * @param body Объект.
+ */
 inline fun <reified T> ParametersBuilder.setBody(body: T) {
     val json: Json = Json { encodeDefaults = true }
 
@@ -24,5 +29,4 @@ inline fun <reified T> ParametersBuilder.setBody(body: T) {
             else -> append(key, value.toString())
         }
     }
-
 }

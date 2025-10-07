@@ -3,19 +3,31 @@
 package su.pank.yamapi.track
 
 import io.ktor.util.*
-import model.Revision
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import su.pank.yamapi.YamApiClient
+import su.pank.yamapi.model.Revision
+import su.pank.yamapi.track.model.DownloadInfo
+import su.pank.yamapi.track.model.SimilarTracks
 import su.pank.yamapi.track.model.TrackData
 import su.pank.yamapi.track.model.supplement.Supplement
-import track.model.SimilarTracks
-import track.model.downloadInfo.DownloadInfo
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * API для работы с треками.
+ *
+ * @param client Клиент YamApiClient.
+ */
 class TracksApi(
     private val client: YamApiClient,
 ) {
+    /**
+     * Получает треки по идентификаторам.
+     *
+     * @param trackIds Идентификаторы треков.
+     * @param withPositions Включать ли позиции.
+     * @return Список треков.
+     */
     suspend operator fun invoke(
         vararg trackIds: String,
         withPositions: Boolean = true,
@@ -26,45 +38,89 @@ class TracksApi(
                 "tracks",
             ).map { Track(client, it) }
 
+    /**
+     * Лайкает треки.
+     *
+     * @param trackIds Идентификаторы треков.
+     * @return Ревизия.
+     */
     suspend fun like(vararg trackIds: Int): Revision =
         client.postForm(
             hashMapOf("track-ids" to trackIds.joinToString(",")),
             "users",
             (
-                null ?: client.account
-                    .status()
-                    .account.uid
-            ).toString(), // FIXME
+                    null ?: client.account
+                        .status()
+                        .account.uid
+                    ).toString(), // FIXME
             "likes",
             "tracks",
             "add-multiple",
         )
 
+    /**
+     * Убирает лайк с треков.
+     *
+     * @param trackIds Идентификаторы треков.
+     * @return Ревизия.
+     */
     suspend fun unlike(vararg trackIds: Int): Revision =
         client.postForm(
             hashMapOf("track-ids" to trackIds.joinToString(",")),
             "users",
             (
-                null ?: client.account
-                    .status()
-                    .account.uid
-            ).toString(), // fixme
+                    null ?: client.account
+                        .status()
+                        .account.uid
+                    ).toString(), // fixme
             "likes",
             "tracks",
             "remove",
         )
 
+    /**
+     * Получает похожие треки.
+     *
+     * @param trackId Идентификатор трека.
+     * @return Похожие треки.
+     */
     suspend fun similar(trackId: Int) = client.get<SimilarTracks>("tracks", trackId.toString(), "similar")
 
+    /**
+     * Получает дополнение к треку.
+     *
+     * @param trackId Идентификатор трека.
+     * @return Дополнение.
+     */
     suspend fun supplement(trackId: Int) = client.get<Supplement>("tracks", trackId.toString(), "supplement")
 
+    /**
+     * Получает текст песни.
+     *
+     * @param trackId Идентификатор трека.
+     * @param format Формат.
+     * @return Текст.
+     */
     suspend fun lyrics(
         trackId: Int,
         format: String = "TEXT",
     ): Nothing = TODO("Необходима реализация get_sign_request")
 
+    /**
+     * Получает информацию о скачивании.
+     *
+     * @param trackId Идентификатор трека.
+     * @return Информация о скачивании.
+     */
     suspend fun downloadInfo(trackId: String) = client.get<List<DownloadInfo>>("tracks", trackId, "download-info")
 
+    /**
+     * Получает информацию о скачивании (новый метод).
+     *
+     * @param trackId Идентификатор трека.
+     * @param canUseStreaming Можно ли использовать стриминг.
+     * @return Информация о скачивании.
+     */
     suspend fun downloadInfoNew(
         trackId: Int,
         canUseStreaming: Boolean = false,

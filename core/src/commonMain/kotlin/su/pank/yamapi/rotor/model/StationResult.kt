@@ -2,7 +2,6 @@ package su.pank.yamapi.rotor.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import rotor.model.Station
 
 @Serializable
 data class StationResult(

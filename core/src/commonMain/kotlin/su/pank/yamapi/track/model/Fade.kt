@@ -1,5 +1,4 @@
-package track.model
-
+package su.pank.yamapi.track.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -13,5 +12,5 @@ data class Fade(
     @SerialName("outStart")
     val outStart: Double,
     @SerialName("outStop")
-    val outStop: Double
+    val outStop: Double,
 )

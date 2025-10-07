@@ -1,6 +1,8 @@
-package model
+package su.pank.yamapi.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Revision(val revision: Int)
+data class Revision(
+    val revision: Int,
+)

@@ -6,7 +6,14 @@ import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.model.*
 import su.pank.yamapi.utils.removeCarets
 
-class LandingApi(private val client: YamApiClient) {
+/**
+ * API для работы с лендингом.
+ *
+ * @param client Клиент YamApiClient.
+ */
+class LandingApi(
+    private val client: YamApiClient,
+) {
     /**
      * Получение сгенерированных плейлистов
      *
@@ -23,9 +30,7 @@ class LandingApi(private val client: YamApiClient) {
      * @see Landing
      * @see BlockType
      */
-    suspend operator fun invoke(vararg blocks: BlockType = BlockType.entries.toTypedArray()): Landing =
-        blocks(*blocks)
-
+    suspend operator fun invoke(vararg blocks: BlockType = BlockType.entries.toTypedArray()): Landing = blocks(*blocks)
 
     /**
      * Получение landing'а по различным блокам. Для этого также можно использовать отдельные запросы.
@@ -38,14 +43,14 @@ class LandingApi(private val client: YamApiClient) {
     suspend fun blocks(vararg blocks: BlockType): Landing =
         client.get(
             hashMapOf(
-                "blocks" to blocks.joinToString(",") {
-                    Json.encodeToString(it).removeCarets()
-
-                },
-                "eitherUserId" to (null ?: throw NotAuthenticatedException()).toString() // FIXME
+                "blocks" to
+                    blocks.joinToString(",") {
+                        Json.encodeToString(it).removeCarets()
+                    },
+                "eitherUserId" to (null ?: throw NotAuthenticatedException()).toString(), // FIXME
             ),
             "landing3",
-            )
+        )
 
     /**
      * Получение чарта мирового или российского
@@ -57,9 +62,13 @@ class LandingApi(private val client: YamApiClient) {
      */
     suspend fun chart(chartOption: ChartOption? = null) =
         client.get<ChartInfo>(
-            "landing3", "chart", if (chartOption != null) {
+            "landing3",
+            "chart",
+            if (chartOption != null) {
                 Json.encodeToString(chartOption).removeCarets()
-            } else ""
+            } else {
+                ""
+            },
         )
 
     /**
@@ -86,7 +95,5 @@ class LandingApi(private val client: YamApiClient) {
     /**
      * WTF?
      */
-    suspend fun feedWizardIsPassed() =
-        client.get<HashMap<String, Boolean>>("feed", "wizard", "is-passed")["isWizardPassed"] as Boolean
-
+    suspend fun feedWizardIsPassed() = client.get<HashMap<String, Boolean>>("feed", "wizard", "is-passed")["isWizardPassed"] as Boolean
 }

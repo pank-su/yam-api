@@ -1,3 +1,10 @@
 package su.pank.yamapi.exceptions
 
-class SessionExpiredException(override val message: String) : Exception(message)
+/**
+ * Исключение, выбрасываемое при истечении сессии.
+ *
+ * @param message Сообщение.
+ */
+class SessionExpiredException(
+    override val message: String,
+) : Exception(message)

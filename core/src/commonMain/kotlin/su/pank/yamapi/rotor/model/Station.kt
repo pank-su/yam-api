@@ -1,8 +1,7 @@
-package rotor.model
+package su.pank.yamapi.rotor.model
 
 import kotlinx.serialization.Serializable
-import model.Icon
-import su.pank.yamapi.rotor.model.Restrictions
+import su.pank.yamapi.model.Icon
 
 @Serializable
 data class Station(
@@ -14,11 +13,13 @@ data class Station(
     val restrictions: Restrictions,
     val restrictions2: Restrictions,
     val fullImageUrl: String? = null,
-    val parentId: Id? = null
+    val parentId: Id? = null,
 )
 
-
 @Serializable
-data class Id(val type: String, val tag: String) {
+data class Id(
+    val type: String,
+    val tag: String,
+) {
     override fun toString(): String = "$type:$tag"
 }

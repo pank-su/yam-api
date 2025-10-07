@@ -6,8 +6,7 @@ import su.pank.yamapi.album.model.Album
 import su.pank.yamapi.album.model.AlbumType
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.utils.IntOrStringSerializer
-import track.model.Options
-import track.model.downloadInfo.DownloadInfo
+
 
 @Serializable
 data class TrackData(
