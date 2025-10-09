@@ -9,7 +9,7 @@ class Likes : CliktCommand() {
         val client = yamApiClient()
         val likes = client.playlists.byKind(3).tracks()
         likes.forEach {
-            echo("${it.title} - ${it.artist.joinToString(", ") { it.name }}")
+            echo("${it.title} - ${it.artists.joinToString(", ") { it.name }}")
 
         }
     }

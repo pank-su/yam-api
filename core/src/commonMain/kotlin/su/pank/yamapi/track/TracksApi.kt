@@ -101,7 +101,7 @@ class TracksApi(
      * @param format Формат.
      * @return Текст.
      */
-    suspend fun lyrics(
+    private suspend fun lyrics(
         trackId: Int,
         format: String = "TEXT",
     ): Nothing = TODO("Необходима реализация get_sign_request")
