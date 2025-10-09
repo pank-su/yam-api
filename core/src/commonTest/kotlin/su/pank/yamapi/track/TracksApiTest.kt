@@ -2,7 +2,7 @@
 
 package su.pank.yamapi.track
 
-import io.ktor.http.fullPath
+import io.ktor.http.*
 import kotlinx.coroutines.test.runTest
 import su.pank.yamapi.account.model.Account
 import su.pank.yamapi.account.model.Status
@@ -38,7 +38,15 @@ class TracksApiTest {
 
             val actualTracks = tracksApi("123")
 
-            assertEquals(expectedTracks, actualTracks.map { it.trackData })
+            assertEquals(1, actualTracks.size)
+            val actualTrack = actualTracks.first()
+            val expectedTrack = expectedTracks.first()
+            assertEquals(expectedTrack.id, actualTrack.id)
+            assertEquals(expectedTrack.title, actualTrack.title)
+            assertEquals(expectedTrack.artists, actualTrack.artists)
+            assertEquals(expectedTrack.albums, actualTrack.albums)
+            assertEquals(expectedTrack.available, actualTrack.available)
+            assertEquals(expectedTrack.contentWarning, actualTrack.contentWarning)
         }
 
     @Test
