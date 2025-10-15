@@ -5,7 +5,13 @@ plugins {
 
 
 dependencies{
+    // Libs for yam-api
     implementation(projects.core)
-    implementation(libs.clikt)
     implementation(libs.ktor.client.java)
+
+
+    // Cli libs
+    implementation(libs.clikt)
+    implementation(libs.mordant)
+    implementation(libs.mordant.coroutines)
 }

@@ -14,8 +14,9 @@ class Status : CliktCommand() {
         runBlocking {
             val yamApiClient = yamApiClient()
             val status = yamApiClient.account.status()
-            echo("Хеш пользователя: ${status.userHash}")
-            echo("Почта по умолчанию: ${status.defaultEmail}")
+
+            echo("ID пользователя: ${status.account.uid}")
+            echo("Почта: ${status.defaultEmail}")
             echo("Подписка: ${status.hasSubscription.toYesOrNo()}")
         }
 
