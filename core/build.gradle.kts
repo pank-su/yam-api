@@ -1,12 +1,14 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxJson)
+    alias(libs.plugins.dokka)
     id("module.publication")
-    id("dokka.convention")
-
 }
 
 
@@ -24,7 +26,17 @@ kotlin {
 
     }
 
+
     linuxX64()
+
+    js{
+        browser()
+        nodejs()
+    }
+    wasmJs{
+        browser()
+        nodejs()
+    }
 
     sourceSets {
         androidUnitTest {
@@ -40,6 +52,11 @@ kotlin {
         linuxX64Test {
             dependencies {
                 implementation(libs.ktor.client.curl)
+            }
+        }
+        webTest{
+            dependencies {
+                implementation(libs.ktor.client.js)
             }
         }
         commonMain {
