@@ -12,7 +12,7 @@ dokka {
     moduleName.set("yam-api")
 
     pluginsConfiguration.html {
-        customAssets.from("../images/logo.png")
+        customAssets.from("../images/logo-icon.svg")
         customStyleSheets.from("logo-styles.css")
     }
 }
