@@ -1,5 +1,5 @@
 plugins {
-    id("dokka.convention")
+    alias(libs.plugins.dokka)
 }
 
 
@@ -11,9 +11,8 @@ dependencies {
 dokka {
     moduleName.set("yam-api")
 
-
-
     pluginsConfiguration.html {
-        
+        customAssets.from("../images/logo.png")
+        customStyleSheets.from("logo-styles.css")
     }
 }
