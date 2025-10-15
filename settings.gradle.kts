@@ -21,6 +21,9 @@ dependencyResolutionManagement {
 
 
 include(":core")
-include(":examples:cli")
+include("rotor")
 include(":docs")
+
+include(":examples:cli")
+
 

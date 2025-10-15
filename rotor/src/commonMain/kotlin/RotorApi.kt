@@ -1,4 +1,4 @@
-package su.pank.yamapi.rotor
+
 
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.exceptions.ExperimentalYamApi
@@ -12,3 +12,7 @@ import su.pank.yamapi.exceptions.ExperimentalYamApi
 class RotorApi(
     private val client: YamApiClient,
 )
+
+@ExperimentalYamApi
+context(client: YamApiClient)
+val rotor: RotorApi get() = RotorApi(client)

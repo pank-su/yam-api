@@ -6,17 +6,14 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.json.Json
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
 import su.pank.yamapi.album.model.Album
-import su.pank.yamapi.exceptions.ExperimentalYamApi
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
 import su.pank.yamapi.model.search.*
 import su.pank.yamapi.playlist.PlaylistsApi
 import su.pank.yamapi.playlist.model.TagResult
-import su.pank.yamapi.rotor.RotorApi
 import su.pank.yamapi.track.TracksApi
 import su.pank.yamapi.utils.setBody
 
@@ -105,10 +102,6 @@ class YamApiClient(
     override val httpClient: HttpClient,
     val language: Language,
 ) : YamClient() {
-    var jsonSettings =
-        Json {
-            ignoreUnknownKeys = true
-        }
 
     /**
      * API для работы с аккаунтом пользователя.
@@ -130,9 +123,6 @@ class YamApiClient(
      */
     val albums: AlbumsApi = AlbumsApi(this)
 
-    // TODO: replace to module
-    @ExperimentalYamApi
-    private val rotor: RotorApi = RotorApi(this)
 
     /**
      * API для работы с треками.
