@@ -65,9 +65,11 @@ class PlaylistsApiTest {
 
             val api = PlaylistsApi(yamApiClient)
 
-            val result = api.byKind(kind = 999, userId = 111)
+            val result = api.byKind(kind = 999, userId = "111")
 
-            assertEquals(playlist, result.playlistData)
+            assertEquals(playlist.kind, result.kind)
+            assertEquals(playlist.title, result.title)
+            assertEquals(playlist.uid, result.ownerId)
         }
 
     @Test
