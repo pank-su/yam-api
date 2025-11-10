@@ -4,14 +4,13 @@ package su.pank.yamapi.album.model
 
 import kotlinx.serialization.Serializable
 import su.pank.yamapi.model.Artist
-import su.pank.yamapi.model.cover.CoverSize
 import su.pank.yamapi.track.model.Options
 import su.pank.yamapi.track.model.TrackData
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Serializable
-data class Album(
+data class AlbumData(
     val id: Int,
     val title: String,
     val type: AlbumType? = null,
@@ -34,13 +33,9 @@ data class Album(
     val availablePartially: Boolean,
     val bests: List<Int>,
     val trackPosition: TrackPosition? = null,
-    val duplicates: List<Album>? = null,
+    val duplicates: List<AlbumData>? = null,
     val volumes: List<List<TrackData>>? = null,
-) {
-    fun getCoverUri(size: CoverSize) = if (coverUri != null) "https://${coverUri.replace("%%", size.toString())}" else null
-
-    fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
-}
+)
 
 @Serializable(with = LabelSerializer::class)
 data class Label(
@@ -51,7 +46,7 @@ data class Label(
 /**
  * Позиция трека в альбоме
  *
- * @see Album
+ * @see AlbumData
  */
 @Serializable
 data class TrackPosition(

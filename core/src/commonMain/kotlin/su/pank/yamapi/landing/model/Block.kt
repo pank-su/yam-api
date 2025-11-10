@@ -4,7 +4,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 
 @Serializable
 data class Block(
@@ -86,5 +86,5 @@ data class Promotion(
 
 @Serializable
 data class Podcast(
-    val podcast: Album,
+    val podcast: AlbumData,
 )

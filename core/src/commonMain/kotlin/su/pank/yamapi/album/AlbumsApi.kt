@@ -1,8 +1,8 @@
 package su.pank.yamapi.album
 
-import io.ktor.client.request.parameter
+import io.ktor.client.request.*
 import su.pank.yamapi.YamApiClient
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.model.Like
 
 /**
@@ -19,7 +19,19 @@ class AlbumsApi(
      * @param albumId Идентификатор альбома.
      * @return Альбом с треками.
      */
-    suspend fun withTracks(albumId: Int): Album = client.get("albums", albumId.toString(), "with-tracks")
+    suspend fun withTracks(albumId: String): Album =
+        client.get<AlbumData>("albums", albumId, "with-tracks").let { Album(client, it) }
+
+    /**
+     * Получает альбом по идентификатору.
+     *
+     * @param albumId Идентификатор альбома.
+     * @return Альбом.
+     */
+    suspend operator fun get(albumId: String): Album {
+        val albumData: AlbumData = client.get("albums", albumId)
+        return Album(client, albumData)
+    }
 
     /**
      * Получает список альбомов по идентификаторам.
@@ -27,11 +39,14 @@ class AlbumsApi(
      * @param albumIds Идентификаторы альбомов.
      * @return Список альбомов.
      */
-    suspend fun list(vararg albumIds: Int): List<Album> =
-        client.postForm(
-            hashMapOf("album-ids" to albumIds.joinToString(",")),
-            "albums",
-        )
+    suspend fun list(vararg albumIds: Int): List<Album> {
+        val albumDataList: List<AlbumData> =
+            client.postForm(
+                hashMapOf("album-ids" to albumIds.joinToString(",")),
+                "albums",
+            )
+        return albumDataList.map { Album(client, it) }
+    }
 
     /**
      * Получает лайки альбомов пользователя.
@@ -61,17 +76,10 @@ class AlbumsApi(
      * @return true если успешно.
      */
     suspend fun like(
-        vararg albumIds: Int,
-        userId: Int? = null,
+        vararg albumIds: String,
+        userId: String? = null,
     ): Boolean =
-        client.postForm<String, Map<String, String>>(
-            hashMapOf("album-ids" to albumIds.joinToString(",")),
-            "users",
-            resolveUserId(userId).toString(),
-            "likes",
-            "albums",
-            "add-multiple",
-        ) == "ok"
+        client.like<Album>(*albumIds, userId = userId)
 
     /**
      * Убирает лайк с альбомов.
@@ -81,17 +89,10 @@ class AlbumsApi(
      * @return true если успешно.
      */
     suspend fun unlike(
-        vararg albumIds: Int,
-        userId: Int? = null,
+        vararg albumIds: String,
+        userId: String? = null,
     ): Boolean =
-        client.postForm<String, Map<String, String>>(
-            hashMapOf("album-ids" to albumIds.joinToString(",")),
-            "users",
-            resolveUserId(userId).toString(),
-            "likes",
-            "albums",
-            "remove",
-        ) == "ok"
+        client.unlike<Album>(*albumIds, userId = userId)
 
     private suspend fun resolveUserId(userId: Int?): Long =
         userId?.toLong() ?: client.account

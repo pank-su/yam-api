@@ -47,10 +47,10 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun like(vararg trackIds: Int): Revision = client.postForm(
+    suspend fun like(vararg trackIds: String): Revision = client.postForm(
         hashMapOf("track-ids" to trackIds.joinToString(",")),
         "users",
-        (null ?: client.account.status().account.uid).toString(), // FIXME
+        client.resolveUserId(),
         "likes",
         "tracks",
         "add-multiple",
@@ -62,10 +62,10 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun unlike(vararg trackIds: Int): Revision = client.postForm(
+    suspend fun unlike(vararg trackIds: String): Revision = client.postForm(
         hashMapOf("track-ids" to trackIds.joinToString(",")),
         "users",
-        (null ?: client.account.status().account.uid).toString(), // fixme
+        (client.resolveUserId()),
         "likes",
         "tracks",
         "remove",
@@ -77,7 +77,7 @@ class TracksApi(
      * @param trackId Идентификатор трека.
      * @return Похожие треки.
      */
-    suspend fun similar(trackId: Int) = client.get<SimilarTracks>("tracks", trackId.toString(), "similar")
+    suspend fun similar(trackId: String) = client.get<SimilarTracks>("tracks", trackId, "similar")
 
     /**
      * Получает дополнение к треку.
@@ -85,7 +85,7 @@ class TracksApi(
      * @param trackId Идентификатор трека.
      * @return Дополнение.
      */
-    suspend fun supplement(trackId: Int) = client.get<Supplement>("tracks", trackId.toString(), "supplement")
+    suspend fun supplement(trackId: String) = client.get<Supplement>("tracks", trackId, "supplement")
 
     /**
      * Получает информацию о скачивании.
@@ -103,7 +103,7 @@ class TracksApi(
      * @return Информация о скачивании.
      */
     suspend fun downloadInfoNew(
-        trackId: Int,
+        trackId: String,
         canUseStreaming: Boolean = false,
     ): List<DownloadInfo> {
         val sign = sign(trackId)
@@ -122,7 +122,7 @@ class TracksApi(
 
 
     fun sign(
-        trackId: Int,
+        trackId: String,
     ): Sign {
         val timestamp = Clock.System.now().epochSeconds
         val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
@@ -131,11 +131,11 @@ class TracksApi(
         return Sign(timestamp, sign)
     }
 
-    suspend fun lyrics(trackId: Int, format: LyricsFormat = LyricsFormat.TEXT): Lyrics {
+    suspend fun lyrics(trackId: String, format: LyricsFormat = LyricsFormat.TEXT): Lyrics {
         val sign = sign(trackId)
         val body = LyricsRequest(format, sign.timestamp, sign.value)
 
-        return client.get<LyricsData, LyricsRequest>(body = body, "tracks", trackId.toString(), "lyrics").let {
+        return client.get<LyricsData, LyricsRequest>(body = body, "tracks", trackId, "lyrics").let {
             Lyrics(client, it)
         }
     }

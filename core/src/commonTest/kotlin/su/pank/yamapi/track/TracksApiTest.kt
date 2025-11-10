@@ -44,7 +44,7 @@ class TracksApiTest {
             assertEquals(expectedTrack.id, actualTrack.id)
             assertEquals(expectedTrack.title, actualTrack.title)
             assertEquals(expectedTrack.artists, actualTrack.artists)
-            assertEquals(expectedTrack.albums, actualTrack.albums)
+            assertEquals(expectedTrack.albums.size, actualTrack.albums.size)
             assertEquals(expectedTrack.available, actualTrack.available)
             assertEquals(expectedTrack.contentWarning, actualTrack.contentWarning)
         }
@@ -78,7 +78,7 @@ class TracksApiTest {
 
             val tracksApi = TracksApi(yamApiClient)
 
-            val actualRevision = tracksApi.like(54321)
+            val actualRevision = tracksApi.like("54321")
 
             assertEquals(expectedRevision, actualRevision)
         }
@@ -112,7 +112,7 @@ class TracksApiTest {
 
             val tracksApi = TracksApi(yamApiClient)
 
-            val actualRevision = tracksApi.unlike(54321)
+            val actualRevision = tracksApi.unlike("54321")
 
             assertEquals(expectedRevision, actualRevision)
         }

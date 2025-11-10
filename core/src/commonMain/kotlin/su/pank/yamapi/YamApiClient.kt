@@ -8,7 +8,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
@@ -106,8 +106,6 @@ class YamApiClient(
     override val httpClient: HttpClient,
     val language: Language,
 ) : YaRequester() {
-
-
     /**
      * API для работы с аккаунтом пользователя.
      */
@@ -128,7 +126,6 @@ class YamApiClient(
      */
     val albums: AlbumsApi = AlbumsApi(this)
 
-
     /**
      * API для работы с треками.
      */
@@ -148,14 +145,6 @@ class YamApiClient(
      * @return Результат с плейлистами.
      */
     suspend fun tags(tagId: String) = get<TagResult>("tags", tagId, "playlist-ids")
-
-    /**
-     * Получает альбом с треками.
-     *
-     * @param albumId Идентификатор альбома.
-     * @return Альбом с треками.
-     */
-    suspend fun albumsWithTracks(albumId: Int): Album = albums.withTracks(albumId)
 
     /**
      * Выполняет поиск с использованием билдера запроса.
@@ -214,13 +203,17 @@ class YamApiClient(
     /**
      * Получить userId
      */
-    internal suspend fun resolveUserId(userId: String?): String =
+    internal suspend fun resolveUserId(userId: String? = null): String =
         userId ?: account
             .status()
-            .account.uid?.toString() ?: throw NotAuthenticatedException()
+            .account.uid
+            ?.toString() ?: throw NotAuthenticatedException()
 
-
-    internal suspend inline fun <reified T : Likable> likeAction(vararg ids: String, userId: String? = null, action: LikeAction = LikeAction.`add-multiple`): Boolean {
+    internal suspend inline fun <reified T : Likable> likeAction(
+        vararg ids: String,
+        userId: String? = null,
+        action: LikeAction = LikeAction.`add-multiple`,
+    ): Boolean {
         val userId = resolveUserId(userId)
         val name = T::class.simpleName?.lowercase()
         val body = hashMapOf("$name-ids" to ids.toList())
@@ -233,10 +226,13 @@ class YamApiClient(
         return result == "ok"
     }
 
+    internal suspend inline fun <reified T : Likable> like(
+        vararg ids: String,
+        userId: String? = null,
+    ): Boolean = likeAction<T>(*ids, userId = userId)
 
-    internal suspend inline fun <reified T : Likable> like(vararg ids: String, userId: String? = null): Boolean = likeAction<T>(*ids, userId=userId)
-
-    internal suspend inline fun <reified T : Likable> unlike(vararg ids: String, userId: String? = null): Boolean = likeAction<T>(*ids, userId=userId, action = LikeAction.remove)
-
-
+    internal suspend inline fun <reified T : Likable> unlike(
+        vararg ids: String,
+        userId: String? = null,
+    ): Boolean = likeAction<T>(*ids, userId = userId, action = LikeAction.remove)
 }

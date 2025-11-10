@@ -12,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
 import su.pank.yamapi.account.model.User
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.landing.model.Podcast
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Video
@@ -34,7 +34,7 @@ object BestSerializer : KSerializer<Best> {
         when (type) {
             QueryResponseType.Artist -> serializer<Artist>()
             QueryResponseType.User -> serializer<User>()
-            QueryResponseType.Album -> serializer<Album>()
+            QueryResponseType.Album -> serializer<AlbumData>()
             QueryResponseType.Playlist -> serializer<PlaylistData>()
             QueryResponseType.Track -> serializer<TrackData>()
             QueryResponseType.Podcast -> serializer<Podcast>()
