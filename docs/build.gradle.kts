@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     dokka(projects.core)
+    dokka(projects.rotor)
 }
 
 dokka {
