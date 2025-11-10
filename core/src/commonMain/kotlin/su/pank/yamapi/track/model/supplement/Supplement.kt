@@ -9,7 +9,7 @@ data class Supplement(
         "Получение текста из дополнительной информации устарело.",
         replaceWith = ReplaceWith("Client().tracksLyrics()")
     )
-    val lyrics: Lyrics? = null,
+    val lyrics: SupplementLyrics? = null,
     val video: List<VideoSupplement> = listOf(),
     val clips: List<Clip>? = null,
     val radioIsAvailable: Boolean? = null,
@@ -17,7 +17,7 @@ data class Supplement(
 )
 
 @Serializable
-data class Lyrics(
+data class SupplementLyrics(
     val id: Int,
     val lyrics: String,
     val hasRights: Boolean,

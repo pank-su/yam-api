@@ -20,11 +20,8 @@ inline fun <reified T> ParametersBuilder.setBody(body: T) {
 
     element.forEach { (key, value) ->
         when (value) {
-            // Примитив (числа, строки, булевы и т.п.)
             is JsonPrimitive -> append(key, value.content)
-            // Массив (если хотите обработать массивы, можно решить, как именно их превращать в строку)
             is JsonArray -> appendAll(key, value.map { it.toString() })
-            // Объекты (если в модели есть вложенные объекты, нужно решить, как их сериализовать)
             is JsonObject -> append(key, value.toString())
             else -> append(key, value.toString())
         }

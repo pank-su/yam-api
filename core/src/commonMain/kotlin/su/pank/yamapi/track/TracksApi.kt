@@ -7,8 +7,13 @@ import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.model.Revision
 import su.pank.yamapi.track.model.DownloadInfo
+import su.pank.yamapi.track.model.Sign
 import su.pank.yamapi.track.model.SimilarTracks
 import su.pank.yamapi.track.model.TrackData
+import su.pank.yamapi.track.model.lyrics.Lyrics
+import su.pank.yamapi.track.model.lyrics.LyricsData
+import su.pank.yamapi.track.model.lyrics.LyricsFormat
+import su.pank.yamapi.track.model.lyrics.LyricsRequest
 import su.pank.yamapi.track.model.supplement.Supplement
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -31,12 +36,10 @@ class TracksApi(
     suspend operator fun invoke(
         vararg trackIds: String,
         withPositions: Boolean = true,
-    ): List<Track> =
-        client
-            .postForm<List<TrackData>, Map<String, String>>(
-                hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
-                "tracks",
-            ).map { Track(client, it) }
+    ): List<Track> = client.postForm<List<TrackData>, Map<String, String>>(
+            hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
+            "tracks",
+        ).map { Track(client, it) }
 
     /**
      * Лайкает треки.
@@ -44,19 +47,14 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun like(vararg trackIds: Int): Revision =
-        client.postForm(
-            hashMapOf("track-ids" to trackIds.joinToString(",")),
-            "users",
-            (
-                    null ?: client.account
-                        .status()
-                        .account.uid
-                    ).toString(), // FIXME
-            "likes",
-            "tracks",
-            "add-multiple",
-        )
+    suspend fun like(vararg trackIds: Int): Revision = client.postForm(
+        hashMapOf("track-ids" to trackIds.joinToString(",")),
+        "users",
+        (null ?: client.account.status().account.uid).toString(), // FIXME
+        "likes",
+        "tracks",
+        "add-multiple",
+    )
 
     /**
      * Убирает лайк с треков.
@@ -64,19 +62,14 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun unlike(vararg trackIds: Int): Revision =
-        client.postForm(
-            hashMapOf("track-ids" to trackIds.joinToString(",")),
-            "users",
-            (
-                    null ?: client.account
-                        .status()
-                        .account.uid
-                    ).toString(), // fixme
-            "likes",
-            "tracks",
-            "remove",
-        )
+    suspend fun unlike(vararg trackIds: Int): Revision = client.postForm(
+        hashMapOf("track-ids" to trackIds.joinToString(",")),
+        "users",
+        (null ?: client.account.status().account.uid).toString(), // fixme
+        "likes",
+        "tracks",
+        "remove",
+    )
 
     /**
      * Получает похожие треки.
@@ -93,18 +86,6 @@ class TracksApi(
      * @return Дополнение.
      */
     suspend fun supplement(trackId: Int) = client.get<Supplement>("tracks", trackId.toString(), "supplement")
-
-    /**
-     * Получает текст песни.
-     *
-     * @param trackId Идентификатор трека.
-     * @param format Формат.
-     * @return Текст.
-     */
-    private suspend fun lyrics(
-        trackId: Int,
-        format: String = "TEXT",
-    ): Nothing = TODO("Необходима реализация get_sign_request")
 
     /**
      * Получает информацию о скачивании.
@@ -125,19 +106,37 @@ class TracksApi(
         trackId: Int,
         canUseStreaming: Boolean = false,
     ): List<DownloadInfo> {
-        val timestamp = Clock.System.now().epochSeconds
-        val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
-        val sign = hmacSign.doFinal("${trackId}$timestamp".encodeToByteArray()).encodeBase64()
+        val sign = sign(trackId)
 
         return client.form(
             hashMapOf(
                 "can_use_streaming" to canUseStreaming.toString().lowercase(),
-                "ts" to timestamp.toString(),
+                "ts" to sign.timestamp.toString(),
                 "sign" to sign,
             ),
             "tracks",
             trackId.toString(),
             "download-info",
         )
+    }
+
+
+    fun sign(
+        trackId: Int,
+    ): Sign {
+        val timestamp = Clock.System.now().epochSeconds
+        val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
+        val sign = hmacSign.doFinal("${trackId}$timestamp".encodeToByteArray()).encodeBase64()
+
+        return Sign(timestamp, sign)
+    }
+
+    suspend fun lyrics(trackId: Int, format: LyricsFormat = LyricsFormat.TEXT): Lyrics {
+        val sign = sign(trackId)
+        val body = LyricsRequest(format, sign.timestamp, sign.value)
+
+        return client.get<LyricsData, LyricsRequest>(body = body, "tracks", trackId.toString(), "lyrics").let {
+            Lyrics(client, it)
+        }
     }
 }
