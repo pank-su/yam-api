@@ -3,7 +3,7 @@ package su.pank.yamapi.model.search
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import su.pank.yamapi.account.model.User
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Video
 import su.pank.yamapi.playlist.model.PlaylistData
@@ -22,12 +22,12 @@ data class Search(
     val misspellCorrected: Boolean? = null,
     val best: Best? = null,
     val artists: SearchResult<Artist>? = null,
-    val albums: SearchResult<Album>? = null,
+    val albums: SearchResult<AlbumData>? = null,
     val playlist: SearchResult<PlaylistData>? = null,
     val tracks: SearchResult<TrackData>? = null,
     val videos: SearchResult<Video>? = null,
     val users: SearchResult<User>? = null,
-    val podcasts: SearchResult<Album>? = null,
+    val podcasts: SearchResult<AlbumData>? = null,
     val podcastsEpisodes: SearchResult<TrackData>? = null,
     val clips: SearchResult<Clip>? = null,
 ) {

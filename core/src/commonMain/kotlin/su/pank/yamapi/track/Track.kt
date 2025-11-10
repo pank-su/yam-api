@@ -1,9 +1,10 @@
 package su.pank.yamapi.track
 
 import su.pank.yamapi.YamApiClient
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.Album
 import su.pank.yamapi.album.model.AlbumType
 import su.pank.yamapi.model.Artist
+import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
 import su.pank.yamapi.track.model.*
 
@@ -16,7 +17,7 @@ import su.pank.yamapi.track.model.*
 class Track(
     private val client: YamApiClient,
     trackData: TrackData,
-) {
+) : Likable {
     /** Уникальный идентификатор трека. */
     val id: String = trackData.id
 
@@ -38,11 +39,11 @@ class Track(
     val artists: List<Artist> = trackData.artists
 
     /** Список альбомов, содержащих трек. */
-    val albums: List<Album> = trackData.albums
+    val albums: List<Album> = trackData.albums.map { Album(client, it) }
     val trackSource: String? = trackData.trackSource
     val major: Major? = trackData.major
-    val ogImageUri: String? = trackData.ogImageUri
-    val coverUri: String? = trackData.coverUri
+    private val ogImageUri: String? = trackData.ogImageUri
+    private val coverUri: String? = trackData.coverUri
     val lyricsAvailable: Boolean? = trackData.lyricsAvailable
     val lyricsInfo: LyricsInfo? = trackData.lyricsInfo
     val derivedColors: DerivedColors? = trackData.derivedColors
@@ -50,23 +51,17 @@ class Track(
     val rememberPosition: Boolean? = trackData.rememberPosition
     val trackSharingFlag: TrackSharingFlag? = trackData.trackSharingFlag
     val contentWarning: String? = trackData.contentWarning
-    var downloadInfo: List<DownloadInfo>? = trackData.downloadInfo
 
-    fun getUrlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
+    fun urlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
 
-    fun getUrlCover(size: CoverSize) = "https://${coverUri?.replace("%%", size.toString())}"
+    fun urlCover(size: CoverSize) = "https://${coverUri?.replace("%%", size.toString())}"
 
-    private suspend fun fetchDownloadInfo(): List<DownloadInfo> = client.tracks.downloadInfo(this.id)
+    suspend fun downloadInfo(): List<DownloadInfo> = client.tracks.downloadInfo(this.id)
 
-    suspend fun downloadInfo(
-        codec: Codec,
-        bitrateInKbps: Int,
-    ): DownloadInfo {
-        val downloadInfo = this.fetchDownloadInfo()
+    override fun toString(): String =
+        "Track(id=$id, title=$title, available=$available, availableForPremiumUsers=$availableForPremiumUsers, availableFullWithoutPermission=$availableFullWithoutPermission, availableForOptions=$availableForOptions, durationMs=$durationMs, previewDurationMs=$previewDurationMs, storageDir=$storageDir, fileSize=$fileSize, r128=$r128, artists=$artists, albums=$albums, trackSource=$trackSource, major=$major, ogImageUri=$ogImageUri, coverUri=$coverUri, lyricsAvailable=$lyricsAvailable, lyricsInfo=$lyricsInfo, derivedColors=$derivedColors, type=$type, rememberPosition=$rememberPosition, trackSharingFlag=$trackSharingFlag, contentWarning=$contentWarning)"
 
-        return downloadInfo.firstOrNull { it.codec == codec && it.bitrateInKbps == bitrateInKbps }
-            ?: downloadInfo.first()
-    }
+    override suspend fun like(): Boolean = client.like<Track>(id)
 
-    override fun toString(): String = "Track(id=$id, title=$title, artists=$artists)"
+    override suspend fun unlike(): Boolean = client.unlike<Track>(id)
 }

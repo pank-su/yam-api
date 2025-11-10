@@ -11,7 +11,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.playlist.model.PlaylistData
 
 object BlockSerializer : KSerializer<BlockEntity> {
@@ -28,13 +28,13 @@ object BlockSerializer : KSerializer<BlockEntity> {
         when (type) {
             BlockType.PersonalPlaylists -> serializer<GeneratedPlaylist>()
             BlockType.Promotions -> serializer<Promotion>()
-            BlockType.NewReleases -> serializer<Album>()
+            BlockType.NewReleases -> serializer<AlbumData>()
             BlockType.NewPlaylists -> serializer<PlaylistData>()
             BlockType.Mixes -> serializer<MixLink>()
             BlockType.Chart -> serializer<ChartItem>()
             BlockType.Artists -> serializer<GeneratedPlaylist>()
             BlockType.Podcasts -> serializer<Podcast>()
-            BlockType.Albums -> serializer<Album>()
+            BlockType.Albums -> serializer<AlbumData>()
             BlockType.Playlists -> serializer<GeneratedPlaylist>()
             BlockType.PlayContexts -> serializer<PlayContextsData>()
         } as KSerializer<Any>

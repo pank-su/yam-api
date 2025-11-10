@@ -11,7 +11,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.serializer
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.landing.model.Context
 import su.pank.yamapi.landing.model.PlayContextsData
 import su.pank.yamapi.model.Artist
@@ -31,7 +31,7 @@ object PlayContextsDataSerializer : KSerializer<PlayContextsData> {
     private fun getDataSerializer(type: Context): KSerializer<Any> =
         when (type) {
             Context.Playlist -> serializer<PlaylistData>()
-            Context.Album -> serializer<Album>()
+            Context.Album -> serializer<AlbumData>()
             Context.Artist -> serializer<Artist>()
         } as KSerializer<Any>
 

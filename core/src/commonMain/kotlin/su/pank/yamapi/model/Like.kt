@@ -6,7 +6,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.playlist.model.PlaylistData
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -16,7 +16,7 @@ data class Like(
     val type: LikeType,
     val id: String? = null,
     val timestamp: Instant? = null,
-    val album: Album? = null,
+    val album: AlbumData? = null,
     val artist: Artist? = null,
     val playlist: PlaylistData? = null,
     @JsonNames("shortDescription", "short_description")
@@ -40,7 +40,7 @@ enum class LikeType {
     PLAYLIST,
 }
 
-
 enum class LikeAction {
-    `add-multiple`, remove
+    `add-multiple`,
+    remove,
 }

@@ -2,11 +2,10 @@ package su.pank.yamapi.track.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.album.model.AlbumType
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.utils.IntOrStringSerializer
-
 
 @Serializable
 data class TrackData(
@@ -23,7 +22,7 @@ data class TrackData(
     val fileSize: Int? = null,
     val r128: R128? = null,
     val artists: List<Artist>,
-    val albums: List<Album>,
+    val albums: List<AlbumData>,
     val trackSource: String? = null,
     val major: Major? = null,
     @SerialName("ogImage") val ogImageUri: String? = null,
@@ -35,9 +34,7 @@ data class TrackData(
     val rememberPosition: Boolean? = null,
     val trackSharingFlag: TrackSharingFlag? = null,
     val contentWarning: String? = null,
-) {
-    var downloadInfo: List<DownloadInfo>? = null
-}
+)
 
 enum class TrackSharingFlag {
     VIDEO_ALLOWED,

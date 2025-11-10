@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.encodeToString
 import su.pank.yamapi.account.model.Account
 import su.pank.yamapi.account.model.Status
+import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.album.model.AlbumType
 import su.pank.yamapi.createMockedYamApiClient
 import su.pank.yamapi.mockJsonResponse
@@ -20,7 +21,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import su.pank.yamapi.album.model.Album as AlbumModel
 
 class AlbumsApiTest {
     @Test
@@ -92,7 +92,7 @@ class AlbumsApiTest {
 
             val api = AlbumsApi(yamApiClient)
 
-            val result = api.like(321)
+            val result = api.like("321")
 
             assertTrue(result)
             assertEquals("321", capturedAlbumIds)
@@ -101,8 +101,8 @@ class AlbumsApiTest {
     @Test
     fun `fetch album with tracks`() =
         runTest {
-            val album =
-                AlbumModel(
+            val albumData =
+                AlbumData(
                     id = 1,
                     title = "Test Album",
                     type = null,
@@ -128,7 +128,7 @@ class AlbumsApiTest {
                     duplicates = null,
                     volumes = null,
                 )
-            val responseJson = wrapWithBasicResponse(testJson.encodeToString(album))
+            val responseJson = wrapWithBasicResponse(testJson.encodeToString(albumData))
 
             val yamApiClient =
                 createMockedYamApiClient { request ->
@@ -138,8 +138,9 @@ class AlbumsApiTest {
 
             val api = AlbumsApi(yamApiClient)
 
-            val result = api.withTracks(1)
+            val result = api.withTracks("1")
 
-            assertEquals(album, result)
+            assertEquals(albumData.id.toString(), result.id)
+
         }
 }
