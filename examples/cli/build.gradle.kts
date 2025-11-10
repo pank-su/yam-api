@@ -8,6 +8,7 @@ dependencies{
     // Libs for yam-api
     implementation(projects.core)
     implementation(libs.ktor.client.java)
+    implementation(libs.ktor.client.logging)
 
 
     // Cli libs

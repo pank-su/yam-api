@@ -39,3 +39,8 @@ enum class LikeType {
     @SerialName("playlist")
     PLAYLIST,
 }
+
+
+enum class LikeAction {
+    `add-multiple`, remove
+}

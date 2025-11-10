@@ -19,9 +19,13 @@ inline fun <reified T> ParametersBuilder.setBody(body: T) {
     }
 
     element.forEach { (key, value) ->
+
         when (value) {
             is JsonPrimitive -> append(key, value.content)
-            is JsonArray -> appendAll(key, value.map { it.toString() })
+            is JsonArray -> append(key, value.joinToString(",") { when (it){
+                is JsonPrimitive -> it.content
+                else -> it.toString()
+            } })
             is JsonObject -> append(key, value.toString())
             else -> append(key, value.toString())
         }

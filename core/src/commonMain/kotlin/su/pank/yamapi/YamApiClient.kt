@@ -9,11 +9,13 @@ import io.ktor.http.*
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
 import su.pank.yamapi.album.model.Album
+import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
 import su.pank.yamapi.model.search.*
 import su.pank.yamapi.playlist.PlaylistsApi
 import su.pank.yamapi.playlist.model.TagResult
+import su.pank.yamapi.track.Track
 import su.pank.yamapi.track.TracksApi
 import su.pank.yamapi.utils.setBody
 
@@ -104,6 +106,7 @@ class YamApiClient(
     override val httpClient: HttpClient,
     val language: Language,
 ) : YaRequester() {
+
 
     /**
      * API для работы с аккаунтом пользователя.
@@ -207,6 +210,33 @@ class YamApiClient(
      * @return Информация о пользователе.
      */
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
+
+    /**
+     * Получить userId
+     */
+    internal suspend fun resolveUserId(userId: String?): String =
+        userId ?: account
+            .status()
+            .account.uid?.toString() ?: throw NotAuthenticatedException()
+
+
+    internal suspend inline fun <reified T : Likable> likeAction(vararg ids: String, userId: String? = null, action: LikeAction = LikeAction.`add-multiple`): Boolean {
+        val userId = resolveUserId(userId)
+        val name = T::class.simpleName?.lowercase()
+        val body = hashMapOf("$name-ids" to ids.toList())
+
+        val result =
+            postForm<String, HashMap<String, List<String>>>(body, "users", userId, "likes", "${name}s", action.name)
+        if (T::class == Track::class) {
+            return "revision" in result
+        }
+        return result == "ok"
+    }
+
+
+    internal suspend inline fun <reified T : Likable> like(vararg ids: String, userId: String? = null): Boolean = likeAction<T>(*ids, userId=userId)
+
+    internal suspend inline fun <reified T : Likable> unlike(vararg ids: String, userId: String? = null): Boolean = likeAction<T>(*ids, userId=userId, action = LikeAction.remove)
 
 
 }
