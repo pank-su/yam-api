@@ -11,7 +11,7 @@
 
 # Package su.pank.yamapi.builder
 
-Builder для создания [YamApiClient].
+Builder для создания [su.pank.yamapi.YamApiClient].
 
 # Package su.pank.yamapi.account
 
