@@ -50,9 +50,8 @@ abstract class YamClient {
             .get {
                 url {
                     path(*path)
-                    parameters {
-                        setBody(body)
-                    }
+
+                    parameters.setBody(body)
                 }
                 block()
             }.yabody()
