@@ -5,8 +5,9 @@ package su.pank.yamapi.track
 import io.ktor.util.*
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import su.pank.yamapi.YamApiClient
+import su.pank.yamapi.downloadInfo.DownloadInfo
+import su.pank.yamapi.downloadInfo.model.DownloadInfoData
 import su.pank.yamapi.model.Revision
-import su.pank.yamapi.track.model.DownloadInfo
 import su.pank.yamapi.track.model.Sign
 import su.pank.yamapi.track.model.SimilarTracks
 import su.pank.yamapi.track.model.TrackData
@@ -36,10 +37,12 @@ class TracksApi(
     suspend operator fun invoke(
         vararg trackIds: String,
         withPositions: Boolean = true,
-    ): List<Track> = client.postForm<List<TrackData>, Map<String, String>>(
-            hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
-            "tracks",
-        ).map { Track(client, it) }
+    ): List<Track> =
+        client
+            .postForm<List<TrackData>, Map<String, String>>(
+                hashMapOf("with-positions" to withPositions.toString(), "track-ids" to trackIds.joinToString(",")),
+                "tracks",
+            ).map { Track(client, it) }
 
     /**
      * Лайкает треки.
@@ -47,14 +50,15 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun like(vararg trackIds: String): Revision = client.postForm(
-        hashMapOf("track-ids" to trackIds.joinToString(",")),
-        "users",
-        client.resolveUserId(),
-        "likes",
-        "tracks",
-        "add-multiple",
-    )
+    suspend fun like(vararg trackIds: String): Revision =
+        client.postForm(
+            hashMapOf("track-ids" to trackIds.joinToString(",")),
+            "users",
+            client.resolveUserId(),
+            "likes",
+            "tracks",
+            "add-multiple",
+        )
 
     /**
      * Убирает лайк с треков.
@@ -62,14 +66,15 @@ class TracksApi(
      * @param trackIds Идентификаторы треков.
      * @return Ревизия.
      */
-    suspend fun unlike(vararg trackIds: String): Revision = client.postForm(
-        hashMapOf("track-ids" to trackIds.joinToString(",")),
-        "users",
-        (client.resolveUserId()),
-        "likes",
-        "tracks",
-        "remove",
-    )
+    suspend fun unlike(vararg trackIds: String): Revision =
+        client.postForm(
+            hashMapOf("track-ids" to trackIds.joinToString(",")),
+            "users",
+            (client.resolveUserId()),
+            "likes",
+            "tracks",
+            "remove",
+        )
 
     /**
      * Получает похожие треки.
@@ -93,7 +98,10 @@ class TracksApi(
      * @param trackId Идентификатор трека.
      * @return Информация о скачивании.
      */
-    suspend fun downloadInfo(trackId: String) = client.get<List<DownloadInfo>>("tracks", trackId, "download-info")
+    suspend fun downloadInfo(trackId: String) =
+        client
+            .get<List<DownloadInfoData>>("tracks", trackId, "download-info")
+            .map { DownloadInfo(client, it) }
 
     /**
      * Получает информацию о скачивании (новый метод).
@@ -108,22 +116,20 @@ class TracksApi(
     ): List<DownloadInfo> {
         val sign = sign(trackId)
 
-        return client.form(
-            hashMapOf(
-                "can_use_streaming" to canUseStreaming.toString().lowercase(),
-                "ts" to sign.timestamp.toString(),
-                "sign" to sign,
-            ),
-            "tracks",
-            trackId.toString(),
-            "download-info",
-        )
+        return client
+            .form<List<DownloadInfoData>, HashMap<String, String>>(
+                hashMapOf(
+                    "can_use_streaming" to canUseStreaming.toString().lowercase(),
+                    "ts" to sign.timestamp.toString(),
+                    "sign" to sign.value,
+                ),
+                "tracks",
+                trackId.toString(),
+                "download-info",
+            ).map { DownloadInfo(client, it) }
     }
 
-
-    fun sign(
-        trackId: String,
-    ): Sign {
+    fun sign(trackId: String): Sign {
         val timestamp = Clock.System.now().epochSeconds
         val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
         val sign = hmacSign.doFinal("${trackId}$timestamp".encodeToByteArray()).encodeBase64()
@@ -131,7 +137,10 @@ class TracksApi(
         return Sign(timestamp, sign)
     }
 
-    suspend fun lyrics(trackId: String, format: LyricsFormat = LyricsFormat.TEXT): Lyrics {
+    suspend fun lyrics(
+        trackId: String,
+        format: LyricsFormat = LyricsFormat.TEXT,
+    ): Lyrics {
         val sign = sign(trackId)
         val body = LyricsRequest(format, sign.timestamp, sign.value)
 

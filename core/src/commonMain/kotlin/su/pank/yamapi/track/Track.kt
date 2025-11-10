@@ -3,6 +3,7 @@ package su.pank.yamapi.track
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.album.Album
 import su.pank.yamapi.album.model.AlbumType
+import su.pank.yamapi.downloadInfo.DownloadInfo
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
