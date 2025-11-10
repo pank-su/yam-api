@@ -2,6 +2,7 @@ package data
 
 import data.auth.EnvAuthRepository
 import data.auth.FileAuthRepository
+import io.ktor.client.plugins.logging.LogLevel
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.builder.createYaMusicApiClient
 
@@ -18,5 +19,7 @@ suspend fun yamApiClient(): YamApiClient {
     } else {
         token = envToken
     }
-    return createYaMusicApiClient { this.token = token }
+    return createYaMusicApiClient { this.token = token
+        logLevel = LogLevel.ALL
+    }
 }

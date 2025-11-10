@@ -17,7 +17,10 @@ import su.pank.yamapi.playlist.model.TagResult
 import su.pank.yamapi.track.TracksApi
 import su.pank.yamapi.utils.setBody
 
-abstract class YamClient {
+/**
+ * Базовый класс для выполнения запросов к API Яндекс.Музыки.
+ */
+abstract class YaRequester {
     internal abstract val httpClient: HttpClient
 
     // ёбидоёби
@@ -100,7 +103,7 @@ abstract class YamClient {
 class YamApiClient(
     override val httpClient: HttpClient,
     val language: Language,
-) : YamClient() {
+) : YaRequester() {
 
     /**
      * API для работы с аккаунтом пользователя.
