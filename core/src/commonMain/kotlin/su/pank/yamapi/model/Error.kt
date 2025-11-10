@@ -3,6 +3,7 @@ package su.pank.yamapi.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import su.pank.yamapi.exceptions.NotAuthenticatedException
+import su.pank.yamapi.exceptions.NotFoundException
 import su.pank.yamapi.exceptions.SessionExpiredException
 import su.pank.yamapi.exceptions.ValidateException
 
@@ -20,6 +21,9 @@ enum class ErrorType {
     @SerialName("validate")
     Validate,
 
+    @SerialName("not-found")
+    NotFound
+
     ;
 
     /**
@@ -33,6 +37,7 @@ enum class ErrorType {
             SessionExpired -> SessionExpiredException(message)
             NotAuthenticated -> NotAuthenticatedException()
             Validate -> ValidateException(message)
+            NotFound -> NotFoundException()
         }
 }
 

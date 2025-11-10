@@ -1,17 +1,33 @@
-@file:OptIn(ExperimentalTime::class)
-
-package su.pank.yamapi.playlist.model
+package su.pank.yamapi.playlist
 
 import su.pank.yamapi.YamApiClient
+import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
+import su.pank.yamapi.playlist.model.PlaylistData
+import su.pank.yamapi.playlist.model.TrackShort
 import su.pank.yamapi.track.Track
 import kotlin.time.ExperimentalTime
 
+
+@OptIn(ExperimentalTime::class)
 class Playlist(
     private val client: YamApiClient,
-    val playlistData: PlaylistData,
-) {
-    val uid: Int get() = playlistData.uid
+    private val playlistData: PlaylistData,
+): Likable {
+    /**
+     * Id плейлиста
+     */
+    val id: String = "$ownerId:$kind"
+    /**
+     * ID владельца плейлиста
+     */
+    val ownerId: Int get() = playlistData.uid
+
+    /**
+     * ID плейлиста у пользователя
+     *
+     * Замечание: плейлист "Мне нравится" **всегда** под номером 3
+     */
     val kind: Int get() = playlistData.kind
     val title: String get() = playlistData.title
     val description: String get() = playlistData.description ?: ""
@@ -40,4 +56,17 @@ class Playlist(
     fun getUrlOgImage(size: CoverSize) = "https://${playlistData.ogImageUri?.replace("%%", size.toString())}"
 
     fun getUrlBackgroundImage(size: CoverSize) = "https://${playlistData.backgroundImageUrl?.replace("%%", size.toString())}"
+    override suspend fun like() =
+        client.like<Playlist>(id)
+
+
+    override suspend fun unlike() =
+        client.unlike<Playlist>(id)
+
+
+    override fun toString(): String {
+        return "Playlist(ownerId=$ownerId, kind=$kind, title='$title', description='$description', trackCount=$trackCount, tags=$tags, revision=$revision, snapshot=$snapshot, visibility=$visibility, collective=$collective, created=$created, modified=$modified, isBanner=$isBanner, isPremiere=$isPremiere, everPlayed=$everPlayed, durationMs=$durationMs)"
+    }
+
+
 }

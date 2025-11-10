@@ -20,6 +20,5 @@ suspend fun yamApiClient(): YamApiClient {
         token = envToken
     }
     return createYaMusicApiClient { this.token = token
-        logLevel = LogLevel.ALL
-    }
+    logLevel = LogLevel.BODY}
 }
