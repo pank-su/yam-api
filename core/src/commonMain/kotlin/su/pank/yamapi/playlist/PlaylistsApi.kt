@@ -210,14 +210,7 @@ class PlaylistsApi(
         vararg playlistIds: String,
         userId: String? = null,
     ): Boolean =
-        client.postForm<String, Map<String, String>>(
-            hashMapOf("playlist-ids" to playlistIds.joinToString(",")),
-            "users",
-            client.resolveUserId(userId).toString(),
-            "likes",
-            "playlists",
-            "remove",
-        ) == "ok"
+        client.unlike<Playlist>(*playlistIds, userId = userId)
 
     suspend fun likes(userId: String? = null): List<Like> =
         client.get(
