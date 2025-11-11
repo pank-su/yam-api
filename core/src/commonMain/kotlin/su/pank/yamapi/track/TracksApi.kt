@@ -148,4 +148,8 @@ class TracksApi(
             Lyrics(client, it)
         }
     }
+
+    suspend fun losslessInfo(){
+        TODO()
+    }
 }

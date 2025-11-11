@@ -7,6 +7,7 @@ import su.pank.yamapi.downloadInfo.DownloadInfo
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
+import su.pank.yamapi.model.cover.WithCover
 import su.pank.yamapi.track.model.*
 
 /**
@@ -18,7 +19,7 @@ import su.pank.yamapi.track.model.*
 class Track(
     private val client: YamApiClient,
     trackData: TrackData,
-) : Likable {
+) : Likable, WithCover {
     /** Уникальный идентификатор трека. */
     val id: String = trackData.id
 
@@ -53,9 +54,9 @@ class Track(
     val trackSharingFlag: TrackSharingFlag? = trackData.trackSharingFlag
     val contentWarning: String? = trackData.contentWarning
 
-    fun urlOgImage(size: CoverSize) = "https://${ogImageUri?.replace("%%", size.toString())}"
+    fun urlOgImage(size: CoverSize) = buildImageUrl(ogImageUri, size)
 
-    fun urlCover(size: CoverSize) = "https://${coverUri?.replace("%%", size.toString())}"
+    fun urlCover(size: CoverSize) = buildImageUrl(coverUri, size)
 
     suspend fun downloadInfo(): List<DownloadInfo> = client.tracks.downloadInfo(this.id)
 

@@ -10,6 +10,7 @@ import su.pank.yamapi.album.model.TrackPosition
 import su.pank.yamapi.model.Artist
 import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
+import su.pank.yamapi.model.cover.WithCover
 import su.pank.yamapi.track.Track
 import su.pank.yamapi.track.model.Options
 import su.pank.yamapi.track.model.TrackData
@@ -24,8 +25,9 @@ import kotlin.time.Instant
  */
 class Album(
     private val client: YamApiClient,
-    private val albumData: AlbumData,
-) : Likable {
+    albumData: AlbumData,
+) : Likable, WithCover {
+
     /** Уникальный идентификатор альбома. */
     val id: String = albumData.id.toString()
 
@@ -36,8 +38,8 @@ class Album(
     val metaType: AlbumType = albumData.metaType
     val year: UInt? = albumData.year
     val releaseDate: Instant? = albumData.releaseDate
-    val coverUri: String? = albumData.coverUri
-    val ogImage: String = albumData.ogImage
+    private val coverUri: String? = albumData.coverUri
+    private val ogImage: String = albumData.ogImage
     val genre: String? = albumData.genre
 
     /** Количество треков в альбоме. */
@@ -85,15 +87,15 @@ class Album(
      * @param size Размер обложки.
      * @return URL обложки или null, если обложка отсутствует.
      */
-    fun getCoverUri(size: CoverSize) = if (coverUri != null) "https://${coverUri.replace("%%", size.toString())}" else null
+    fun coverUri(size: CoverSize) = if (coverUri != null) "https://${coverUri.replace("%%", size.toString())}" else null
 
     /**
      * Получает URL OG-изображения альбома указанного размера.
      *
      * @param size Размер изображения.
      * @return URL изображения.
-     */
-    fun getOgImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
+    */
+    fun ogImage(size: CoverSize) = "https://${ogImage.replace("%%", size.toString())}"
 
     override suspend fun like(): Boolean = client.albums.like(id)
 
