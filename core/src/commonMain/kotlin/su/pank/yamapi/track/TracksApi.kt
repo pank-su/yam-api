@@ -6,7 +6,10 @@ import io.ktor.util.*
 import org.kotlincrypto.macs.hmac.sha2.HmacSHA256
 import su.pank.yamapi.YamApiClient
 import su.pank.yamapi.downloadInfo.DownloadInfo
+import su.pank.yamapi.downloadInfo.LosslessDownloadInfo
 import su.pank.yamapi.downloadInfo.model.DownloadInfoData
+import su.pank.yamapi.downloadInfo.model.LosslessDownloadInfoData
+import su.pank.yamapi.downloadInfo.model.LosslessDownloadInfoRequest
 import su.pank.yamapi.model.Revision
 import su.pank.yamapi.track.model.Sign
 import su.pank.yamapi.track.model.SimilarTracks
@@ -27,6 +30,9 @@ import kotlin.time.ExperimentalTime
 class TracksApi(
     private val client: YamApiClient,
 ) {
+
+    private val SIGN = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray())
+
     /**
      * Получает треки по идентификаторам.
      *
@@ -114,7 +120,7 @@ class TracksApi(
         trackId: String,
         canUseStreaming: Boolean = false,
     ): List<DownloadInfo> {
-        val sign = sign(trackId)
+        val sign = signTrack(trackId)
 
         return client
             .form<List<DownloadInfoData>, HashMap<String, String>>(
@@ -129,19 +135,21 @@ class TracksApi(
             ).map { DownloadInfo(client, it) }
     }
 
-    fun sign(trackId: String): Sign {
+    fun signTrack(trackId: String): Sign {
         val timestamp = Clock.System.now().epochSeconds
-        val hmacSign = HmacSHA256("p93jhgh689SBReK6ghtw62".encodeToByteArray()) // HmacSHA256()
-        val sign = hmacSign.doFinal("${trackId}$timestamp".encodeToByteArray()).encodeBase64()
 
-        return Sign(timestamp, sign)
+        return signData("${trackId}$timestamp", timestamp)
     }
+
+    fun signData(data: String, timestamp: Long, sign: HmacSHA256 = SIGN): Sign = Sign(timestamp,
+        sign.doFinal(data.encodeToByteArray()).encodeBase64())
+
 
     suspend fun lyrics(
         trackId: String,
         format: LyricsFormat = LyricsFormat.TEXT,
     ): Lyrics {
-        val sign = sign(trackId)
+        val sign = signTrack(trackId)
         val body = LyricsRequest(format, sign.timestamp, sign.value)
 
         return client.get<LyricsData, LyricsRequest>(body = body, "tracks", trackId, "lyrics").let {
@@ -149,7 +157,13 @@ class TracksApi(
         }
     }
 
-    suspend fun losslessInfo(){
-        TODO()
+    suspend fun losslessInfo(trackId: String): LosslessDownloadInfo {
+        val timestamp = Clock.System.now().epochSeconds
+        val sign = signData("${timestamp}${trackId}losslessflacaache-aacmp3raw", timestamp)
+
+        val body = LosslessDownloadInfoRequest(sign.timestamp, trackId, sign = sign.value.dropLast(1))
+        return client.get<HashMap<String, LosslessDownloadInfoData>, LosslessDownloadInfoRequest>(body = body, "get-file-info").let {
+            LosslessDownloadInfo(client, it.get("downloadInfo")!!)
+        }
     }
 }

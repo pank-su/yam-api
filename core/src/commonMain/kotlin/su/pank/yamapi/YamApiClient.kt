@@ -12,10 +12,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transform
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
-import su.pank.yamapi.album.model.AlbumData
 import su.pank.yamapi.builder.updateToken
 import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.LandingApi
@@ -116,6 +114,8 @@ class YamApiClient(
     token: String?
 ) : YaRequester() {
 
+
+
     /**
      * Поток токена для обновления зависимых от токена данных
      */
@@ -130,6 +130,10 @@ class YamApiClient(
             httpClient = httpClient.config { updateToken(value) }
             _token.value = value
         }
+
+    init {
+        this.token = token
+    }
 
     /**
      * Scope для хранения состояний зависящих от токена

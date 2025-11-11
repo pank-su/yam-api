@@ -44,7 +44,6 @@ class DownloadInfo(
     /** Контейнер файла. */
     val container: Container? = downloadInfoData.container
 
-    private var directLink: String? = null
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun buildDirectLink(xml: String): String {
@@ -60,7 +59,6 @@ class DownloadInfo(
      * @return Прямая ссылка или null, если не удалось получить.
      */
     suspend fun fetchDirectLink(): String? {
-        if (directLink != null) return directLink
         val xml =
             client.httpClient
                 .get(downloadInfoUrl) {
@@ -68,8 +66,7 @@ class DownloadInfo(
                         // append(HttpHeaders.Authorization, "OAuth ${client.token}")
                     }
                 }.body() as String
-        directLink = buildDirectLink(xml)
-        return directLink
+        return buildDirectLink(xml)
     }
 
     /**
@@ -78,10 +75,10 @@ class DownloadInfo(
      * @return Массив байтов аудиофайла.
      */
     suspend fun download(): ByteArray {
-        val link = directLink ?: fetchDirectLink()
+        val link = fetchDirectLink()
         return client.httpClient.get(link!!).body() as ByteArray
     }
 
     override fun toString(): String =
-        "DownloadInfo(codec=$codec, bitrateInKbps=$bitrateInKbps, gain=$gain, preview=$preview, downloadInfoUrl='$downloadInfoUrl', direct=$direct, container=$container, directLink=$directLink)"
+        "DownloadInfo(codec=$codec, bitrateInKbps=$bitrateInKbps, gain=$gain, preview=$preview, downloadInfoUrl='$downloadInfoUrl', direct=$direct, container=$container)"
 }
