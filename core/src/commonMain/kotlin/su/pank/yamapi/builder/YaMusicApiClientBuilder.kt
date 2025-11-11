@@ -53,7 +53,7 @@ class YaMusicApiClientBuilder {
     fun build(): YamApiClient {
         val httpClient = httpClient.configure(this)
 
-        return YamApiClient(httpClient, language)
+        return YamApiClient(httpClient, language, token)
     }
 }
 
@@ -82,9 +82,19 @@ private fun HttpClient?.configure(builder: YaMusicApiClientBuilder): HttpClient 
                 append("USER_AGENT", builder.userAgent)
                 append("Accept-Language", builder.language.toString())
 
-                if (builder.token != null) {
-                    append(HttpHeaders.Authorization, "OAuth ${builder.token}")
-                }
+                // token выставляется в [YamApiClient] при создании и изменении
+            }
+        }
+    }
+
+
+fun HttpClientConfig<*>.updateToken(token: String?) {
+        defaultRequest {
+            headers {
+                if (token == null)
+                    this.remove(HttpHeaders.Authorization)
+                else
+                    set(HttpHeaders.Authorization, "OAuth ${token}")
             }
         }
     }

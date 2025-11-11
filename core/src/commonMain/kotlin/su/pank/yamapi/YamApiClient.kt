@@ -6,9 +6,17 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transform
 import su.pank.yamapi.account.AccountApi
 import su.pank.yamapi.album.AlbumsApi
 import su.pank.yamapi.album.model.AlbumData
+import su.pank.yamapi.builder.updateToken
 import su.pank.yamapi.exceptions.NotAuthenticatedException
 import su.pank.yamapi.landing.LandingApi
 import su.pank.yamapi.model.*
@@ -103,9 +111,43 @@ abstract class YaRequester {
  * @param language Язык для запросов.
  */
 class YamApiClient(
-    override val httpClient: HttpClient,
+    override var httpClient: HttpClient,
     val language: Language,
+    token: String?
 ) : YaRequester() {
+
+    /**
+     * Поток токена для обновления зависимых от токена данных
+     */
+    private val _token = MutableStateFlow<String?>(token)
+
+    /**
+     * Токен авторизации для горячего обновления его в клиенте
+     */
+    var token: String?
+        get() = _token.value
+        set(value){
+            httpClient = httpClient.config { updateToken(value) }
+            _token.value = value
+        }
+
+    /**
+     * Scope для хранения состояний зависящих от токена
+     */
+    private val tokenScope = CoroutineScope(Dispatchers.Default)
+
+    /**
+     * Идентификатор пользователя
+     *
+     * Используется для взаимодействия с плейлистом, лайками и т.п.
+     */
+    val userId = _token.map {
+        if (it != null) {
+            account.status().account.uid.toString()
+        }
+        else null
+    }.stateIn(tokenScope, SharingStarted.Eagerly, null)
+
     /**
      * API для работы с аккаунтом пользователя.
      */
@@ -201,14 +243,14 @@ class YamApiClient(
     suspend fun userInfo() = httpClient.get("https://login.yandex.ru/" + "info").body<UserInfo>()
 
     /**
-     * Получить userId
+     * Получить userId или использовать заданный
      */
-    internal suspend fun resolveUserId(userId: String? = null): String =
-        userId ?: account
-            .status()
-            .account.uid
-            ?.toString() ?: throw NotAuthenticatedException()
+    internal fun resolveUserId(userId: String? = null): String =
+        userId ?: this.userId.value ?: throw NotAuthenticatedException()
 
+    /**
+     * Выполняет действие лайка или удаления лайка для [Likable].
+     */
     internal suspend inline fun <reified T : Likable> likeAction(
         vararg ids: String,
         userId: String? = null,
