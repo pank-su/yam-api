@@ -25,5 +25,5 @@ include("rotor")
 include(":docs")
 
 include(":examples:cli")
-
+include(":examples:notebooks")
 
