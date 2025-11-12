@@ -9,6 +9,8 @@ import su.pank.yamapi.model.Likable
 import su.pank.yamapi.model.cover.CoverSize
 import su.pank.yamapi.model.cover.WithCover
 import su.pank.yamapi.track.model.*
+import su.pank.yamapi.track.model.lyrics.Lyrics
+import su.pank.yamapi.track.model.lyrics.LyricsFormat
 
 /**
  * Представляет музыкальный трек с его метаданными и предоставляет методы для взаимодействия с треком через API.
@@ -66,4 +68,6 @@ class Track(
     override suspend fun like(): Boolean = client.like<Track>(id)
 
     override suspend fun unlike(): Boolean = client.unlike<Track>(id)
+
+    suspend fun lyrics(format: LyricsFormat = LyricsFormat.TEXT): Lyrics = client.tracks.lyrics(id, format)
 }

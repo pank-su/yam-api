@@ -31,4 +31,9 @@ class Lyrics(private val client: YamApiClient, lyricsData: LyricsData) {
         return client.httpClient.get(downloadUrl).bodyAsText()
     }
 
+
+    override fun toString(): String {
+        return "Lyrics(lyricId=$lyricId, externalLyricId=$externalLyricId, writers=$writers, major=$major, downloadUrl='$downloadUrl')"
+    }
+
 }
