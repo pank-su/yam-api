@@ -17,6 +17,7 @@ hash = "0.8.0"
 io = "0.8.0"
 dokka = "2.1.0"
 clikt = "5.0.3"
+grpc = "1.4.0"
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -24,6 +25,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinxJson = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+grpc = { id = "io.github.timortel.kmpgrpc.plugin", version.ref = "grpc" }
 
 [libraries]
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaGradlePlugin" }
@@ -59,3 +61,4 @@ md5 = { module = "org.kotlincrypto.hash:md", version.ref = "hash" }
 io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "io" }
 
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
+

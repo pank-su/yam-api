@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 include(":core")
 include("rotor")
 include(":docs")
+include(":ynison")
 
 include(":examples:cli")
 include(":examples:notebooks")

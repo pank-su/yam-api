@@ -56,6 +56,7 @@ class Track(
     val trackSharingFlag: TrackSharingFlag? = trackData.trackSharingFlag
     val contentWarning: String? = trackData.contentWarning
 
+
     fun urlOgImage(size: CoverSize) = buildImageUrl(ogImageUri, size)
 
     fun urlCover(size: CoverSize) = buildImageUrl(coverUri, size)

@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.dokka).apply(false)
     alias(libs.plugins.kotlinxJson).apply(false)
     alias(libs.plugins.kotlinJvm).apply(false)
+    alias(libs.plugins.grpc).apply(false)
 }
