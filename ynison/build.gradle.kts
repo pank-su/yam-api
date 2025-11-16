@@ -14,6 +14,9 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.set(listOf("-Xcontext-parameters"))
+    }
 
     kotlin.applyDefaultHierarchyTemplate()
     jvm()
@@ -60,6 +63,7 @@ kotlin {
         }
         commonMain {
             dependencies {
+                implementation(projects.core)
 
                 implementation(libs.ktor.client)
                 implementation(libs.ktor.client.logging)

@@ -6,3 +6,4 @@ This file will express "thanks" to various developers and projects for good exam
   yandex-music-api;
 - [Kord](https://github.com/kordlib/kord) - the library has a very good structure and solutions; I have room for more
   improvement.
+- [go-ynison](https://github.com/bulatorr/go-yaynison) - a Go library that helped to understand the YNISON format and GRPC.
