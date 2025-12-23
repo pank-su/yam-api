@@ -4,40 +4,14 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxJson)
     alias(libs.plugins.dokka)
     id("module.publication")
+    id("kmp.all")
 }
 
 
-
-
 kotlin {
-
-    kotlin.applyDefaultHierarchyTemplate()
-    jvm()
-    androidTarget {
-        publishLibraryVariants("release")
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
-        }
-
-    }
-
-
-    linuxX64()
-
-    js{
-        browser()
-        nodejs()
-    }
-    wasmJs{
-        browser()
-        nodejs()
-    }
-
     sourceSets {
         androidUnitTest {
             dependencies {
@@ -89,15 +63,6 @@ kotlin {
     }
 }
 
-android {
-    namespace = "su.pank.yamapi"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-
-    }
-
-}
 
 
 dokka {

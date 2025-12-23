@@ -24,7 +24,6 @@ val testJson =
 fun createMockedYamApiClient(handler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData): YamApiClient {
     val mockEngine =
         MockEngine { request ->
-
             handler(this, request)
         }
 
@@ -35,7 +34,7 @@ fun createMockedYamApiClient(handler: suspend MockRequestHandleScope.(HttpReques
             }
         }
 
-    return YamApiClient(client, Language.ru)
+    return YamApiClient(client, Language.ru, null)
 }
 
 fun mockJsonResponse(content: String): suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData =

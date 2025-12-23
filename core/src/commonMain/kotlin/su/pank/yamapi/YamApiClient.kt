@@ -28,6 +28,7 @@ import su.pank.yamapi.utils.setBody
 /**
  * Базовый класс для выполнения запросов к API Яндекс.Музыки.
  */
+// TODO: сделать отдельный HttpClient
 abstract class YaRequester {
     internal abstract val httpClient: HttpClient
 
@@ -105,8 +106,9 @@ abstract class YaRequester {
 /**
  * Основной клиент для взаимодействия с API Яндекс.Музыки.
  *
- * @param httpClient HTTP клиент для выполнения запросов.
- * @param language Язык для запросов.
+ * @param httpClient HTTP клиент для выполнения запросов
+ * @param language Язык для запросов
+ * @param token Токен
  */
 class YamApiClient(
     override var httpClient: HttpClient,

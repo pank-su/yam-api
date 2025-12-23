@@ -28,6 +28,8 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 grpc = { id = "io.github.timortel.kmpgrpc.plugin", version.ref = "grpc" }
 
 [libraries]
+android-gradle-plugin = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "agp" }
+kmp-gradle-plugin = { module = "org.jetbrains.kotlin.multiplatform:org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokkaGradlePlugin" }
 getenv = { module = "io.github.luca992.getenv-kt:getenv", version.ref = "getenv" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

@@ -4,7 +4,7 @@ rootProject.name = "yam-api"
 
 
 pluginManagement {
-    includeBuild("convention-plugins")
+    includeBuild("build-plugins")
     repositories {
         google()
         mavenCentral()
@@ -28,3 +28,5 @@ include(":ynison")
 include(":examples:cli")
 include(":examples:notebooks")
 
+
+include("yam")
